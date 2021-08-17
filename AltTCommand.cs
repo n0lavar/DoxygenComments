@@ -68,6 +68,25 @@ namespace DoxygenComments
             ".tlh", 
         };
 
+        private static readonly vsCMElement[] m_FastSearchElements = {
+            //vsCMElement.vsCMElementOther,
+            vsCMElement.vsCMElementClass,
+            vsCMElement.vsCMElementFunction,
+            vsCMElement.vsCMElementVariable,
+            vsCMElement.vsCMElementNamespace,
+            //vsCMElement.vsCMElementParameter,
+            vsCMElement.vsCMElementEnum,
+            vsCMElement.vsCMElementStruct,
+            vsCMElement.vsCMElementUnion,
+            //vsCMElement.vsCMElementLocalDeclStmt,
+            //vsCMElement.vsCMElementFunctionInvokeStmt,
+            //vsCMElement.vsCMElementAssignmentStmt,
+            vsCMElement.vsCMElementDefineStmt,
+            vsCMElement.vsCMElementTypeDef,
+            //vsCMElement.vsCMElementIncludeStmt,
+            vsCMElement.vsCMElementMacro,
+        };
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AltTCommand"/> class.
@@ -227,7 +246,7 @@ namespace DoxygenComments
             }
 
             int nCommentIndex = sLine.IndexOf("//");
-            if (nCommentIndex != -1 && sLine.All(ch => Char.IsWhiteSpace(ch) || ch == '/'))
+            if (nCommentIndex != -1)
             {
                 bool bAllWhilespaces = true;
                 for (int i = 0; bAllWhilespaces && i < nCommentIndex; ++i)
@@ -264,7 +283,7 @@ namespace DoxygenComments
             VCFileCodeModel fileCodeModel = projectItem.FileCodeModel as VCFileCodeModel
                 ?? throw new ArgumentNullException(nameof(projectItem.FileCodeModel));
 
-            CodeElement codeElement = FindNextLineCodeElement(fileCodeModel.CodeElements, editPoint);
+            CodeElement codeElement = FindNextLineCodeElement(fileCodeModel.CodeElements, editPoint, nWhiteSpaces);
             if (codeElement != null)
             {
                 // create code element comment

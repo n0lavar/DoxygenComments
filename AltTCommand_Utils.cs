@@ -71,87 +71,40 @@ namespace DoxygenComments
         };
 
 
-        private CodeElement FindNextLineCodeElement(CodeElements elements, TextPoint textPoint)
+        private CodeElement FindNextLineCodeElement(CodeElements elements, TextPoint textPoint, int nWhiteSpaces)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-#if false
-
+            // try to get symbol right under the edit point ( O(1) )
             EditPoint searchPoint = textPoint.CreateEditPoint();
             searchPoint.LineDown();
             searchPoint.CharRight(nWhiteSpaces);
-            
-            foreach (vsCMElement scope in Enum.GetValues(typeof(vsCMElement)))
-            {
-                CodeElement elem = searchPoint.CodeElement[scope];
-                if (elem != null)
-                    return elem;
-            }
-            
-            return null;
 
-#endif
-
-#if false
-
-            SortedSet<LineCodeElement> allElements = new SortedSet<LineCodeElement>(new CodeElementLineCompare());
-            void AddElements(ref CodeElements _elements)
-            {
-                foreach (CodeElement item in _elements)
-                {
-                    LineCodeElement lineCodeElement = new LineCodeElement(item, textPoint);
-                    if (lineCodeElement.CodeElement != null)
-                    {
-                        allElements.Add(lineCodeElement);
-                        CodeElements _children = item.Children;
-                        AddElements(ref _children);
-                    }
-                }
-            }
-            AddElements(ref elements);
-
-            int nSearchBorderLeft   = 0;
-            int nSearchBorderRight  = allElements.Count - 1;
-            int nResult             = -1;
-
-            while (nSearchBorderLeft <= nSearchBorderRight)
-            {
-                int nMiddle = (nSearchBorderLeft + nSearchBorderRight) / 2;
-                LineCodeElement lineCodeElement = allElements.ElementAt(nMiddle);
-
-                if (textPoint.Line + 1 == lineCodeElement.Line) 
-                {
-                    nResult = nMiddle;
-                    break;
-                }
-
-                if (textPoint.Line + 1 < lineCodeElement.Line)
-                    nSearchBorderRight = nMiddle - 1;
-                else
-                    nSearchBorderLeft = nMiddle + 1;
-            }
-
-            if (nResult != -1)
-                return allElements.ElementAt(nResult).CodeElement;
-            else
-                return null;
-
-#endif
-
-#if true
-
-            TextPoint GetStartPoint(CodeElement codeElement)
+            CodeElement elem = searchPoint.get_CodeElement(vsCMElement.vsCMElementClass);
+            if (elem != null && Array.IndexOf(m_FastSearchElements, elem.Kind) != -1)
             {
                 try
                 {
-                    return codeElement.StartPoint;
+                    TextPoint start  = elem.GetStartPoint(vsCMPart.vsCMPartHeader);
+                    TextPoint finish = elem.GetEndPoint(vsCMPart.vsCMPartHeader);
+
+                    try
+                    {
+                        if (textPoint.LessThan(start) || textPoint.GreaterThan(finish))
+                            return elem; // not inside the body
+                    }
+                    catch (Exception)
+                    {
+                        return elem; // other document
+                    }
                 }
-                catch(Exception)
+                catch (Exception)
                 {
-                    return null;
                 }
             }
 
+            // some elements can't be found by searchPoint (for instance, templated method inside the class)
+            // iterate over all the document elements ( O(N) )
             string sTextPointDocName = textPoint.Parent.Parent.FullName;
 
             CodeElement CheckElement(TextPoint startPoint, CodeElement codeElement)
@@ -165,16 +118,29 @@ namespace DoxygenComments
             }
 
             foreach (CodeElement codeElement in elements)
-            {                    
-                CodeElements children = codeElement.Children;
-                if (children != null && children.Count != 0)
+            {            
+                // don't care about function params
+                if (codeElement.Kind != vsCMElement.vsCMElementFunction)
                 {
-                    var child = FindNextLineCodeElement(children, textPoint);
-                    if (child != null)
-                        return child;
+                    CodeElements children = codeElement.Children;
+                    if (children != null && children.Count != 0)
+                    {
+                        var child = FindNextLineCodeElement(children, textPoint, nWhiteSpaces);
+                        if (child != null)
+                            return child;
+                    }
                 }
             
-                TextPoint startPoint = GetStartPoint(codeElement);
+                TextPoint startPoint;
+                try
+                {
+                    startPoint = codeElement.StartPoint;
+                }
+                catch (Exception)
+                {
+                    startPoint = null;
+                }
+
                 if (startPoint != null)
                 {
                     var ret = CheckElement(startPoint, codeElement);
@@ -184,6 +150,7 @@ namespace DoxygenComments
                     if (codeElement.Kind == vsCMElement.vsCMElementFunction)
                     {
                         VCCodeFunction codeFunction = codeElement as VCCodeFunction;
+
                         ret = CheckElement(
                             codeFunction.StartPointOf[vsCMPart.vsCMPartHeader, vsCMWhere.vsCMWhereDeclaration], 
                             codeElement);
@@ -195,7 +162,6 @@ namespace DoxygenComments
             }
             
             return null;
-#endif
         }
 
         private bool TryRemoveWithRoot(ref string path, string rootFolder)
@@ -276,7 +242,7 @@ namespace DoxygenComments
                 !bAddCopyright ? 0 : sCopyrightTag.Length);
 
 
-            int nMaxParamLength = -1;
+            int nMaxParamLength = 0;
             if (templateParameters != null && templateParameters.Length != 0)
                 foreach (Parameter sTParam in templateParameters)
                     nMaxParamLength = Math.Max(nMaxParamLength, sTParam.Name.Length);
@@ -363,6 +329,8 @@ namespace DoxygenComments
                     nTagsIndent, 
                     nMaxTagLength, 
                     sRetvalTag, 
+                    "",
+                    nMaxParamLength,
                     sRetvalValue));
 
                 if (sEmptyStringTags.Contains("retval"))
@@ -466,7 +434,7 @@ namespace DoxygenComments
                 sTextIndent = new string(chIndentChar, nMaxTagLength - sTag.Length + 1);
 
                 if (nParamsIndent != -1)
-                    sParamIndent = new string(chIndentChar, nParamsIndent - sTagText.Length) + " - ";
+                    sParamIndent = new string(chIndentChar, nParamsIndent - sTagText.Length) + "- ";
                 else
                     sParamIndent = "";
             }

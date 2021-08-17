@@ -165,7 +165,7 @@ namespace DoxygenComments
 
             List<Parameter> tparams = new List<Parameter>();
             foreach (CodeElement tparam in classElement.TemplateParameters)
-                tparams.Add(new Parameter(tparam.FullName));
+                tparams.Add(new Parameter(tparam.FullName + " "));
 
             CreateComment(
                 editPoint,
@@ -191,7 +191,7 @@ namespace DoxygenComments
 
             List<Parameter> tparams = new List<Parameter>();
             foreach (CodeElement tparam in structElement.TemplateParameters)
-                tparams.Add(new Parameter(tparam.FullName));
+                tparams.Add(new Parameter(tparam.FullName + " "));
 
             CreateComment(
                 editPoint,
@@ -218,7 +218,7 @@ namespace DoxygenComments
             List<Parameter> tparams = new List<Parameter>();
             foreach (CodeElement tparam in functionElement.TemplateParameters)
             {
-                string sName = tparam.FullName.Replace("...", "");
+                string sName = tparam.FullName.Replace("...", "") + " ";
                 tparams.Add(new Parameter(
                     sName, 
                     sName == Settings.TemplateParameterPackTypeName 
@@ -230,7 +230,7 @@ namespace DoxygenComments
             foreach (CodeElement param in functionElement.Parameters)
             {
                 Params.Add(new Parameter(
-                    param.FullName.Replace("...", "")));
+                    param.FullName.Replace("...", "") + " "));
             }
 
             string sDefaultBrief  = "";
@@ -245,7 +245,12 @@ namespace DoxygenComments
             }
             else
             {
-                if (functionElement.Type.TypeKind != vsCMTypeRef.vsCMTypeRefVoid)
+                // sometimes functionElement.Type.TypeKind = vsCMTypeRef.vsCMTypeRefOther 
+                // even if retval is "void"
+                bool bVoidRetval = functionElement.Type.TypeKind == vsCMTypeRef.vsCMTypeRefVoid 
+                    || Regex.Replace(functionElement.TypeString.Replace("noexcept", ""), @"\s+", "") == "void";
+
+                if (!bVoidRetval)
                     sDefaultRetval =  "";
 
                 if (sDefaultRetval != null)
