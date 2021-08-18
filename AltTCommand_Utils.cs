@@ -32,7 +32,9 @@ namespace DoxygenComments
             searchPoint.CharRight(nWhiteSpaces);
 
             CodeElement elem = searchPoint.get_CodeElement(vsCMElement.vsCMElementClass);
-            if (elem != null && Array.IndexOf(m_FastSearchElements, elem.Kind) != -1)
+            if (elem != null 
+                && Array.IndexOf(m_FastSearchElements, elem.Kind) != -1
+                && Array.IndexOf(m_IgnoredElements, elem.Kind) == -1)
             {
                 try
                 {
@@ -77,17 +79,8 @@ namespace DoxygenComments
 
             foreach (CodeElement codeElement in elements)
             {
-                // don't care about function params
-                if (codeElement.Kind != vsCMElement.vsCMElementFunction)
-                {
-                    CodeElements children = codeElement.Children;
-                    if (children != null && children.Count != 0)
-                    {
-                        var child = FindNextLineCodeElementRecursive(children, textPoint);
-                        if (child != null)
-                            return child;
-                    }
-                }
+                if (Array.IndexOf(m_IgnoredElements, codeElement.Kind) != -1)
+                    continue;
 
                 TextPoint startPoint;
                 try
@@ -115,6 +108,18 @@ namespace DoxygenComments
 
                         if (ret != null)
                             return ret;
+                    }
+                }
+
+                // don't care about function params
+                if (codeElement.Kind != vsCMElement.vsCMElementFunction)
+                {
+                    CodeElements children = codeElement.Children;
+                    if (children != null && children.Count != 0)
+                    {
+                        var child = FindNextLineCodeElementRecursive(children, textPoint);
+                        if (child != null)
+                            return child;
                     }
                 }
             }

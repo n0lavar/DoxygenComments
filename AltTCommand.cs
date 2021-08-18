@@ -87,6 +87,9 @@ namespace DoxygenComments
             vsCMElement.vsCMElementMacro,
         };
 
+        private static readonly vsCMElement[] m_IgnoredElements = {
+            vsCMElement.vsCMElementVCBase,
+        };
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AltTCommand"/> class.
