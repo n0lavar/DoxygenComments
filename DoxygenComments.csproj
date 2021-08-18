@@ -53,6 +53,7 @@
     <Compile Include="SettingsPage.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="StringArrayConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
