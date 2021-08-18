@@ -219,8 +219,8 @@ namespace DoxygenComments
             {
                 string sName = tparam.FullName.Replace("...", "") + " ";
                 tparams.Add(new Parameter(
-                    sName, 
-                    sName == Settings.TemplateParameterPackTypeName 
+                    sName,
+                    Regex.Replace(sName, @"\s+", "") == Settings.TemplateParameterPackTypeName 
                         ? "template parameter pack type" 
                         : null));
             }
