@@ -251,10 +251,9 @@ namespace DoxygenComments
                     || Regex.Replace(functionElement.TypeString.Replace("noexcept", ""), @"\s+", "") == "void";
 
                 if (!bVoidRetval)
+                {
                     sDefaultRetval =  "";
 
-                if (sDefaultRetval != null)
-                {
                     switch (functionElement.Name)
                     {
                     case "begin":
@@ -297,6 +296,16 @@ namespace DoxygenComments
                         sDefaultRetval = "const reverse iterator to reverse end";
                         break;
 
+                    case "operator+=":
+                    case "operator-=":
+                    case "operator*=":
+                    case "operator/=":
+                    case "operator%=":
+                    case "operator^=":
+                    case "operator&=":
+                    case "operator|=":
+                    case "operator>>=":
+                    case "operator<<=":
                     case "operator=":
                         sDefaultRetval = "this object reference";
                         break;

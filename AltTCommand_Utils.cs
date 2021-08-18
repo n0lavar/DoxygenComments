@@ -105,6 +105,13 @@ namespace DoxygenComments
 
             // some elements can't be found by searchPoint (for instance, templated method inside the class)
             // iterate over all the document elements ( O(N) )
+            return FindNextLineCodeElementRecursive(elements, textPoint);
+        }
+
+        private CodeElement FindNextLineCodeElementRecursive(CodeElements elements, TextPoint textPoint)
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             string sTextPointDocName = textPoint.Parent.Parent.FullName;
 
             CodeElement CheckElement(TextPoint startPoint, CodeElement codeElement)
@@ -113,24 +120,24 @@ namespace DoxygenComments
                 if (sTextPointDocName == startPoint.Parent.Parent.FullName)
                     if (startPoint.Line == textPoint.Line + 1)
                         ret = codeElement;
-            
+
                 return ret;
             }
 
             foreach (CodeElement codeElement in elements)
-            {            
+            {
                 // don't care about function params
                 if (codeElement.Kind != vsCMElement.vsCMElementFunction)
                 {
                     CodeElements children = codeElement.Children;
                     if (children != null && children.Count != 0)
                     {
-                        var child = FindNextLineCodeElement(children, textPoint, nWhiteSpaces);
+                        var child = FindNextLineCodeElementRecursive(children, textPoint);
                         if (child != null)
                             return child;
                     }
                 }
-            
+
                 TextPoint startPoint;
                 try
                 {
@@ -146,13 +153,13 @@ namespace DoxygenComments
                     var ret = CheckElement(startPoint, codeElement);
                     if (ret != null)
                         return ret;
-            
+
                     if (codeElement.Kind == vsCMElement.vsCMElementFunction)
                     {
                         VCCodeFunction codeFunction = codeElement as VCCodeFunction;
 
                         ret = CheckElement(
-                            codeFunction.StartPointOf[vsCMPart.vsCMPartHeader, vsCMWhere.vsCMWhereDeclaration], 
+                            codeFunction.StartPointOf[vsCMPart.vsCMPartHeader, vsCMWhere.vsCMWhereDeclaration],
                             codeElement);
 
                         if (ret != null)
@@ -160,7 +167,7 @@ namespace DoxygenComments
                     }
                 }
             }
-            
+
             return null;
         }
 
@@ -473,7 +480,7 @@ namespace DoxygenComments
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            string sComment = "";
+            string sComment;
             if (nElementIndent != -1)
             {
                 editPoint.StartOfLine();
