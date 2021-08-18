@@ -373,7 +373,7 @@ namespace DoxygenComments
 
             List<Parameter> Params = new List<Parameter>();
             foreach (CodeElement param in macroElement.Parameters)
-                Params.Add(new Parameter(param.FullName));
+                Params.Add(new Parameter(param.FullName + " "));
 
             CreateComment(
                 editPoint,

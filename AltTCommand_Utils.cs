@@ -22,55 +22,6 @@ namespace DoxygenComments
             public string Value;
         }
 
-        private struct LineCodeElement
-        {
-            public LineCodeElement(CodeElement codeElement, TextPoint textPoint)
-            {
-                ThreadHelper.ThrowIfNotOnUIThread();
-
-                string sTextPointDocName = textPoint.Parent.Parent.FullName;
-                CodeElement = null;
-                Line = -1;
-
-                try
-                {
-                    TextPoint definitionTextPoint = codeElement.StartPoint;
-
-                    if (sTextPointDocName == definitionTextPoint.Parent.Parent.FullName)
-                    {
-                        Line = definitionTextPoint.Line;
-                    }
-                    else if (codeElement.Kind == vsCMElement.vsCMElementFunction)
-                    {
-                        VCCodeFunction codeFunction = codeElement as VCCodeFunction;
-                        TextPoint funcStartPoint = codeFunction.StartPointOf[vsCMPart.vsCMPartHeader, vsCMWhere.vsCMWhereDeclaration];
-                        if (sTextPointDocName == funcStartPoint.Parent.Parent.FullName)
-                        {
-                            Line = funcStartPoint.Line;
-                        }
-                    }
-
-                    if (Line != -1)
-                        CodeElement = codeElement;
-                }
-                catch (Exception)
-                {
-                }
-            }
-
-            public CodeElement  CodeElement;
-            public int          Line;
-        }
-
-        private class CodeElementLineCompare : IComparer<LineCodeElement>
-        {
-            public int Compare(LineCodeElement l, LineCodeElement r)
-            {
-                return l.Line.CompareTo(r.Line);
-            }
-        };
-
-
         private CodeElement FindNextLineCodeElement(CodeElements elements, TextPoint textPoint, int nWhiteSpaces)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
@@ -407,7 +358,7 @@ namespace DoxygenComments
                     sComment.Append(CreateEmptyString());
             }
 
-            if (additionalTextAfterComment.Length > 0)
+            if (additionalTextAfterComment != null && additionalTextAfterComment.Length > 0)
             {
                 sComment.Append(Environment.NewLine);
                 foreach (string str in additionalTextAfterComment)
