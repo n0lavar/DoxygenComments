@@ -23,16 +23,16 @@ namespace DoxygenComments
 
             if (nFillerLeft >= 0)
             {
-                sCommentText += new string('=', nFillerLeft);
-                sCommentText += sText.Length == 0 ? '=' : ' ';
+                sCommentText += new string('-', nFillerLeft);
+                sCommentText += sText.Length == 0 ? '-' : ' ';
             }
 
             sCommentText += sText;
 
             if (nFillerRight >= 0)
             {
-                sCommentText += sText.Length == 0 ? '=' : ' ';
-                sCommentText += new string('=', nFillerRight);
+                sCommentText += sText.Length == 0 ? '-' : ' ';
+                sCommentText += new string('-', nFillerRight);
             }
 
             editPoint.StartOfLine();
