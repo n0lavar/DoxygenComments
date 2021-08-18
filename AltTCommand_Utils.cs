@@ -199,7 +199,7 @@ namespace DoxygenComments
             bool        bAddAuthor,
             bool        bAddDate,
             bool        bAddCopyright,
-            string      sAditionalTextAfterComment)
+            string[]    additionalTextAfterComment)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
@@ -389,10 +389,10 @@ namespace DoxygenComments
                         "", 
                         Settings.Copyright[i].Replace("{year}", DateTime.Now.Year.ToString())));
                 }
-            }
 
-            if (sEmptyStringTags.Contains("copyright"))
-                sComment.Append(CreateEmptyString());
+                if (sEmptyStringTags.Contains("copyright"))
+                    sComment.Append(CreateEmptyString());
+            }
 
             if (sComment.Length != 0 && !sComment.ToString().All(Char.IsWhiteSpace))
             {
@@ -407,8 +407,12 @@ namespace DoxygenComments
                     sComment.Append(CreateEmptyString());
             }
 
-            if (!string.IsNullOrEmpty(sAditionalTextAfterComment))
-                sComment.Append(Environment.NewLine + sAditionalTextAfterComment);
+            if (additionalTextAfterComment.Length > 0)
+            {
+                sComment.Append(Environment.NewLine);
+                foreach (string str in additionalTextAfterComment)
+                    sComment.Append(str + Environment.NewLine);
+            }
 
             if (sComment.Length != 0)
             {

@@ -44,10 +44,6 @@ namespace DoxygenComments
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            string sPragmaOnce = Settings.HeaderFilesHeaderAddPragmaOnce 
-                ? "#pragma once" 
-                : "";
-
             CreateComment(
                 editPoint,
                 0,
@@ -63,7 +59,7 @@ namespace DoxygenComments
                 Settings.HeaderFilesHeaderAddAuthor,
                 Settings.HeaderFilesHeaderAddDate,
                 Settings.HeaderFilesHeaderAddCopyright,
-                sPragmaOnce);
+                Settings.HeaderFilesHeaderAdditionalText);
         }
 
         private void CreateSourceFileHeader(EditPoint editPoint, TextDocument textDocument)
@@ -116,8 +112,11 @@ namespace DoxygenComments
                 {
                     sAdditionalText += "#include \"" + sHeaderInclude + "\"" + Environment.NewLine;
                 }
-
             }
+
+            string[] additionalText = new string[Settings.SourceFilesHeaderAdditionalText.Length + 1];
+            additionalText[0] = sAdditionalText;
+            Settings.SourceFilesHeaderAdditionalText.CopyTo(additionalText, 1);
 
             CreateComment(
                 editPoint,
@@ -134,7 +133,7 @@ namespace DoxygenComments
                 Settings.SourceFilesHeaderAddAuthor,
                 Settings.SourceFilesHeaderAddDate,
                 Settings.SourceFilesHeaderAddCopyright,
-                sAdditionalText);
+                additionalText);
         }
 
         private void CreateInlineFileHeader(EditPoint editPoint, TextDocument textDocument)
@@ -156,7 +155,7 @@ namespace DoxygenComments
                 Settings.InlineFilesHeaderAddAuthor,
                 Settings.InlineFilesHeaderAddDate,
                 Settings.InlineFilesHeaderAddCopyright,
-                null);
+                Settings.InlineFilesHeaderAdditionalText);
         }
 
         private void CreateClassComment(EditPoint editPoint, int nElementIndent, VCCodeClass classElement)

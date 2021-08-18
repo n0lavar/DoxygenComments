@@ -130,8 +130,10 @@ namespace DoxygenComments
         public bool HeaderFilesHeaderAddCopyright { get; set; } = true;
 
         [Category(sHeaderFilesHeader)]
-        [DisplayName("Add #pragma once")]
-        public bool HeaderFilesHeaderAddPragmaOnce { get; set; } = true;
+        [DisplayName("Additional text for header files")]
+        [Description("Additional text that will be placed after the main comment text. Can be used for [#pragma once], [namespace MyLib { }] or whatever you wish")]
+        [TypeConverter(typeof(StringArrayConverter))]
+        public string[] HeaderFilesHeaderAdditionalText { get; set; } = { "#pragma once" };
 
         [Category(sHeaderFilesHeader)]
         [DisplayName(sEmptyStringTags)]
@@ -186,6 +188,12 @@ namespace DoxygenComments
         public string SourceFilesHeaderIncludeRoot { get; set; } = "inc";
 
         [Category(sSourceFilesHeader)]
+        [DisplayName("Additional text for source files")]
+        [Description("Additional text that will be placed after the main comment text. Can be used for [using namespace MyLib;], [namespace MyLib { }] or whatever you wish")]
+        [TypeConverter(typeof(StringArrayConverter))]
+        public string[] SourceFilesHeaderAdditionalText { get; set; } = { "" };
+
+        [Category(sSourceFilesHeader)]
         [DisplayName(sEmptyStringTags)]
         [Description(sEmptyStringTagsDesc)]
         public string SourceFilesHeaderEmptyStringTags { get; set; } = "begin elementType details copyright";
@@ -221,6 +229,12 @@ namespace DoxygenComments
         [Category(sInlineFilesHeader)]
         [DisplayName(sAddCopyright)]
         public bool InlineFilesHeaderAddCopyright { get; set; } = true;
+
+        [Category(sInlineFilesHeader)]
+        [DisplayName("Additional text for inline files")]
+        [Description("Additional text that will be placed after the main comment text. Can be used for [namespace MyLib { }] or whatever you wish")]
+        [TypeConverter(typeof(StringArrayConverter))]
+        public string[] InlineFilesHeaderAdditionalText { get; set; } = { "" };
 
         [Category(sInlineFilesHeader)]
         [DisplayName(sEmptyStringTags)]
