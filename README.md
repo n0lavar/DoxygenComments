@@ -10,13 +10,16 @@ It is possible to insert blank lines for each tag block (as well as the beginnin
 
 
 * Create file comment with copyright info and custom text after comment (`#pragma once`, `#include <stdafx.h>`, `#include <classHeader.h>`, `using namespace MyLib;` etc). You can customize comment styles for different kinds of files (header, source or inline)   
-![Alt Text](https://github.com/n0lavar/DoxygenComments/blob/main/gifs/header.gif)
+![Alt Text](https://github.com/n0lavar/DoxygenComments/blob/main/gifs/file.gif)
 
 * Create class comment with template parameters list 
 ![Alt Text](https://github.com/n0lavar/DoxygenComments/blob/main/gifs/class.gif)
 
 * Create function/method comment with all template and common parameters and return value 
 ![Alt Text](https://github.com/n0lavar/DoxygenComments/blob/main/gifs/fn.gif)
+
+* Create macro comment with all parameters
+![Alt Text](https://github.com/n0lavar/DoxygenComments/blob/main/gifs/macro.gif)
 
 * Create a centered comment to separate logical blocks in the file 
 ![Alt Text](https://github.com/n0lavar/DoxygenComments/blob/main/gifs/line_comment.gif)
