@@ -39,6 +39,13 @@
 
   ```
 * No `@param` comment for `...` parameter packs   
-  `void append_sprintf(const_pointer pszFormat, ...) noexcept;`   
+  ```
+  /**
+      @brief 
+      @param pszFormat - 
+      @param           -    <- no ... name
+  **/
+  void append_sprintf(const_pointer pszFormat, ...) noexcept;
+  ```
   In this parameter, its name is empty and cannot be distinguished from a typed parameter without a name
 
