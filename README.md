@@ -3,8 +3,11 @@ Visual Studio extension for auto-generating Doxygen-style comments in C ++ code
 
 ## Extension capabilities
 
-Use a keyboard shortcut `Alt + T` for all actions   
-All lines can be enabled / disabled or configured at your discretion   
+Use a keyboard shortcut `Alt + T` for all actions.   
+All lines can be enabled / disabled or configured at your discretion.   
+Tag indentation can be configured for each code element.   
+It is possible to insert blank lines for each tag block (as well as the beginning and end parts of the comment).
+
 
 * Create file comment with copyright info and custom text after comment (`#pragma once`, `#include <stdafx.h>`, `#include <classHeader.h>`, `using namespace MyLib;` etc). You can customize comment styles for different kinds of files (header, source or inline)   
 ![Alt Text](https://github.com/n0lavar/DoxygenComments/blob/main/gifs/header.gif)
@@ -12,7 +15,7 @@ All lines can be enabled / disabled or configured at your discretion
 * Create class comment with template parameters list 
 ![Alt Text](https://github.com/n0lavar/DoxygenComments/blob/main/gifs/class.gif)
 
-* Create function/method comment with all template and common parameters
+* Create function/method comment with all template and common parameters and return value 
 ![Alt Text](https://github.com/n0lavar/DoxygenComments/blob/main/gifs/fn.gif)
 
 * Create a centered comment to separate logical blocks in the file 
