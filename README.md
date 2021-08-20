@@ -34,7 +34,7 @@ It is possible to insert blank lines for each tag block (as well as the beginnin
 * Create a centered comment to separate logical blocks in the file   
 ![Alt Text](https://github.com/n0lavar/DoxygenComments/blob/main/gifs/line_comment.gif)
 
-A list of all elements for which a comment can be generated
+A list of all elements for which a comment can be generated:
 * file (header, source, inline)
 * class
 * function (or method)
