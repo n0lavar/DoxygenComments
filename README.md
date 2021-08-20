@@ -9,13 +9,23 @@ Tag indentation can be configured for each code element.
 It is possible to insert blank lines for each tag block (as well as the beginning and end parts of the comment).
 
 
-* Create file comment with copyright info and custom text after comment (`#pragma once`, `#include <stdafx.h>`, `#include <classHeader.h>`, `using namespace MyLib;` etc). You can customize comment styles for different kinds of files (header, source or inline)   
+* Create file comment with copyright info and custom text after comment, such as
+  * `#pragma once`
+  * `#include <stdafx.h>`
+  * `#include <TestClass.h>`
+  * `using namespace MyLib;`
+  * `namespace MyLib
+    {
+    }`
+  
+  etc   
+  You can customize comment styles for different kinds of files (header, source or inline)  
 ![Alt Text](https://github.com/n0lavar/DoxygenComments/blob/main/gifs/file.gif)
 
 * Create class comment with template parameters list 
 ![Alt Text](https://github.com/n0lavar/DoxygenComments/blob/main/gifs/class.gif)
 
-* Create function/method comment with all template and common parameters and return value 
+* Create function/method comment with template and usual parameters along with return value 
 ![Alt Text](https://github.com/n0lavar/DoxygenComments/blob/main/gifs/fn.gif)
 
 * Create macro comment with all parameters
@@ -27,7 +37,7 @@ It is possible to insert blank lines for each tag block (as well as the beginnin
 A list of all elements for which a comment can be generated
 * file (header, source, inline)
 * class
-* fn (or method)
+* function (or method)
 * macro
 * struct
 * union
