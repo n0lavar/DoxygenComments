@@ -61,3 +61,11 @@ You can download the code and build the VSIX yourself or support me and buy it o
 
 DoxygenComments was mainly written and is maintained by Nick Khrapov.
 (nick.khrapov@gmail.com). See the git commit log for other authors.
+
+## Can't fix issues
+
+See [can't fix issues file](https://github.com/n0lavar/DoxygenComments/blob/main/ISSUES.md)
+
+## Todo list
+
+See [todo](https://github.com/n0lavar/DoxygenComments/projects/1)
