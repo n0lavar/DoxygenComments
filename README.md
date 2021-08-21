@@ -48,7 +48,7 @@ A list of all elements for which a comment can be generated:
 
 ## Examples
 
-[qxLib](https://github.com/n0lavar/qxLib) uses Doxigen based documentation and this extension.
+[qxLib](https://github.com/n0lavar/qxLib) uses Doxigen based [documentation](https://n0lavar.github.io/qxLib/files.html) and this extension.
 
 
 ## License
