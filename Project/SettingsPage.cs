@@ -61,6 +61,10 @@ namespace DoxygenComments
             return IndentChar == EIndentChar.Space ? ' ' : '\t';
         }
 
+        [Category(sCommonSettings)]
+        [DisplayName("Add \"- \" to param, tparam and retval")]
+        public bool AddРyphen { get; set; } = false;
+
         // Header files header
         private const string sHeaderFilesHeader = "Header files header";
 

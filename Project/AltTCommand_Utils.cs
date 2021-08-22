@@ -325,14 +325,16 @@ namespace DoxygenComments
             if (sComment.Length != 0 && !sComment.ToString().All(Char.IsWhiteSpace))
             {
                 string sBegin = CreateCommentBeginning(nElementIndent);
+
                 if (bAddBlankLines)
                     sBegin += CreateEmptyString();
 
                 sComment = sComment.Insert(0, sBegin);
 
-                sComment.Append(CreateCommentEnding(nElementIndent));
                 if (bAddBlankLines)
                     sComment.Append(CreateEmptyString());
+
+                sComment.Append(CreateCommentEnding(nElementIndent));
             }
 
             if (additionalTextAfterComment != null && additionalTextAfterComment.Length > 0)
@@ -373,9 +375,15 @@ namespace DoxygenComments
                 sTextIndent = new string(chIndentChar, nMaxTagLength - sTag.Length + 1);
 
                 if (nParamsIndent != -1)
-                    sParamIndent = new string(chIndentChar, nParamsIndent - sTagText.Length) + "- ";
+                {
+                    sParamIndent = new string(chIndentChar, nParamsIndent - sTagText.Length);
+                    if (Settings.AddРyphen)
+                        sParamIndent += "- ";
+                }
                 else
+                {
                     sParamIndent = "";
+                }
             }
             else
             {
@@ -384,9 +392,15 @@ namespace DoxygenComments
                 sTextIndent = new string(chIndentChar, nTabsLongestTag - nTabsThisTag + 1);
 
                 if (nParamsIndent != -1)
-                    sParamIndent = new string(chIndentChar, (nParamsIndent - sTagText.Length + 1) / Settings.TabWidth + 1) + " - ";
+                {
+                    sParamIndent = new string(chIndentChar, (nParamsIndent - sTagText.Length + 1) / Settings.TabWidth + 1);
+                    if (Settings.AddРyphen)
+                        sParamIndent += "- ";
+                }
                 else
+                {
                     sParamIndent = "";
+                }
             }
 
             return sTagsIndent 
