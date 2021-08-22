@@ -172,7 +172,7 @@ namespace DoxygenComments
                 Settings.ClassIndent,
                 Settings.ClassEmptyStringTags,
                 Settings.ClassAddName ? "@class" : null,
-                classElement.FullName,
+                classElement.Name,
                 Settings.ClassAddBrief ? "" : null,
                 Settings.ClassDetails,
                 tparams.ToArray(),
@@ -198,7 +198,7 @@ namespace DoxygenComments
                 Settings.StructIndent,
                 Settings.StructEmptyStringTags,
                 Settings.StructAddName ? "@struct" : null,
-                structElement.FullName,
+                structElement.Name,
                 Settings.StructAddBrief ? "" : null,
                 Settings.StructDetails,
                 tparams.ToArray(),
@@ -355,7 +355,7 @@ namespace DoxygenComments
                 Settings.FunctionIndent,
                 Settings.FunctionEmptyStringTags,
                 Settings.FunctionAddName ? "@fn" : null,
-                functionElement.FullName,
+                functionElement.Name,
                 Settings.FunctionAddBrief ? sDefaultBrief : null,
                 Settings.FunctionDetails,
                 tparams.ToArray(),
@@ -373,14 +373,14 @@ namespace DoxygenComments
 
             List<Parameter> Params = new List<Parameter>();
             foreach (CodeElement param in macroElement.Parameters)
-                Params.Add(new Parameter(param.FullName + " "));
+                Params.Add(new Parameter(param.FullName.Replace("__VA_ARGS__", "...") + " "));
 
             CreateComment(
                 editPoint,
                 nElementIndent,
                 Settings.MacroIndent,
                 Settings.MacroEmptyStringTags,
-                Settings.MacroAddName ? "@macro" : null,
+                Settings.MacroAddName ? "@def" : null,
                 macroElement.FullName,
                 Settings.MacroAddBrief ? "" : null,
                 Settings.MacroDetails,
