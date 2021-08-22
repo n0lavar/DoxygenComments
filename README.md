@@ -9,22 +9,35 @@ Tag indentation can be configured for each code element.
 It is possible to insert blank lines for each tag block (as well as the beginning and end parts of the comment).
 
 
-* Create file comment with copyright info and custom text after comment (`#pragma once`, `#include <stdafx.h>`, `#include <classHeader.h>`, `using namespace MyLib;` etc). You can customize comment styles for different kinds of files (header, source or inline)   
-![Alt Text](https://github.com/n0lavar/DoxygenComments/blob/main/gifs/header.gif)
+* Create file comment with copyright info and custom text after comment, such as
+  * `#pragma once`
+  * `#include <stdafx.h>`
+  * `#include <TestClass.h>`
+  * `using namespace MyLib;`
+  * `namespace MyLib
+    {
+    }`
+  
+  etc   
+  You can customize comment styles for different kinds of files (header, source or inline)   
+![Alt Text](https://github.com/n0lavar/DoxygenComments/blob/main/gifs/file.gif)
 
-* Create class comment with template parameters list 
+* Create class comment with template parameters list   
 ![Alt Text](https://github.com/n0lavar/DoxygenComments/blob/main/gifs/class.gif)
 
-* Create function/method comment with all template and common parameters and return value 
+* Create function/method comment with template and usual parameters along with return value   
 ![Alt Text](https://github.com/n0lavar/DoxygenComments/blob/main/gifs/fn.gif)
 
-* Create a centered comment to separate logical blocks in the file 
+* Create macro comment with all parameters   
+![Alt Text](https://github.com/n0lavar/DoxygenComments/blob/main/gifs/macro.gif)
+
+* Create a centered comment to separate logical blocks in the file   
 ![Alt Text](https://github.com/n0lavar/DoxygenComments/blob/main/gifs/line_comment.gif)
 
-A list of all elements for which a comment can be generated
+A list of all elements for which a comment can be generated:
 * file (header, source, inline)
 * class
-* fn (or method)
+* function (or method)
 * macro
 * struct
 * union
@@ -35,7 +48,7 @@ A list of all elements for which a comment can be generated
 
 ## Examples
 
-[qxLib](https://github.com/n0lavar/qxLib) uses Doxigen based documentation and this extension.
+[qxLib](https://github.com/n0lavar/qxLib) uses Doxigen based [documentation](https://n0lavar.github.io/qxLib/files.html) and this extension.
 
 
 ## License
@@ -48,3 +61,11 @@ You can download the code and build the VSIX yourself or support me and buy it o
 
 DoxygenComments was mainly written and is maintained by Nick Khrapov.
 (nick.khrapov@gmail.com). See the git commit log for other authors.
+
+## Can't fix issues
+
+See [can't fix issues file](https://github.com/n0lavar/DoxygenComments/blob/main/ISSUES.md)
+
+## Todo list
+
+See [todo](https://github.com/n0lavar/DoxygenComments/projects/1)
