@@ -3,7 +3,6 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.VCCodeModel;
 using EnvDTE;
 using System.Linq;
-using System.Collections.Generic;
 using System.Text;
 
 namespace DoxygenComments
@@ -144,7 +143,7 @@ namespace DoxygenComments
             EditPoint   editPoint,
             int         nElementIndent, 
             int         nIndent, 
-            string      sEmptyStringTags, 
+            bool        bAddBlankLines, 
             string      sCommentType,
             string      sCommentTypeValue,
             string      sDefaultBrief,
@@ -223,9 +222,6 @@ namespace DoxygenComments
                     nMaxTagLength, 
                     sCommentType, 
                     sCommentTypeValue));
-
-                if (sEmptyStringTags.Contains("elementType"))
-                    sComment.Append(CreateEmptyString());
             }
 
             if (sDefaultBrief != null)
@@ -235,9 +231,6 @@ namespace DoxygenComments
                     nMaxTagLength, 
                     sBriefTag, 
                     sDefaultBrief));
-
-                if (sEmptyStringTags.Contains("brief"))
-                    sComment.Append(CreateEmptyString());
             }
 
             if (sDetails != null && sDetails.Length != 0)
@@ -247,9 +240,6 @@ namespace DoxygenComments
                     nMaxTagLength, 
                     sDetailsTag, 
                     sDetails));
-
-                if (sEmptyStringTags.Contains("details"))
-                    sComment.Append(CreateEmptyString());
             }
 
             if (templateParameters != null && templateParameters.Length != 0)
@@ -264,9 +254,6 @@ namespace DoxygenComments
                         nMaxParamLength,
                         sTParam.Value));
                 }
-
-                if (sEmptyStringTags.Contains("tparam"))
-                    sComment.Append(CreateEmptyString());
             }
             
             if (parameters != null && parameters.Length != 0)
@@ -281,9 +268,6 @@ namespace DoxygenComments
                         nMaxParamLength,
                         sParam.Value));
                 }
-
-                if (sEmptyStringTags.Contains("param"))
-                    sComment.Append(CreateEmptyString());
             }
 
             if (sRetvalValue != null)
@@ -295,9 +279,6 @@ namespace DoxygenComments
                     "",
                     nMaxParamLength,
                     sRetvalValue));
-
-                if (sEmptyStringTags.Contains("retval"))
-                    sComment.Append(CreateEmptyString());
             }
 
             if (bAddAuthor)
@@ -307,9 +288,6 @@ namespace DoxygenComments
                     nMaxTagLength, 
                     sAuthorTag, 
                     Settings.Author));
-
-                if (sEmptyStringTags.Contains("author"))
-                    sComment.Append(CreateEmptyString());
             }
 
             if (bAddDate)
@@ -324,9 +302,6 @@ namespace DoxygenComments
                     nMaxTagLength, 
                     sDateTag, 
                     sDate));
-
-                if (sEmptyStringTags.Contains("date"))
-                    sComment.Append(CreateEmptyString());
             }
 
             if (bAddCopyright && Settings.Copyright != null && Settings.Copyright.Length != 0)
@@ -345,21 +320,18 @@ namespace DoxygenComments
                         "", 
                         Settings.Copyright[i].Replace("{year}", DateTime.Now.Year.ToString())));
                 }
-
-                if (sEmptyStringTags.Contains("copyright"))
-                    sComment.Append(CreateEmptyString());
             }
 
             if (sComment.Length != 0 && !sComment.ToString().All(Char.IsWhiteSpace))
             {
                 string sBegin = CreateCommentBeginning(nElementIndent);
-                if (sEmptyStringTags.Contains("begin"))
+                if (bAddBlankLines)
                     sBegin += CreateEmptyString();
 
                 sComment = sComment.Insert(0, sBegin);
 
                 sComment.Append(CreateCommentEnding(nElementIndent));
-                if (sEmptyStringTags.Contains("end"))
+                if (bAddBlankLines)
                     sComment.Append(CreateEmptyString());
             }
 

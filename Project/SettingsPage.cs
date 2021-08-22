@@ -15,8 +15,7 @@ namespace DoxygenComments
         private const string sAddTParam           = "Add @tparam";
         private const string sAddParam            = "Add @param";
         private const string sAddFile             = "Add @file";
-        private const string sEmptyStringTags     = "Tags after which empty lines will be added";
-        private const string sEmptyStringTagsDesc = "Tags separated by spase. Possible values: begin, elementType, brief, details, tparam, param, retval, author, date, copyright, end.";
+        private const string sAddBlankLines       = "Add blank lines before the first tag and after the last";
 
         // Common settings
         private const string sCommonSettings = "Common settings";
@@ -101,9 +100,8 @@ namespace DoxygenComments
         public string[] HeaderFilesHeaderAdditionalText { get; set; } = { "#pragma once" };
 
         [Category(sHeaderFilesHeader)]
-        [DisplayName(sEmptyStringTags)]
-        [Description(sEmptyStringTagsDesc)]
-        public string HeaderFilesHeaderEmptyStringTags { get; set; } = "begin elementType details copyright";
+        [DisplayName(sAddBlankLines)]
+        public bool HeaderFilesHeaderAddBlankLines { get; set; } = true;
 
         // Source files header
         private const string sSourceFilesHeader = "Source files header";
@@ -159,9 +157,8 @@ namespace DoxygenComments
         public string[] SourceFilesHeaderAdditionalText { get; set; } = { "" };
 
         [Category(sSourceFilesHeader)]
-        [DisplayName(sEmptyStringTags)]
-        [Description(sEmptyStringTagsDesc)]
-        public string SourceFilesHeaderEmptyStringTags { get; set; } = "begin elementType details copyright";
+        [DisplayName(sAddBlankLines)]
+        public bool SourceFilesHeaderAddBlankLines { get; set; } = true;
 
         // Inline files header
         private const string sInlineFilesHeader = "Inline files header";
@@ -202,9 +199,8 @@ namespace DoxygenComments
         public string[] InlineFilesHeaderAdditionalText { get; set; } = { "" };
 
         [Category(sInlineFilesHeader)]
-        [DisplayName(sEmptyStringTags)]
-        [Description(sEmptyStringTagsDesc)]
-        public string InlineFilesHeaderEmptyStringTags { get; set; } = "begin elementType details copyright";
+        [DisplayName(sAddBlankLines)]
+        public bool InlineFilesHeaderAddBlankLines { get; set; } = true;
 
         // Class comment
         private const string sClassComment = "Class comment";
@@ -239,9 +235,8 @@ namespace DoxygenComments
         public bool ClassAddDate { get; set; } = false;
 
         [Category(sClassComment)]
-        [DisplayName(sEmptyStringTags)]
-        [Description(sEmptyStringTagsDesc)]
-        public string ClassEmptyStringTags { get; set; } = "";
+        [DisplayName(sAddBlankLines)]
+        public bool ClassAddBlankLines { get; set; } = true;
 
         // Struct comment
         private const string sStructComment = "Struct comment";
@@ -276,9 +271,8 @@ namespace DoxygenComments
         public bool StructAddDate { get; set; } = false;
 
         [Category(sStructComment)]
-        [DisplayName(sEmptyStringTags)]
-        [Description(sEmptyStringTagsDesc)]
-        public string StructEmptyStringTags { get; set; } = "";
+        [DisplayName(sAddBlankLines)]
+        public bool StructAddBlankLines { get; set; } = false;
 
         // Function / method comment
         private const string sFunctionComment = "Function / method comment";
@@ -321,9 +315,8 @@ namespace DoxygenComments
         public bool FunctionAddDate { get; set; } = false;
 
         [Category(sFunctionComment)]
-        [DisplayName(sEmptyStringTags)]
-        [Description(sEmptyStringTagsDesc)]
-        public string FunctionEmptyStringTags { get; set; } = "";
+        [DisplayName(sAddBlankLines)]
+        public bool FunctionAddBlankLines { get; set; } = false;
 
         // Macro comment
         private const string sMacroComment = "Macro comment";
@@ -333,7 +326,7 @@ namespace DoxygenComments
         public int MacroIndent { get; set; } = 4;
 
         [Category(sMacroComment)]
-        [DisplayName("Add @macro")]
+        [DisplayName("Add @def")]
         public bool MacroAddName { get; set; } = true;
 
         [Category(sMacroComment)]
@@ -358,9 +351,8 @@ namespace DoxygenComments
         public bool MacroAddDate { get; set; } = false;
 
         [Category(sMacroComment)]
-        [DisplayName(sEmptyStringTags)]
-        [Description(sEmptyStringTagsDesc)]
-        public string MacroEmptyStringTags { get; set; } = "";
+        [DisplayName(sAddBlankLines)]
+        public bool MacroAddBlankLines { get; set; } = false;
 
         // Namespace comment
         private const string sNamespaceComment = "Namespace comment";
@@ -391,9 +383,8 @@ namespace DoxygenComments
         public bool NamespaceAddDate { get; set; } = false;
 
         [Category(sNamespaceComment)]
-        [DisplayName(sEmptyStringTags)]
-        [Description(sEmptyStringTagsDesc)]
-        public string NamespaceEmptyStringTags { get; set; } = "";
+        [DisplayName(sAddBlankLines)]
+        public bool NamespaceAddBlankLines { get; set; } = false;
 
         // Union comment
         private const string sUnionComment = "Union comment";
@@ -424,9 +415,8 @@ namespace DoxygenComments
         public bool UnionAddDate { get; set; } = false;
 
         [Category(sUnionComment)]
-        [DisplayName(sEmptyStringTags)]
-        [Description(sEmptyStringTagsDesc)]
-        public string UnionEmptyStringTags { get; set; } = "";
+        [DisplayName(sAddBlankLines)]
+        public bool UnionAddBlankLines { get; set; } = false;
 
         // Typedef comment
         private const string sTypedefComment = "Typedef comment";
@@ -457,9 +447,8 @@ namespace DoxygenComments
         public bool TypedefAddDate { get; set; } = false;
 
         [Category(sTypedefComment)]
-        [DisplayName(sEmptyStringTags)]
-        [Description(sEmptyStringTagsDesc)]
-        public string TypedefEmptyStringTags { get; set; } = "";
+        [DisplayName(sAddBlankLines)]
+        public bool TypedefAddBlankLines { get; set; } = false;
 
         // Enum comment
         private const string sEnumComment = "Enum comment";
@@ -490,8 +479,7 @@ namespace DoxygenComments
         public bool EnumAddDate { get; set; } = false;
 
         [Category(sEnumComment)]
-        [DisplayName(sEmptyStringTags)]
-        [Description(sEmptyStringTagsDesc)]
-        public string EnumEmptyStringTags { get; set; } = "";
+        [DisplayName(sAddBlankLines)]
+        public bool EnumAddBlankLines { get; set; } = false;
     }
 }
