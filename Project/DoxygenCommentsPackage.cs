@@ -57,6 +57,7 @@ namespace DoxygenComments
             DTE dte = await GetServiceAsync(typeof(DTE)) as DTE;
             IVsTextManager textManager = await GetServiceAsync(typeof(SVsTextManager)) as IVsTextManager;
 
+            await AboutCommand.InitializeAsync(this);
             await AltTCommand.InitializeAsync(this, dte, textManager);
         }
 

@@ -45,6 +45,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AboutCommand.cs" />
     <Compile Include="AltTCommand.cs" />
     <Compile Include="AltTCommand_ElementComments.cs" />
     <Compile Include="AltTCommand_Utils.cs" />
@@ -83,6 +84,7 @@
     </VSCTCompile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\AboutCommand.png" />
     <Content Include="Resources\AltTCommand.png" />
     <Content Include="Resources\icon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
