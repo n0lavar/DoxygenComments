@@ -6,7 +6,6 @@ Visual Studio extension for auto-generating Doxygen-style comments in C ++ code
 Use a keyboard shortcut `Alt + T` for all actions.   
 All lines can be enabled / disabled or configured at your discretion.   
 Tag indentation can be configured for each code element.   
-It is possible to insert blank lines for each tag block (as well as the beginning and end parts of the comment).
 
 
 * Create file comment with copyright info and custom text after comment, such as
@@ -54,7 +53,7 @@ A list of all elements for which a comment can be generated:
 ## License
 
 DoxygenComments is available under the GPL-3.0 License. See LICENSE.txt.   
-You can download the code and build the VSIX yourself or support me and buy it on the market and get updates.   
+You can download VSIX from [marketplace](https://marketplace.visualstudio.com/items?itemName=NickKhrapov.DoxygenComments).   
 
 
 ## Authors
