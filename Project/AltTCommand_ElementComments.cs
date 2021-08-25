@@ -234,11 +234,22 @@ namespace DoxygenComments
 
             string sDefaultBrief  = "";
             string sDefaultRetval =  null;
-            if ((functionElement.FunctionKind & vsCMFunction.vsCMFunctionConstructor) > 0)
+            vsCMFunction functionKind;
+            try
+            {
+                functionKind = functionElement.FunctionKind;
+            }
+            catch (Exception)
+            {
+                functionKind = vsCMFunction.vsCMFunctionOther;
+            }
+
+
+            if ((functionKind & vsCMFunction.vsCMFunctionConstructor) > 0)
             {
                 sDefaultBrief = functionElement.Name + " object constructor";
             }
-            else if ((functionElement.FunctionKind & vsCMFunction.vsCMFunctionDestructor) > 0)
+            else if ((functionKind & vsCMFunction.vsCMFunctionDestructor) > 0)
             {
                 sDefaultBrief = functionElement.Name.Substring(1) + " object destructor";
             }
@@ -344,7 +355,7 @@ namespace DoxygenComments
                         break;
                     }
 
-                    if ((functionElement.FunctionKind & vsCMFunction.vsCMFunctionOperator) != 0)
+                    if ((functionKind & vsCMFunction.vsCMFunctionOperator) != 0)
                         sDefaultBrief = functionElement.Name;
                 }
             }
