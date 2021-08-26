@@ -41,11 +41,6 @@ namespace DoxygenComments
         [Description("Tab width for correct alighment if [Indent char] is tab")]
         public int TabWidth { get; set; } = 4;
 
-        [Category(sCommonSettings)]
-        [DisplayName("Template parameter pack type name")]
-        [Description("Is specified, \"template parameter pack type\" will be added to this @tparam")]
-        public string TemplateParameterPackTypeName { get; set; } = "Args";
-
         public enum EIndentChar 
         { 
             Space, 
@@ -64,6 +59,108 @@ namespace DoxygenComments
         [Category(sCommonSettings)]
         [DisplayName("Add \"- \" to param, tparam and retval")]
         public bool AddРyphen { get; set; } = false;
+
+        [Category(sCommonSettings)]
+        [DisplayName("@brief dictionary")]
+        [Description("A list of lines, each of which consists of the first key word (object name) and a value that will be automatically written in the @brief field")]
+        [TypeConverter(typeof(StringArrayConverter))]
+        public string[] BriefDictionary { get; set; } = {
+            "begin Return iterator to beginning",
+            "end Return iterator to end",
+            "rbegin Return reverse iterator to reverse beginning",
+            "rend Return reverse iterator to reverse end",
+            "cbegin Return const iterator to beginning",
+            "cend Return const iterator to end",
+            "crbegin Return const reverse iterator to reverse beginning",
+            "crend Return const reverse iterator to reverse end",
+            "operator+ operator+",
+            "operator- operator-",
+            "operator* operator*",
+            "operator/ operator/",
+            "operator% operator%",
+            "operator^ operator^",
+            "operator& operator&",
+            "operator| operator|",
+            "operator~ operator~",
+            "operator! operator!",
+            "operator= operator=",
+            "operator< operator<",
+            "operator> operator>",
+            "operator+= operator+=",
+            "operator-= operator-=",
+            "operator*= operator*=",
+            "operator/= operator/=",
+            "operator%= operator%=",
+            "operator^= operator^=",
+            "operator&= operator&=",
+            "operator|= operator|=",
+            "operator<< operator<<",
+            "operator>> operator>>",
+            "operator<<= operator<<=",
+            "operator>>= operator>>=",
+            "operator== operator==",
+            "operator!= operator!=",
+            "operator<= operator<=",
+            "operator>= operator>=",
+            "operator<=> operator<=>",
+            "operator&& operator&&",
+            "operator|| operator||",
+            "operator++ operator++",
+            "operator-- operator--",
+            "operator, operator,",
+            "operator->* operator->*",
+            "operator-> operator->",
+        };
+
+        [Category(sCommonSettings)]
+        [DisplayName("@retval dictionary")]
+        [Description("A list of lines, each of which consists of the first key word (object name) and a value that will be automatically written in the @retval field")]
+        [TypeConverter(typeof(StringArrayConverter))]
+        public string[] RetvalDictionary { get; set; } = {
+            "begin iterator to beginning",
+            "end iterator to end",
+            "rbegin reverse iterator to reverse beginning",
+            "rend reverse iterator to reverse end",
+            "cbegin const iterator to beginning",
+            "cend const iterator to end",
+            "crbegin const reverse iterator to reverse beginning",
+            "crend const reverse iterator to reverse end",
+            "operator+= this object reference",
+            "operator-= this object reference",
+            "operator*= this object reference",
+            "operator/= this object reference",
+            "operator%= this object reference",
+            "operator^= this object reference",
+            "operator&= this object reference",
+            "operator|= this object reference",
+            "operator>>= this object reference",
+            "operator<<= this object reference",
+            "operator= this object reference",
+            "operator< true, if left object is less than right",
+            "operator> true, if left object is greater than right",
+            "operator== true, if objects are equal",
+            "operator!= true, if objects are not equal",
+            "operator<= true, if left object is less or equal than right",
+            "operator>= true, if left object is greater or equal than right",
+            "operator-> this object pointer",
+            "operator* this object reference",
+        };
+
+        [Category(sCommonSettings)]
+        [DisplayName("@param dictionary")]
+        [Description("A list of lines, each of which consists of the first key word (param name) and a value that will be automatically written in the @param field")]
+        [TypeConverter(typeof(StringArrayConverter))]
+        public string[] ParamDictionary { get; set; } = {
+            "args template parameter pack",
+        };
+
+        [Category(sCommonSettings)]
+        [DisplayName("@tparam dictionary")]
+        [Description("A list of lines, each of which consists of the first key word (tparam name) and a value that will be automatically written in the @tparam field")]
+        [TypeConverter(typeof(StringArrayConverter))]
+        public string[] TParamDictionary { get; set; } = {
+            "Args template parameter pack type",
+        };
 
         // Header files header
         private const string sHeaderFilesHeader = "Header files header";

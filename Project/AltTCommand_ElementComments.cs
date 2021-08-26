@@ -162,9 +162,9 @@ namespace DoxygenComments
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            List<Parameter> tparams = new List<Parameter>();
+            List<string> tparams = new List<string>();
             foreach (CodeElement tparam in classElement.TemplateParameters)
-                tparams.Add(new Parameter(tparam.FullName + " "));
+                tparams.Add(tparam.FullName);
 
             CreateComment(
                 editPoint,
@@ -188,9 +188,9 @@ namespace DoxygenComments
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            List<Parameter> tparams = new List<Parameter>();
+            List<string> tparams = new List<string>();
             foreach (CodeElement tparam in structElement.TemplateParameters)
-                tparams.Add(new Parameter(tparam.FullName + " "));
+                tparams.Add(tparam.FullName);
 
             CreateComment(
                 editPoint,
@@ -214,26 +214,16 @@ namespace DoxygenComments
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            List<Parameter> tparams = new List<Parameter>();
+            List<string> tparams = new List<string>();
             foreach (CodeElement tparam in functionElement.TemplateParameters)
-            {
-                string sName = tparam.FullName.Replace("...", "") + " ";
-                tparams.Add(new Parameter(
-                    sName,
-                    Regex.Replace(sName, @"\s+", "") == Settings.TemplateParameterPackTypeName 
-                        ? "template parameter pack type" 
-                        : null));
-            }
+                tparams.Add(tparam.FullName.Replace("...", ""));
 
-            List<Parameter> Params = new List<Parameter>();
+            List<string> Params = new List<string>();
             foreach (CodeElement param in functionElement.Parameters)
-            {
-                Params.Add(new Parameter(
-                    param.FullName.Replace("...", "") + " "));
-            }
+                Params.Add(param.FullName.Replace("...", ""));
 
             string sDefaultBrief  = "";
-            string sDefaultRetval =  null;
+            string sDefaultRetval = null;
             vsCMFunction functionKind;
             try
             {
@@ -261,103 +251,7 @@ namespace DoxygenComments
                     || Regex.Replace(functionElement.TypeString.Replace("noexcept", ""), @"\s+", "") == "void";
 
                 if (!bVoidRetval)
-                {
                     sDefaultRetval =  "";
-
-                    switch (functionElement.Name)
-                    {
-                    case "begin":
-                        sDefaultBrief  = "Return iterator to beginning";
-                        sDefaultRetval = "iterator to beginning";
-                        break;
-
-                    case "end":
-                        sDefaultBrief  = "Return iterator to end";
-                        sDefaultRetval = "iterator to end";
-                        break;
-
-                    case "rbegin":
-                        sDefaultBrief  = "Return reverse iterator to reverse beginning";
-                        sDefaultRetval = "reverse iterator to reverse beginning";
-                        break;
-
-                    case "rend":
-                        sDefaultBrief  = "Return reverse iterator to reverse end";
-                        sDefaultRetval = "reverse iterator to reverse end";
-                        break;
-
-                    case "cbegin":
-                        sDefaultBrief  = "Return const iterator to beginning";
-                        sDefaultRetval = "const iterator to beginning";
-                        break;
-
-                    case "cend":
-                        sDefaultBrief  = "Return const iterator to end";
-                        sDefaultRetval = "const iterator to end";
-                        break;
-
-                    case "crbegin":
-                        sDefaultBrief  = "Return const reverse iterator to reverse beginning";
-                        sDefaultRetval = "const reverse iterator to reverse beginning";
-                        break;
-
-                    case "crend":
-                        sDefaultBrief  = "Return const reverse iterator to reverse end";
-                        sDefaultRetval = "const reverse iterator to reverse end";
-                        break;
-
-                    case "operator+=":
-                    case "operator-=":
-                    case "operator*=":
-                    case "operator/=":
-                    case "operator%=":
-                    case "operator^=":
-                    case "operator&=":
-                    case "operator|=":
-                    case "operator>>=":
-                    case "operator<<=":
-                    case "operator=":
-                        sDefaultRetval = "this object reference";
-                        break;
-
-                    case "operator<":
-                        sDefaultRetval = "true, if left object is less than right";
-                        break;
-
-                    case "operator>":
-                        sDefaultRetval = "true, if left object is greater than right";
-                        break;
-
-                    case "operator==":
-                        sDefaultRetval = "true, if objects are equal";
-                        break;
-
-                    case "operator!=":
-                        sDefaultRetval = "true, if objects are not equal";
-                        break;
-
-                    case "operator<=":
-                        sDefaultRetval = "true, if left object is less or equal than right";
-                        break;
-
-                    case "operator>=":
-                        sDefaultRetval = "true, if left object is greater or equal than right";
-                        break;
-
-                    case "operator->":
-                        sDefaultRetval = "this object pointer";
-                        break;
-
-                    case "operator*":
-                        if (functionElement.Parameters.Count == 0)
-                            sDefaultRetval = "this object reference";
-
-                        break;
-                    }
-
-                    if ((functionKind & vsCMFunction.vsCMFunctionOperator) != 0)
-                        sDefaultBrief = functionElement.Name;
-                }
             }
 
             CreateComment(
@@ -382,9 +276,9 @@ namespace DoxygenComments
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            List<Parameter> Params = new List<Parameter>();
+            List<string> Params = new List<string>();
             foreach (CodeElement param in macroElement.Parameters)
-                Params.Add(new Parameter(param.FullName.Replace("__VA_ARGS__", "...") + " "));
+                Params.Add(param.FullName.Replace("__VA_ARGS__", "..."));
 
             CreateComment(
                 editPoint,

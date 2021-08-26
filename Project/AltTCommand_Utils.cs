@@ -9,18 +9,6 @@ namespace DoxygenComments
 {
     internal sealed partial class AltTCommand
     {
-        private struct Parameter
-        {
-            public Parameter(string sName, string sValue = null)
-            {
-                Name  = sName;
-                Value = sValue;
-            }
-
-            public string Name;
-            public string Value;
-        }
-
         private CodeElement FindNextLineCodeElement(CodeElements elements, TextPoint textPoint, int nWhiteSpaces)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
@@ -139,6 +127,29 @@ namespace DoxygenComments
             return false;
         }
 
+        private string FindStringDictionaryValue(string[] dictionary, string sKeyToFind)
+        {
+            if (string.IsNullOrEmpty(sKeyToFind))
+                return "";
+
+            foreach (string sKeyValue in dictionary)
+            {
+                int nKeyEnd = sKeyValue.IndexOf(" ");
+                string sKey = sKeyValue.Substring(0, nKeyEnd);
+
+                if (sKeyToFind == sKey)
+                {
+                    int nValueStart = nKeyEnd;
+                    while (Char.IsWhiteSpace(sKeyValue[nValueStart]))
+                        ++nValueStart;
+
+                    return sKeyValue.Substring(nValueStart, sKeyValue.Length - nValueStart);
+                }
+            }
+
+            return "";
+        }
+
         private void CreateComment(
             EditPoint   editPoint,
             int         nElementIndent, 
@@ -148,8 +159,8 @@ namespace DoxygenComments
             string      sCommentTypeValue,
             string      sDefaultBrief,
             string      sDetails,
-            Parameter[] templateParameters,
-            Parameter[] parameters,
+            string[]    templateParameters,
+            string[]    parameters,
             string      sRetvalValue,
             bool        bAddAuthor,
             bool        bAddDate,
@@ -206,12 +217,12 @@ namespace DoxygenComments
 
             int nMaxParamLength = 0;
             if (templateParameters != null && templateParameters.Length != 0)
-                foreach (Parameter sTParam in templateParameters)
-                    nMaxParamLength = Math.Max(nMaxParamLength, sTParam.Name.Length);
+                foreach (string sTParam in templateParameters)
+                    nMaxParamLength = Math.Max(nMaxParamLength, sTParam.Length + 1); // extra space
 
             if (parameters != null && parameters.Length != 0)
-                foreach (Parameter sParam in parameters)
-                    nMaxParamLength = Math.Max(nMaxParamLength, sParam.Name.Length);
+                foreach (string sParam in parameters)
+                    nMaxParamLength = Math.Max(nMaxParamLength, sParam.Length + 1); // extra space
 
             StringBuilder sComment = new StringBuilder(256);
 
@@ -230,7 +241,9 @@ namespace DoxygenComments
                     nTagsIndent, 
                     nMaxTagLength, 
                     sBriefTag, 
-                    sDefaultBrief));
+                    sDefaultBrief.Length != 0 
+                        ? sDefaultBrief 
+                        : FindStringDictionaryValue(Settings.BriefDictionary, sCommentTypeValue)));
             }
 
             if (sDetails != null && sDetails.Length != 0)
@@ -244,29 +257,29 @@ namespace DoxygenComments
 
             if (templateParameters != null && templateParameters.Length != 0)
             {
-                foreach (Parameter sTParam in templateParameters)
+                foreach (string sTParam in templateParameters)
                 {
                     sComment.Append(CreateCommemtMiddle(
                         nTagsIndent, 
                         nMaxTagLength, 
                         sTParamTag, 
-                        sTParam.Name, 
+                        sTParam, 
                         nMaxParamLength,
-                        sTParam.Value));
+                        FindStringDictionaryValue(Settings.TParamDictionary, sTParam)));
                 }
             }
             
             if (parameters != null && parameters.Length != 0)
             {
-                foreach (Parameter sParam in parameters)
+                foreach (string sParam in parameters)
                 {
                     sComment.Append(CreateCommemtMiddle(
                         nTagsIndent, 
                         nMaxTagLength, 
                         sParamTag, 
-                        sParam.Name, 
+                        sParam, 
                         nMaxParamLength,
-                        sParam.Value));
+                        FindStringDictionaryValue(Settings.ParamDictionary, sParam)));
                 }
             }
 
@@ -278,7 +291,9 @@ namespace DoxygenComments
                     sRetvalTag, 
                     "",
                     nMaxParamLength,
-                    sRetvalValue));
+                    sRetvalValue.Length != 0
+                        ? sRetvalValue
+                        : FindStringDictionaryValue(Settings.RetvalDictionary, sCommentTypeValue)));
             }
 
             if (bAddAuthor)
