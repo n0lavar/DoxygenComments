@@ -6,6 +6,7 @@ Visual Studio extension for auto-generating Doxygen-style comments in C ++ code
 Use a keyboard shortcut `Alt + T` for all actions.   
 All lines can be enabled / disabled or configured at your discretion.   
 Tag indentation can be configured for each code element.   
+Sometimes the same function parameters or method names appear in many places in your code, and you want their documentation to look the same. You can specify the names of such objects and a comment to them in the dictionary, and this comment will be inserted automatically
 
 
 * Create file comment with copyright info and custom text after comment, such as
