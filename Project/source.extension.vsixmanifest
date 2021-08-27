@@ -6,6 +6,7 @@
         <Description xml:space="preserve">Extension for auto-generating Doxygen style comments for different code elements and other code generation.</Description>
         <MoreInfo>https://github.com/n0lavar/DoxygenComments</MoreInfo>
         <License>Resources\license.txt</License>
+        <ReleaseNotes>Resources\release_notes.txt</ReleaseNotes>
         <Icon>Resources\icon.png</Icon>
         <Tags>C++ Doxygen comments codegeneration </Tags>
     </Metadata>

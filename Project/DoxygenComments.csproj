@@ -87,6 +87,10 @@
     </VSCTCompile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\release_notes.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="Resources\AboutCommand.png" />
     <Content Include="Resources\AltTCommand.png" />
     <Content Include="Resources\icon.png">
