@@ -1,8 +1,8 @@
 # DoxygenComments
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](http://paypal.me/nickkhrapov)
-[![Version](https://vsmarketplacebadge.apphb.com/version-short/NickKhrapov.DoxygenComments.svg)](https://marketplace.visualstudio.com/items?itemName=NickKhrapov.DoxygenComments)
-[![Installs](https://vsmarketplacebadge.apphb.com/installs-short/NickKhrapov.DoxygenComments.svg)](https://marketplace.visualstudio.com/items?itemName=NickKhrapov.DoxygenComments)
-[![Ratings](https://vsmarketplacebadge.apphb.com/rating-star/NickKhrapov.DoxygenComments.svg)](https://marketplace.visualstudio.com/items?itemName=NickKhrapov.DoxygenComments)   
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.png)](http://paypal.me/nickkhrapov)
+[![Version](https://vsmarketplacebadge.apphb.com/version-short/NickKhrapov.DoxygenComments.png)](https://marketplace.visualstudio.com/items?itemName=NickKhrapov.DoxygenComments)
+[![Installs](https://vsmarketplacebadge.apphb.com/installs-short/NickKhrapov.DoxygenComments.png)](https://marketplace.visualstudio.com/items?itemName=NickKhrapov.DoxygenComments)
+[![Ratings](https://vsmarketplacebadge.apphb.com/rating-star/NickKhrapov.DoxygenComments.png)](https://marketplace.visualstudio.com/items?itemName=NickKhrapov.DoxygenComments)   
 Visual Studio extension for auto-generating Doxygen-style comments in C ++ code.   
 
 ## Extension capabilities
@@ -25,19 +25,19 @@ Visual Studio extension for auto-generating Doxygen-style comments in C ++ code.
   
   etc   
   You can customize comment styles for different kinds of files (header, source or inline)   
-![Alt Text](https://github.com/n0lavar/DoxygenComments/blob/main/gifs/file.gif)
+![file.gif](https://s9.gifyu.com/images/file.gif)
 
 * Create class comment with template parameters list   
-![Alt Text](https://github.com/n0lavar/DoxygenComments/blob/main/gifs/class.gif)
+![class.gif](https://s9.gifyu.com/images/class.gif)
 
 * Create function/method comment with template and usual parameters along with return value   
-![Alt Text](https://github.com/n0lavar/DoxygenComments/blob/main/gifs/fn.gif)
+![fn.gif](https://s9.gifyu.com/images/fn.gif)
 
 * Create macro comment with all parameters   
-![Alt Text](https://github.com/n0lavar/DoxygenComments/blob/main/gifs/macro.gif)
+![macro.gif](https://s9.gifyu.com/images/macro.gif)
 
 * Create a centered comment to separate logical blocks in the file   
-![Alt Text](https://github.com/n0lavar/DoxygenComments/blob/main/gifs/line_comment.gif)
+![line_comment.gif](https://s9.gifyu.com/images/line_comment.gif)
 
 A list of all elements for which a comment can be generated:   
 
