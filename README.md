@@ -1,8 +1,8 @@
 # DoxygenComments
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.png)](http://paypal.me/nickkhrapov)
-[![Version](https://vsmarketplacebadge.apphb.com/version-short/NickKhrapov.DoxygenComments.png)](https://marketplace.visualstudio.com/items?itemName=NickKhrapov.DoxygenComments)
-[![Installs](https://vsmarketplacebadge.apphb.com/installs-short/NickKhrapov.DoxygenComments.png)](https://marketplace.visualstudio.com/items?itemName=NickKhrapov.DoxygenComments)
-[![Ratings](https://vsmarketplacebadge.apphb.com/rating-star/NickKhrapov.DoxygenComments.png)](https://marketplace.visualstudio.com/items?itemName=NickKhrapov.DoxygenComments)   
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](http://paypal.me/nickkhrapov)
+[![Version](https://vsmarketplacebadge.apphb.com/version-short/NickKhrapov.DoxygenComments.svg)](https://marketplace.visualstudio.com/items?itemName=NickKhrapov.DoxygenComments)
+[![Installs](https://vsmarketplacebadge.apphb.com/installs-short/NickKhrapov.DoxygenComments.svg)](https://marketplace.visualstudio.com/items?itemName=NickKhrapov.DoxygenComments)
+[![Ratings](https://vsmarketplacebadge.apphb.com/rating-star/NickKhrapov.DoxygenComments.svg)](https://marketplace.visualstudio.com/items?itemName=NickKhrapov.DoxygenComments)   
 Visual Studio extension for auto-generating Doxygen-style comments in C ++ code.   
 
 ## Extension capabilities
