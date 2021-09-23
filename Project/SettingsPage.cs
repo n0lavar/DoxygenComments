@@ -7,7 +7,7 @@ namespace DoxygenComments
     {
         private const string sIndent              = "Indent";
         private const string sAddBrief            = "Add @brief";
-        private const string sDetils              = "@details default string";
+        private const string sDetails             = "@details default string";
         private const string sDetailsDesc         = "If empty - don't add @details";
         private const string sAddAuthor           = "Add @author";
         private const string sAddDate             = "Add @date";
@@ -183,7 +183,7 @@ namespace DoxygenComments
         public bool HeaderFilesHeaderAddBrief { get; set; } = true;
 
         [Category(sHeaderFilesHeader)]
-        [DisplayName(sDetils)]
+        [DisplayName(sDetails)]
         [Description(sDetailsDesc)]
         public string HeaderFilesHeaderDetails{ get; set; } = "~";
 
@@ -225,7 +225,7 @@ namespace DoxygenComments
         public bool SourceFilesHeaderAddBrief { get; set; } = true;
 
         [Category(sSourceFilesHeader)]
-        [DisplayName(sDetils)]
+        [DisplayName(sDetails)]
         [Description(sDetailsDesc)]
         public string SourceFilesHeaderDetails{ get; set; } = "~";
 
@@ -282,7 +282,7 @@ namespace DoxygenComments
         public bool InlineFilesHeaderAddBrief { get; set; } = true;
 
         [Category(sInlineFilesHeader)]
-        [DisplayName(sDetils)]
+        [DisplayName(sDetails)]
         [Description(sDetailsDesc)]
         public string InlineFilesHeaderDetails{ get; set; } = "~";
 
@@ -324,7 +324,7 @@ namespace DoxygenComments
         public bool ClassAddBrief { get; set; } = true;
 
         [Category(sClassComment)]
-        [DisplayName(sDetils)]
+        [DisplayName(sDetails)]
         [Description(sDetailsDesc)]
         public string ClassDetails{ get; set; } = "~";
 
@@ -360,7 +360,7 @@ namespace DoxygenComments
         public bool StructAddBrief { get; set; } = true;
 
         [Category(sStructComment)]
-        [DisplayName(sDetils)]
+        [DisplayName(sDetails)]
         [Description(sDetailsDesc)]
         public string StructDetails{ get; set; } = "";
 
@@ -396,7 +396,7 @@ namespace DoxygenComments
         public bool FunctionAddBrief { get; set; } = true;
 
         [Category(sFunctionComment)]
-        [DisplayName(sDetils)]
+        [DisplayName(sDetails)]
         [Description(sDetailsDesc)]
         public string FunctionDetails{ get; set; } = "";
 
@@ -440,7 +440,7 @@ namespace DoxygenComments
         public bool MacroAddBrief { get; set; } = true;
 
         [Category(sMacroComment)]
-        [DisplayName(sDetils)]
+        [DisplayName(sDetails)]
         [Description(sDetailsDesc)]
         public string MacroDetails{ get; set; } = "";
 
@@ -476,7 +476,7 @@ namespace DoxygenComments
         public bool NamespaceAddBrief { get; set; } = true;
 
         [Category(sNamespaceComment)]
-        [DisplayName(sDetils)]
+        [DisplayName(sDetails)]
         [Description(sDetailsDesc)]
         public string NamespaceDetails{ get; set; } = "";
 
@@ -508,7 +508,7 @@ namespace DoxygenComments
         public bool UnionAddBrief { get; set; } = true;
 
         [Category(sUnionComment)]
-        [DisplayName(sDetils)]
+        [DisplayName(sDetails)]
         [Description(sDetailsDesc)]
         public string UnionDetails{ get; set; } = "";
 
@@ -540,7 +540,7 @@ namespace DoxygenComments
         public bool TypedefAddBrief { get; set; } = true;
 
         [Category(sTypedefComment)]
-        [DisplayName(sDetils)]
+        [DisplayName(sDetails)]
         [Description(sDetailsDesc)]
         public string TypedefDetails{ get; set; } = "";
 
@@ -572,7 +572,7 @@ namespace DoxygenComments
         public bool EnumAddBrief { get; set; } = true;
 
         [Category(sEnumComment)]
-        [DisplayName(sDetils)]
+        [DisplayName(sDetails)]
         [Description(sDetailsDesc)]
         public string EnumDetails{ get; set; } = "";
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using DoxygenComments.Styles;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.VCCodeModel;
 using EnvDTE;
@@ -40,11 +41,15 @@ namespace DoxygenComments
             editPoint.Insert(sCommentText);
         }
 
-        private void CreateHeaderFileHeader(EditPoint editPoint, TextDocument textDocument)
+        private void CreateHeaderFileHeader(
+            ICommentStyle   commentStyle,
+            EditPoint       editPoint, 
+            TextDocument    textDocument)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
             CreateComment(
+                commentStyle,
                 editPoint,
                 0,
                 Settings.HeaderFilesHeaderIndent,
@@ -62,7 +67,10 @@ namespace DoxygenComments
                 Settings.HeaderFilesHeaderAdditionalText);
         }
 
-        private void CreateSourceFileHeader(EditPoint editPoint, TextDocument textDocument)
+        private void CreateSourceFileHeader(
+            ICommentStyle   commentStyle,
+            EditPoint       editPoint, 
+            TextDocument    textDocument)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
@@ -119,6 +127,7 @@ namespace DoxygenComments
             Settings.SourceFilesHeaderAdditionalText.CopyTo(additionalText, 1);
 
             CreateComment(
+                commentStyle,
                 editPoint,
                 0,
                 Settings.SourceFilesHeaderIndent,
@@ -136,11 +145,15 @@ namespace DoxygenComments
                 additionalText);
         }
 
-        private void CreateInlineFileHeader(EditPoint editPoint, TextDocument textDocument)
+        private void CreateInlineFileHeader(
+            ICommentStyle   commentStyle,
+            EditPoint       editPoint, 
+            TextDocument    textDocument)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
             CreateComment(
+                commentStyle,
                 editPoint,
                 0,
                 Settings.InlineFilesHeaderIndent,
@@ -158,7 +171,11 @@ namespace DoxygenComments
                 Settings.InlineFilesHeaderAdditionalText);
         }
 
-        private void CreateClassComment(EditPoint editPoint, int nElementIndent, VCCodeClass classElement)
+        private void CreateClassComment(
+            ICommentStyle   commentStyle,
+            EditPoint       editPoint, 
+            int             nElementIndent, 
+            VCCodeClass     classElement)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
@@ -167,6 +184,7 @@ namespace DoxygenComments
                 tparams.Add(tparam.FullName);
 
             CreateComment(
+                commentStyle,
                 editPoint,
                 nElementIndent,
                 Settings.ClassIndent,
@@ -184,7 +202,11 @@ namespace DoxygenComments
                 null);
         }
 
-        private void CreateStructComment(EditPoint editPoint, int nElementIndent, VCCodeStruct structElement)
+        private void CreateStructComment(
+            ICommentStyle   commentStyle,
+            EditPoint       editPoint, 
+            int             nElementIndent, 
+            VCCodeStruct    structElement)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
@@ -193,6 +215,7 @@ namespace DoxygenComments
                 tparams.Add(tparam.FullName);
 
             CreateComment(
+                commentStyle,
                 editPoint,
                 nElementIndent,
                 Settings.StructIndent,
@@ -210,7 +233,11 @@ namespace DoxygenComments
                 null);
         }
 
-        private void CreateFunctionComment(EditPoint editPoint, int nElementIndent, VCCodeFunction functionElement)
+        private void CreateFunctionComment(
+            ICommentStyle   commentStyle,
+            EditPoint       editPoint, 
+            int             nElementIndent, 
+            VCCodeFunction  functionElement)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
@@ -255,6 +282,7 @@ namespace DoxygenComments
             }
 
             CreateComment(
+                commentStyle,
                 editPoint,
                 nElementIndent,
                 Settings.FunctionIndent,
@@ -272,7 +300,11 @@ namespace DoxygenComments
                 null);
         }
 
-        private void CreateMacroComment(EditPoint editPoint, int nElementIndent, VCCodeMacro macroElement)
+        private void CreateMacroComment(
+            ICommentStyle   commentStyle,
+            EditPoint       editPoint, 
+            int             nElementIndent, 
+            VCCodeMacro     macroElement)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
@@ -281,6 +313,7 @@ namespace DoxygenComments
                 Params.Add(param.FullName.Replace("__VA_ARGS__", "..."));
 
             CreateComment(
+                commentStyle,
                 editPoint,
                 nElementIndent,
                 Settings.MacroIndent,
@@ -298,11 +331,16 @@ namespace DoxygenComments
                 null);
         }
 
-        private void CreateNamespaceComment(EditPoint editPoint, int nElementIndent, VCCodeNamespace namespaceElement)
+        private void CreateNamespaceComment(
+            ICommentStyle   commentStyle,
+            EditPoint       editPoint, 
+            int             nElementIndent, 
+            VCCodeNamespace namespaceElement)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
             CreateComment(
+                commentStyle,
                 editPoint,
                 nElementIndent,
                 Settings.NamespaceIndent,
@@ -320,11 +358,16 @@ namespace DoxygenComments
                 null);
         }
 
-        private void CreateUnionComment(EditPoint editPoint, int nElementIndent, VCCodeUnion unionElement)
+        private void CreateUnionComment(
+            ICommentStyle   commentStyle,
+            EditPoint       editPoint, 
+            int             nElementIndent, 
+            VCCodeUnion     unionElement)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
             CreateComment(
+                commentStyle,
                 editPoint,
                 nElementIndent,
                 Settings.UnionIndent,
@@ -342,11 +385,16 @@ namespace DoxygenComments
                 null);
         }
 
-        private void CreateTypedefComment(EditPoint editPoint, int nElementIndent, VCCodeTypedef typedefElement)
+        private void CreateTypedefComment(
+            ICommentStyle   commentStyle,
+            EditPoint       editPoint, 
+            int             nElementIndent, 
+            VCCodeTypedef   typedefElement)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
             CreateComment(
+                commentStyle,
                 editPoint,
                 nElementIndent,
                 Settings.TypedefIndent,
@@ -364,11 +412,16 @@ namespace DoxygenComments
                 null);
         }
 
-        private void CreateEnumComment(EditPoint editPoint, int nElementIndent, VCCodeEnum enumElement)
+        private void CreateEnumComment(
+            ICommentStyle   commentStyle,
+            EditPoint       editPoint, 
+            int             nElementIndent, 
+            VCCodeEnum      enumElement)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
             CreateComment(
+                commentStyle,
                 editPoint,
                 nElementIndent,
                 Settings.EnumIndent,

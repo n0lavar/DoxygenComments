@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.VCCodeModel;
 using EnvDTE;
 using System.Linq;
 using System.Text;
+using DoxygenComments.Styles;
 
 namespace DoxygenComments
 {
@@ -151,21 +152,22 @@ namespace DoxygenComments
         }
 
         private void CreateComment(
-            EditPoint   editPoint,
-            int         nElementIndent, 
-            int         nIndent, 
-            bool        bAddBlankLines, 
-            string      sCommentType,
-            string      sCommentTypeValue,
-            string      sDefaultBrief,
-            string      sDetails,
-            string[]    templateParameters,
-            string[]    parameters,
-            string      sRetvalValue,
-            bool        bAddAuthor,
-            bool        bAddDate,
-            bool        bAddCopyright,
-            string[]    additionalTextAfterComment)
+            ICommentStyle   commentStyle,
+            EditPoint       editPoint,
+            int             nElementIndent, 
+            int             nIndent, 
+            bool            bAddBlankLines, 
+            string          sCommentType,
+            string          sCommentTypeValue,
+            string          sDefaultBrief,
+            string          sDetails,
+            string[]        templateParameters,
+            string[]        parameters,
+            string          sRetvalValue,
+            bool            bAddAuthor,
+            bool            bAddDate,
+            bool            bAddCopyright,
+            string[]        additionalTextAfterComment)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
@@ -228,7 +230,7 @@ namespace DoxygenComments
 
             if (sCommentType != null && sCommentTypeValue != null)
             {
-                sComment.Append(CreateCommentMiddle(
+                sComment.Append(commentStyle.CreateCommentMiddle(
                     nTagsIndent, 
                     nMaxTagLength, 
                     sCommentType, 
@@ -237,7 +239,7 @@ namespace DoxygenComments
 
             if (sDefaultBrief != null)
             {
-                sComment.Append(CreateCommentMiddle(
+                sComment.Append(commentStyle.CreateCommentMiddle(
                     nTagsIndent, 
                     nMaxTagLength, 
                     sBriefTag, 
@@ -248,7 +250,7 @@ namespace DoxygenComments
 
             if (sDetails != null && sDetails.Length != 0)
             {
-                sComment.Append(CreateCommentMiddle(
+                sComment.Append(commentStyle.CreateCommentMiddle(
                     nTagsIndent, 
                     nMaxTagLength, 
                     sDetailsTag, 
@@ -259,7 +261,7 @@ namespace DoxygenComments
             {
                 foreach (string sTParam in templateParameters)
                 {
-                    sComment.Append(CreateCommentMiddle(
+                    sComment.Append(commentStyle.CreateCommentMiddle(
                         nTagsIndent, 
                         nMaxTagLength, 
                         sTParamTag, 
@@ -273,7 +275,7 @@ namespace DoxygenComments
             {
                 foreach (string sParam in parameters)
                 {
-                    sComment.Append(CreateCommentMiddle(
+                    sComment.Append(commentStyle.CreateCommentMiddle(
                         nTagsIndent, 
                         nMaxTagLength, 
                         sParamTag, 
@@ -285,7 +287,7 @@ namespace DoxygenComments
 
             if (sRetvalValue != null)
             {
-                sComment.Append(CreateCommentMiddle(
+                sComment.Append(commentStyle.CreateCommentMiddle(
                     nTagsIndent, 
                     nMaxTagLength, 
                     sRetvalTag, 
@@ -298,7 +300,7 @@ namespace DoxygenComments
 
             if (bAddAuthor)
             {
-                sComment.Append(CreateCommentMiddle(
+                sComment.Append(commentStyle.CreateCommentMiddle(
                     nTagsIndent, 
                     nMaxTagLength, 
                     sAuthorTag, 
@@ -312,7 +314,7 @@ namespace DoxygenComments
                 int nDay     = DateTime.Now.Day;
                 string sDate = nDay + "." + (nMonth < 10 ? "0" : "") + nMonth + "." + nYear;
 
-                sComment.Append(CreateCommentMiddle(
+                sComment.Append(commentStyle.CreateCommentMiddle(
                     nTagsIndent, 
                     nMaxTagLength, 
                     sDateTag, 
@@ -321,7 +323,7 @@ namespace DoxygenComments
 
             if (bAddCopyright && Settings.Copyright != null && Settings.Copyright.Length != 0)
             {
-                sComment.Append(CreateCommentMiddle(
+                sComment.Append(commentStyle.CreateCommentMiddle(
                     nTagsIndent, 
                     nMaxTagLength, 
                     sCopyrightTag, 
@@ -329,7 +331,7 @@ namespace DoxygenComments
 
                 for (int i = 1; i < Settings.Copyright.Length; ++i)
                 {
-                    sComment.Append(CreateCommentMiddle(
+                    sComment.Append(commentStyle.CreateCommentMiddle(
                         nTagsIndent, 
                         nMaxTagLength, 
                         "", 
@@ -339,17 +341,17 @@ namespace DoxygenComments
 
             if (sComment.Length != 0 && !sComment.ToString().All(Char.IsWhiteSpace))
             {
-                string sBegin = CreateCommentBeginning(nElementIndent);
+                string sBegin = commentStyle.CreateCommentBeginning(nElementIndent);
 
                 if (bAddBlankLines)
-                    sBegin += CreateEmptyString();
+                    sBegin += commentStyle.CreateEmptyString();
 
                 sComment = sComment.Insert(0, sBegin);
 
                 if (bAddBlankLines)
-                    sComment.Append(CreateEmptyString());
+                    sComment.Append(commentStyle.CreateEmptyString());
 
-                sComment.Append(CreateCommentEnding(nElementIndent));
+                sComment.Append(commentStyle.CreateCommentEnding(nElementIndent));
             }
 
             if (additionalTextAfterComment != null && additionalTextAfterComment.Length > 0)
@@ -367,79 +369,7 @@ namespace DoxygenComments
             }
         }
 
-        private string CreateCommentBeginning(int nEditPointIndent)
-        {
-            return new string(Settings.GetIndentChar(), nEditPointIndent) + "/**" + Environment.NewLine;
-        }
-
-        private string CreateCommentMiddle(
-            int     nTagsIndent, 
-            int     nMaxTagLength, 
-            string  sTag, 
-            string  sTagText,
-            int     nParamsIndent = -1,
-            string  sParamText = null)
-        {
-            char chIndentChar = Settings.GetIndentChar();
-            sTag = Settings.TagChar + sTag;
-            nMaxTagLength = nMaxTagLength + 1;  // extra TagChar
-
-            string sTagsIndent = new string(chIndentChar, nTagsIndent);
-            string sTextIndent;
-            string sParamIndent;
-            if (Settings.IndentChar == SettingsPage.EIndentChar.Space)
-            {
-                sTextIndent = new string(chIndentChar, nMaxTagLength - sTag.Length + 1);
-
-                if (nParamsIndent != -1)
-                {
-                    sParamIndent = new string(chIndentChar, nParamsIndent - sTagText.Length);
-                    if (Settings.AddРyphen)
-                        sParamIndent += "- ";
-                }
-                else
-                {
-                    sParamIndent = "";
-                }
-            }
-            else
-            {
-                int nTabsLongestTag = nMaxTagLength / Settings.TabWidth + 1;
-                int nTabsThisTag = sTag.Length / Settings.TabWidth + 1;
-                sTextIndent = new string(chIndentChar, nTabsLongestTag - nTabsThisTag + 1);
-
-                if (nParamsIndent != -1)
-                {
-                    sParamIndent = new string(chIndentChar, (nParamsIndent - sTagText.Length + 1) / Settings.TabWidth + 1);
-                    if (Settings.AddРyphen)
-                        sParamIndent += "- ";
-                }
-                else
-                {
-                    sParamIndent = "";
-                }
-            }
-
-            return sTagsIndent 
-                + sTag 
-                + sTextIndent 
-                + sTagText
-                + sParamIndent 
-                + (sParamText != null ? sParamText : "")
-                + Environment.NewLine;
-        }
-
-        private string CreateCommentEnding(int nEditPointIndent)
-        {
-            return new string(Settings.GetIndentChar(), nEditPointIndent) + "**/";
-        }
-
-        private string CreateEmptyString()
-        {
-            return Environment.NewLine;
-        }
-
-        private void CreateSimpleComment(EditPoint editPoint, int nElementIndent = -1)
+        void CreateSimpleComment(EditPoint editPoint, int nElementIndent = -1)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
