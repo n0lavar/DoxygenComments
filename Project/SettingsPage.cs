@@ -57,6 +57,11 @@ namespace DoxygenComments
         }
 
         [Category(sCommonSettings)]
+        [DisplayName("Tag char")]
+        [Description("The character to be inserted before the tag name. Usually \\ (\\brief) or @ (@brief) is used.")]
+        public char TagChar { get; set; } = '@';
+
+        [Category(sCommonSettings)]
         [DisplayName("Add \"- \" to param, tparam and retval")]
         public bool AddРyphen { get; set; } = false;
 

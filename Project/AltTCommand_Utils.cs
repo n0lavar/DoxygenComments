@@ -169,14 +169,14 @@ namespace DoxygenComments
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            const string sBriefTag      = "@brief";
-            const string sDetailsTag    = "@details";
-            const string sTParamTag     = "@tparam";
-            const string sParamTag      = "@param";
-            const string sRetvalTag     = "@retval";
-            const string sAuthorTag     = "@author";
-            const string sDateTag       = "@date";
-            const string sCopyrightTag  = "@copyright";
+            const string sBriefTag      = "brief";
+            const string sDetailsTag    = "details";
+            const string sTParamTag     = "tparam";
+            const string sParamTag      = "param";
+            const string sRetvalTag     = "retval";
+            const string sAuthorTag     = "author";
+            const string sDateTag       = "date";
+            const string sCopyrightTag  = "copyright";
 
             int nTagsIndent = nElementIndent + nIndent;
 
@@ -228,7 +228,7 @@ namespace DoxygenComments
 
             if (sCommentType != null && sCommentTypeValue != null)
             {
-                sComment.Append(CreateCommemtMiddle(
+                sComment.Append(CreateCommentMiddle(
                     nTagsIndent, 
                     nMaxTagLength, 
                     sCommentType, 
@@ -237,7 +237,7 @@ namespace DoxygenComments
 
             if (sDefaultBrief != null)
             {
-                sComment.Append(CreateCommemtMiddle(
+                sComment.Append(CreateCommentMiddle(
                     nTagsIndent, 
                     nMaxTagLength, 
                     sBriefTag, 
@@ -248,7 +248,7 @@ namespace DoxygenComments
 
             if (sDetails != null && sDetails.Length != 0)
             {
-                sComment.Append(CreateCommemtMiddle(
+                sComment.Append(CreateCommentMiddle(
                     nTagsIndent, 
                     nMaxTagLength, 
                     sDetailsTag, 
@@ -259,7 +259,7 @@ namespace DoxygenComments
             {
                 foreach (string sTParam in templateParameters)
                 {
-                    sComment.Append(CreateCommemtMiddle(
+                    sComment.Append(CreateCommentMiddle(
                         nTagsIndent, 
                         nMaxTagLength, 
                         sTParamTag, 
@@ -273,7 +273,7 @@ namespace DoxygenComments
             {
                 foreach (string sParam in parameters)
                 {
-                    sComment.Append(CreateCommemtMiddle(
+                    sComment.Append(CreateCommentMiddle(
                         nTagsIndent, 
                         nMaxTagLength, 
                         sParamTag, 
@@ -285,7 +285,7 @@ namespace DoxygenComments
 
             if (sRetvalValue != null)
             {
-                sComment.Append(CreateCommemtMiddle(
+                sComment.Append(CreateCommentMiddle(
                     nTagsIndent, 
                     nMaxTagLength, 
                     sRetvalTag, 
@@ -298,7 +298,7 @@ namespace DoxygenComments
 
             if (bAddAuthor)
             {
-                sComment.Append(CreateCommemtMiddle(
+                sComment.Append(CreateCommentMiddle(
                     nTagsIndent, 
                     nMaxTagLength, 
                     sAuthorTag, 
@@ -310,9 +310,9 @@ namespace DoxygenComments
                 int nYear    = DateTime.Now.Year;
                 int nMonth   = DateTime.Now.Month;
                 int nDay     = DateTime.Now.Day;
-                string sDate = nDay.ToString() + "." + (nMonth < 10 ? "0" : "") + nMonth.ToString() + "." + nYear.ToString();
+                string sDate = nDay + "." + (nMonth < 10 ? "0" : "") + nMonth + "." + nYear;
 
-                sComment.Append(CreateCommemtMiddle(
+                sComment.Append(CreateCommentMiddle(
                     nTagsIndent, 
                     nMaxTagLength, 
                     sDateTag, 
@@ -321,7 +321,7 @@ namespace DoxygenComments
 
             if (bAddCopyright && Settings.Copyright != null && Settings.Copyright.Length != 0)
             {
-                sComment.Append(CreateCommemtMiddle(
+                sComment.Append(CreateCommentMiddle(
                     nTagsIndent, 
                     nMaxTagLength, 
                     sCopyrightTag, 
@@ -329,7 +329,7 @@ namespace DoxygenComments
 
                 for (int i = 1; i < Settings.Copyright.Length; ++i)
                 {
-                    sComment.Append(CreateCommemtMiddle(
+                    sComment.Append(CreateCommentMiddle(
                         nTagsIndent, 
                         nMaxTagLength, 
                         "", 
@@ -372,7 +372,7 @@ namespace DoxygenComments
             return new string(Settings.GetIndentChar(), nEditPointIndent) + "/**" + Environment.NewLine;
         }
 
-        private string CreateCommemtMiddle(
+        private string CreateCommentMiddle(
             int     nTagsIndent, 
             int     nMaxTagLength, 
             string  sTag, 
@@ -381,6 +381,8 @@ namespace DoxygenComments
             string  sParamText = null)
         {
             char chIndentChar = Settings.GetIndentChar();
+            sTag = Settings.TagChar + sTag;
+            nMaxTagLength = nMaxTagLength + 1;  // extra TagChar
 
             string sTagsIndent = new string(chIndentChar, nTagsIndent);
             string sTextIndent;
