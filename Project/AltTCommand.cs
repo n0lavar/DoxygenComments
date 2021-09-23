@@ -61,11 +61,19 @@ namespace DoxygenComments
             ".C++", 
         };
 
-        private static readonly string[] m_InlineFileExtensions = { 
+        private static readonly string[] m_InlineFileExtensions = {
             ".inl",
-            ".inc", 
-            ".tli", 
-            ".tlh", 
+            ".inc",
+            ".tli",
+            ".tlh",
+            ".ii",
+            ".ixx",
+            ".ipp",
+            ".i++",
+            ".II",
+            ".IXX",
+            ".IPP",
+            ".I++",
         };
 
         private static readonly vsCMElement[] m_FastSearchElements = {
