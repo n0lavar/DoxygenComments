@@ -6,8 +6,8 @@ namespace DoxygenComments.Styles
 {
     class JavadocStyle : ACommentStyle
     {
-        private const string m_sBlock = " *";
-        private const char m_chFilling = '*';
+        private const string m_sBlock    = " *";
+        private const char   m_chFilling = '*';
 
         public JavadocStyle (SettingsPage settings) 
             : base (settings)

@@ -183,8 +183,9 @@ namespace DoxygenComments
             ThreadHelper.ThrowIfNotOnUIThread();
 
             List<string> tparams = new List<string>();
-            foreach (CodeElement tparam in classElement.TemplateParameters)
-                tparams.Add(tparam.FullName);
+            if (Settings.ClassAddTparam)
+                foreach (CodeElement tparam in classElement.TemplateParameters)
+                    tparams.Add(tparam.FullName.Replace("...", ""));
 
             CreateComment(
                 commentStyle,
@@ -215,8 +216,9 @@ namespace DoxygenComments
             ThreadHelper.ThrowIfNotOnUIThread();
 
             List<string> tparams = new List<string>();
-            foreach (CodeElement tparam in structElement.TemplateParameters)
-                tparams.Add(tparam.FullName);
+            if (Settings.StructAddTparam)
+                foreach (CodeElement tparam in structElement.TemplateParameters)
+                    tparams.Add(tparam.FullName.Replace("...", ""));
 
             CreateComment(
                 commentStyle,
@@ -247,12 +249,14 @@ namespace DoxygenComments
             ThreadHelper.ThrowIfNotOnUIThread();
 
             List<string> tparams = new List<string>();
-            foreach (CodeElement tparam in functionElement.TemplateParameters)
-                tparams.Add(tparam.FullName.Replace("...", ""));
+            if (Settings.FunctionAddTparam)
+                foreach (CodeElement tparam in functionElement.TemplateParameters)
+                    tparams.Add(tparam.FullName.Replace("...", ""));
 
             List<string> Params = new List<string>();
-            foreach (CodeElement param in functionElement.Parameters)
-                Params.Add(param.FullName.Replace("...", ""));
+            if (Settings.FunctionAddParam)
+                foreach (CodeElement param in functionElement.Parameters)
+                    Params.Add(param.FullName.Replace("...", ""));
 
             string sDefaultBrief  = "";
             string sDefaultRetval = null;
@@ -299,7 +303,7 @@ namespace DoxygenComments
                 Settings.FunctionDetails,
                 tparams.ToArray(),
                 Params.ToArray(),
-                sDefaultRetval,
+                Settings.FunctionAddRetval ? sDefaultRetval : null,
                 Settings.FunctionAddAuthor,
                 Settings.FunctionAddDate,
                 false,
@@ -315,8 +319,9 @@ namespace DoxygenComments
             ThreadHelper.ThrowIfNotOnUIThread();
 
             List<string> Params = new List<string>();
-            foreach (CodeElement param in macroElement.Parameters)
-                Params.Add(param.FullName.Replace("__VA_ARGS__", "..."));
+            if (Settings.MacroAddParam)
+                foreach (CodeElement param in macroElement.Parameters)
+                    Params.Add(param.FullName.Replace("__VA_ARGS__", "..."));
 
             CreateComment(
                 commentStyle,

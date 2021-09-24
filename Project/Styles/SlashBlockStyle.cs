@@ -5,7 +5,7 @@ namespace DoxygenComments.Styles
 {
     class SlashBlockStyle : ACommentStyle
     {
-        private const string sBlock = "///";
+        private const string m_sBlock = "///";
 
         public SlashBlockStyle (SettingsPage settings) 
             : base (settings)
@@ -17,7 +17,7 @@ namespace DoxygenComments.Styles
             bool    bUseBannerStyle)
         {
             if (bUseBannerStyle)
-                return CreateCommentBeginningBody(nEditPointIndent, bUseBannerStyle, sBlock, '/') + Environment.NewLine;
+                return CreateCommentBeginningBody(nEditPointIndent, bUseBannerStyle, m_sBlock, '/') + Environment.NewLine;
             else
                 return "";
         }
@@ -33,10 +33,10 @@ namespace DoxygenComments.Styles
         {
             string sTagsIndent = new string(
                 ' ', 
-                Math.Max(nTagsIndent - sBlock.Length, 0));
+                Math.Max(nTagsIndent - m_sBlock.Length, 0));
 
             return new string(' ', nEditPointIndent)
-                + sBlock 
+                + m_sBlock 
                 + sTagsIndent 
                 + CreateCommentMiddleBody(
                     nMaxTagLength, 
@@ -50,7 +50,7 @@ namespace DoxygenComments.Styles
         public override string CreateEmptyString(int nEditPointIndent)
         {
             return new string(' ', nEditPointIndent)
-                + sBlock 
+                + m_sBlock 
                 + Environment.NewLine;
         }
 
@@ -59,7 +59,7 @@ namespace DoxygenComments.Styles
             bool    bUseBannerStyle)
         {
             if (bUseBannerStyle)
-                return CreateCommentEndingBody(nEditPointIndent, bUseBannerStyle, sBlock, '/');
+                return CreateCommentEndingBody(nEditPointIndent, bUseBannerStyle, m_sBlock, '/');
             else
                 return "";
         }

@@ -19,7 +19,8 @@ namespace DoxygenComments
         private const string sUseBannerStyle     = "Use banner style for this comment";
         private const string sUseBannerStyleDesc = "Fill the first and the last strings with symbols to make this comment block more visible";
 
-        // Common settings
+        #region Common settings
+
         private const string sCommonSettings = "Common settings";
 
         [Category(sCommonSettings)]
@@ -162,7 +163,10 @@ namespace DoxygenComments
             "Args template parameter pack type",
         };
 
-        // Header files header
+        #endregion
+
+        #region Header files header
+
         private const string sHeaderFilesHeader = "Header files header";
 
         [Category(sHeaderFilesHeader)]
@@ -209,7 +213,10 @@ namespace DoxygenComments
         [Description(sUseBannerStyleDesc)]
         public bool HeaderFilesHeaderUseBannerStyle { get; set; } = false;
 
-        // Source files header
+        #endregion
+
+        #region Source files header
+
         private const string sSourceFilesHeader = "Source files header";
 
         [Category(sSourceFilesHeader)]
@@ -271,7 +278,10 @@ namespace DoxygenComments
         [Description(sUseBannerStyleDesc)]
         public bool SourceFilesHeaderUseBannerStyle { get; set; } = false;
 
-        // Inline files header
+        #endregion
+
+        #region Inline files header
+
         private const string sInlineFilesHeader = "Inline files header";
 
         [Category(sInlineFilesHeader)]
@@ -318,7 +328,10 @@ namespace DoxygenComments
         [Description(sUseBannerStyleDesc)]
         public bool InlineFilesHeaderUseBannerStyle { get; set; } = false;
 
-        // Class comment
+        #endregion
+
+        #region Class comment
+
         private const string sClassComment = "Class comment";
 
         [Category(sClassComment)]
@@ -359,7 +372,10 @@ namespace DoxygenComments
         [Description(sUseBannerStyleDesc)]
         public bool ClassUseBannerStyle { get; set; } = false;
 
-        // Struct comment
+        #endregion
+
+        #region Struct comment
+
         private const string sStructComment = "Struct comment";
 
         [Category(sStructComment)]
@@ -400,7 +416,10 @@ namespace DoxygenComments
         [Description(sUseBannerStyleDesc)]
         public bool StructUseBannerStyle { get; set; } = false;
 
-        // Function / method comment
+        #endregion
+
+        #region Function / method comment
+
         private const string sFunctionComment = "Function / method comment";
 
         [Category(sFunctionComment)]
@@ -449,7 +468,10 @@ namespace DoxygenComments
         [Description(sUseBannerStyleDesc)]
         public bool FunctionUseBannerStyle { get; set; } = false;
 
-        // Macro comment
+        #endregion
+
+        #region Macro comment
+
         private const string sMacroComment = "Macro comment";
 
         [Category(sMacroComment)]
@@ -490,7 +512,10 @@ namespace DoxygenComments
         [Description(sUseBannerStyleDesc)]
         public bool MacroUseBannerStyle { get; set; } = false;
 
-        // Namespace comment
+        #endregion
+
+        #region Namespace comment
+
         private const string sNamespaceComment = "Namespace comment";
 
         [Category(sNamespaceComment)]
@@ -527,7 +552,10 @@ namespace DoxygenComments
         [Description(sUseBannerStyleDesc)]
         public bool NamespaceUseBannerStyle { get; set; } = false;
 
-        // Union comment
+        #endregion
+
+        #region Union comment
+
         private const string sUnionComment = "Union comment";
 
         [Category(sUnionComment)]
@@ -564,7 +592,10 @@ namespace DoxygenComments
         [Description(sUseBannerStyleDesc)]
         public bool UnionUseBannerStyle { get; set; } = false;
 
-        // Typedef comment
+        #endregion
+
+        #region Typedef comment
+
         private const string sTypedefComment = "Typedef comment";
 
         [Category(sTypedefComment)]
@@ -601,7 +632,10 @@ namespace DoxygenComments
         [Description(sUseBannerStyleDesc)]
         public bool TypedefUseBannerStyle { get; set; } = false;
 
-        // Enum comment
+        #endregion
+
+        #region Enum comment
+
         private const string sEnumComment = "Enum comment";
 
         [Category(sEnumComment)]
@@ -637,5 +671,7 @@ namespace DoxygenComments
         [DisplayName(sUseBannerStyle)]
         [Description(sUseBannerStyleDesc)]
         public bool EnumUseBannerStyle { get; set; } = false;
+
+        #endregion
     }
 }
