@@ -10,10 +10,11 @@ namespace DoxygenComments.Styles
         {
         }
 
-        public override string CreateCommentBeginning(int nEditPointIndent)
+        public override string CreateCommentBeginning(
+            int     nEditPointIndent,
+            bool    bUseBannerStyle)
         {
-            return new string(' ', nEditPointIndent) 
-                + "/**"
+            return CreateCommentBeginningBody(nEditPointIndent, bUseBannerStyle,  "/**", '*')
                 + Environment.NewLine;
         }
 
@@ -41,10 +42,11 @@ namespace DoxygenComments.Styles
             return Environment.NewLine;
         }
 
-        public override string CreateCommentEnding(int nEditPointIndent)
+        public override string CreateCommentEnding(
+            int     nEditPointIndent,
+            bool    bUseBannerStyle)
         {
-            return new string(' ', nEditPointIndent) 
-                   + "**/";
+            return CreateCommentEndingBody(nEditPointIndent, bUseBannerStyle, "**/", '*');
         }
     }
 }

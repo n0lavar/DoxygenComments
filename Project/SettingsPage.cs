@@ -5,17 +5,19 @@ namespace DoxygenComments
 {
     class SettingsPage: DialogPage
     {
-        private const string sIndent        = "Indent";
-        private const string sAddBrief      = "Add @brief";
-        private const string sDetails       = "@details default string";
-        private const string sDetailsDesc   = "If empty - don't add @details";
-        private const string sAddAuthor     = "Add @author";
-        private const string sAddDate       = "Add @date";
-        private const string sAddCopyright  = "Add @copyright";
-        private const string sAddTParam     = "Add @tparam";
-        private const string sAddParam      = "Add @param";
-        private const string sAddFile       = "Add @file";
-        private const string sAddBlankLines = "Add blank lines before the first tag and after the last";
+        private const string sIndent             = "Indent";
+        private const string sAddBrief           = "Add @brief";
+        private const string sDetails            = "@details default string";
+        private const string sDetailsDesc        = "If empty - don't add @details";
+        private const string sAddAuthor          = "Add @author";
+        private const string sAddDate            = "Add @date";
+        private const string sAddCopyright       = "Add @copyright";
+        private const string sAddTParam          = "Add @tparam";
+        private const string sAddParam           = "Add @param";
+        private const string sAddFile            = "Add @file";
+        private const string sAddBlankLines      = "Add blank lines before the first tag and after the last";
+        private const string sUseBannerStyle     = "Use banner style for this comment";
+        private const string sUseBannerStyleDesc = "Fill the first and the last strings with symbols to make this comment block more visible";
 
         // Common settings
         private const string sCommonSettings = "Common settings";
@@ -202,6 +204,11 @@ namespace DoxygenComments
         [DisplayName(sAddBlankLines)]
         public bool HeaderFilesHeaderAddBlankLines { get; set; } = true;
 
+        [Category(sHeaderFilesHeader)]
+        [DisplayName(sUseBannerStyle)]
+        [Description(sUseBannerStyleDesc)]
+        public bool HeaderFilesHeaderUseBannerStyle { get; set; } = false;
+
         // Source files header
         private const string sSourceFilesHeader = "Source files header";
 
@@ -259,6 +266,11 @@ namespace DoxygenComments
         [DisplayName(sAddBlankLines)]
         public bool SourceFilesHeaderAddBlankLines { get; set; } = true;
 
+        [Category(sSourceFilesHeader)]
+        [DisplayName(sUseBannerStyle)]
+        [Description(sUseBannerStyleDesc)]
+        public bool SourceFilesHeaderUseBannerStyle { get; set; } = false;
+
         // Inline files header
         private const string sInlineFilesHeader = "Inline files header";
 
@@ -300,6 +312,11 @@ namespace DoxygenComments
         [Category(sInlineFilesHeader)]
         [DisplayName(sAddBlankLines)]
         public bool InlineFilesHeaderAddBlankLines { get; set; } = true;
+        
+        [Category(sInlineFilesHeader)]
+        [DisplayName(sUseBannerStyle)]
+        [Description(sUseBannerStyleDesc)]
+        public bool InlineFilesHeaderUseBannerStyle { get; set; } = false;
 
         // Class comment
         private const string sClassComment = "Class comment";
@@ -336,6 +353,11 @@ namespace DoxygenComments
         [Category(sClassComment)]
         [DisplayName(sAddBlankLines)]
         public bool ClassAddBlankLines { get; set; } = true;
+                
+        [Category(sClassComment)]
+        [DisplayName(sUseBannerStyle)]
+        [Description(sUseBannerStyleDesc)]
+        public bool ClassUseBannerStyle { get; set; } = false;
 
         // Struct comment
         private const string sStructComment = "Struct comment";
@@ -372,6 +394,11 @@ namespace DoxygenComments
         [Category(sStructComment)]
         [DisplayName(sAddBlankLines)]
         public bool StructAddBlankLines { get; set; } = false;
+                        
+        [Category(sStructComment)]
+        [DisplayName(sUseBannerStyle)]
+        [Description(sUseBannerStyleDesc)]
+        public bool StructUseBannerStyle { get; set; } = false;
 
         // Function / method comment
         private const string sFunctionComment = "Function / method comment";
@@ -416,6 +443,11 @@ namespace DoxygenComments
         [Category(sFunctionComment)]
         [DisplayName(sAddBlankLines)]
         public bool FunctionAddBlankLines { get; set; } = false;
+                        
+        [Category(sFunctionComment)]
+        [DisplayName(sUseBannerStyle)]
+        [Description(sUseBannerStyleDesc)]
+        public bool FunctionUseBannerStyle { get; set; } = false;
 
         // Macro comment
         private const string sMacroComment = "Macro comment";
@@ -452,6 +484,11 @@ namespace DoxygenComments
         [Category(sMacroComment)]
         [DisplayName(sAddBlankLines)]
         public bool MacroAddBlankLines { get; set; } = false;
+                        
+        [Category(sMacroComment)]
+        [DisplayName(sUseBannerStyle)]
+        [Description(sUseBannerStyleDesc)]
+        public bool MacroUseBannerStyle { get; set; } = false;
 
         // Namespace comment
         private const string sNamespaceComment = "Namespace comment";
@@ -484,6 +521,11 @@ namespace DoxygenComments
         [Category(sNamespaceComment)]
         [DisplayName(sAddBlankLines)]
         public bool NamespaceAddBlankLines { get; set; } = false;
+                        
+        [Category(sNamespaceComment)]
+        [DisplayName(sUseBannerStyle)]
+        [Description(sUseBannerStyleDesc)]
+        public bool NamespaceUseBannerStyle { get; set; } = false;
 
         // Union comment
         private const string sUnionComment = "Union comment";
@@ -516,6 +558,11 @@ namespace DoxygenComments
         [Category(sUnionComment)]
         [DisplayName(sAddBlankLines)]
         public bool UnionAddBlankLines { get; set; } = false;
+                        
+        [Category(sUnionComment)]
+        [DisplayName(sUseBannerStyle)]
+        [Description(sUseBannerStyleDesc)]
+        public bool UnionUseBannerStyle { get; set; } = false;
 
         // Typedef comment
         private const string sTypedefComment = "Typedef comment";
@@ -548,6 +595,11 @@ namespace DoxygenComments
         [Category(sTypedefComment)]
         [DisplayName(sAddBlankLines)]
         public bool TypedefAddBlankLines { get; set; } = false;
+                        
+        [Category(sTypedefComment)]
+        [DisplayName(sUseBannerStyle)]
+        [Description(sUseBannerStyleDesc)]
+        public bool TypedefUseBannerStyle { get; set; } = false;
 
         // Enum comment
         private const string sEnumComment = "Enum comment";
@@ -580,5 +632,10 @@ namespace DoxygenComments
         [Category(sEnumComment)]
         [DisplayName(sAddBlankLines)]
         public bool EnumAddBlankLines { get; set; } = false;
+                    
+        [Category(sEnumComment)]
+        [DisplayName(sUseBannerStyle)]
+        [Description(sUseBannerStyleDesc)]
+        public bool EnumUseBannerStyle { get; set; } = false;
     }
 }

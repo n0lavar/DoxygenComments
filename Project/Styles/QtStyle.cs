@@ -10,11 +10,20 @@ namespace DoxygenComments.Styles
         {
         }
 
-        public override string CreateCommentBeginning(int nEditPointIndent)
+        public override string CreateCommentBeginning(
+            int     nEditPointIndent,
+            bool    bUseBannerStyle)
         {
-            return new string(' ', nEditPointIndent) 
-                   + "/*!"
-                   + Environment.NewLine;
+            if (bUseBannerStyle)
+            {
+                return base.CreateCommentBeginning(nEditPointIndent, bUseBannerStyle);
+            }
+            else
+            {
+                return new string(' ', nEditPointIndent) 
+                    + "/*!"
+                    + Environment.NewLine;
+            }
         }
     }
 }

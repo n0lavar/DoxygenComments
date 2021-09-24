@@ -12,9 +12,14 @@ namespace DoxygenComments.Styles
         {
         }
 
-        public override string CreateCommentBeginning(int nEditPointIndent)
+        public override string CreateCommentBeginning(
+            int     nEditPointIndent,
+            bool    bUseBannerStyle)
         {
-            return "";
+            if (bUseBannerStyle)
+                return CreateCommentBeginningBody(nEditPointIndent, bUseBannerStyle, sBlock, '/') + Environment.NewLine;
+            else
+                return "";
         }
 
         public override string CreateCommentMiddle(
@@ -49,9 +54,14 @@ namespace DoxygenComments.Styles
                 + Environment.NewLine;
         }
 
-        public override string CreateCommentEnding(int nEditPointIndent)
+        public override string CreateCommentEnding(
+            int     nEditPointIndent,
+            bool    bUseBannerStyle)
         {
-            return "";
+            if (bUseBannerStyle)
+                return CreateCommentEndingBody(nEditPointIndent, bUseBannerStyle, sBlock, '/');
+            else
+                return "";
         }
     }
 }

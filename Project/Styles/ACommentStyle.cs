@@ -6,7 +6,8 @@ namespace DoxygenComments.Styles
     abstract class ACommentStyle : ICommentStyle
     {
         public abstract string CreateCommentBeginning(
-            int nEditPointIndent);
+            int     nEditPointIndent,
+            bool    bUseBannerStyle);
 
         public abstract string CreateCommentMiddle(
             int     nEditPointIndent,
@@ -18,14 +19,30 @@ namespace DoxygenComments.Styles
             string  sParamText = null);
 
         public abstract string CreateEmptyString(
-            int nEditPointIndent);
+            int     nEditPointIndent);
 
         public abstract string CreateCommentEnding(
-            int nEditPointIndent);
+            int     nEditPointIndent,
+            bool    bUseBannerStyle);
 
         protected ACommentStyle(SettingsPage settings)
         {
             Settings = settings;
+        }
+
+        protected string CreateCommentBeginningBody(
+            int     nEditPointIndent,
+            bool    bUseBannerStyle,
+            string  sBeginning,
+            char    chFiling)
+        {
+            string sIndent = new string(' ', nEditPointIndent);
+            string sFill = sBeginning;
+            if (bUseBannerStyle)
+                sFill += new string(chFiling, Settings.ColumnLimit - nEditPointIndent - sFill.Length);
+
+            return sIndent
+                + sFill;
         }
 
         protected string CreateCommentMiddleBody(
@@ -60,6 +77,24 @@ namespace DoxygenComments.Styles
                 + sParamIndent 
                 + (sParamText != null ? sParamText : "");
         }
+
+        protected string CreateCommentEndingBody(
+            int     nEditPointIndent,
+            bool    bUseBannerStyle,
+            string  sEnding,
+            char    chFiling)
+        {
+            string sIndent = new string(' ', nEditPointIndent);
+            string sFill = "";
+            if (bUseBannerStyle)
+                sFill += new string(chFiling, Settings.ColumnLimit - nEditPointIndent - sEnding.Length);
+
+            sFill += sEnding;
+
+            return sIndent 
+                + sFill;
+        }
+
 
         protected SettingsPage Settings { get; set; }
     }

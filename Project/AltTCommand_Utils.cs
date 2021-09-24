@@ -157,6 +157,7 @@ namespace DoxygenComments
             int             nElementIndent, 
             int             nIndent, 
             bool            bAddBlankLines, 
+            bool            bUseBannerStyle,
             string          sCommentType,
             string          sCommentTypeValue,
             string          sDefaultBrief,
@@ -349,7 +350,7 @@ namespace DoxygenComments
 
             if (sComment.Length != 0 && !sComment.ToString().All(Char.IsWhiteSpace))
             {
-                string sBegin = commentStyle.CreateCommentBeginning(nElementIndent);
+                string sBegin = commentStyle.CreateCommentBeginning(nElementIndent, bUseBannerStyle);
 
                 if (bAddBlankLines)
                     sBegin += commentStyle.CreateEmptyString(nElementIndent);
@@ -359,7 +360,7 @@ namespace DoxygenComments
                 if (bAddBlankLines)
                     sComment.Append(commentStyle.CreateEmptyString(nElementIndent));
 
-                string sEnding = commentStyle.CreateCommentEnding(nElementIndent);
+                string sEnding = commentStyle.CreateCommentEnding(nElementIndent, bUseBannerStyle);
                 if (!string.IsNullOrEmpty(sEnding))
                 {
                     sComment.Append(sEnding);
