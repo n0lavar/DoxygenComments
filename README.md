@@ -11,6 +11,54 @@ Visual Studio extension for auto-generating Doxygen-style comments in C ++ code.
 * All lines can be enabled / disabled or configured at your discretion.   
 * Tag indentation can be configured for each code element.   
 * Sometimes the same function parameters or method names appear in many places in your code, and you want their documentation to look the same. You can specify the names of such objects and a comment to them in the dictionary, and this comment will be inserted automatically
+* The following styles are supported:
+  * Simple   
+    ```
+    /**
+        @brief Foo
+    **/
+    ```
+  * SlashBlock   
+    ```
+    ///
+    /// @brief Foo
+    ///
+    ```
+  * Javadoc   
+    ```
+    /**
+     *  @brief Foo
+     */
+    ```
+  * Qt   
+    ```
+    /*!
+     *  @brief Foo
+     */
+    ```
+ * You can make a comment block with a specific type more visible by filling the first and last lines of the comment:
+   ```
+    /*******************************************************************************
+     *
+     *  @file      test.h
+     *  @author    Khrapov
+     *  @date      24.09.2021
+     *  @copyright © Nick Khrapov, 2021. All right reserved.
+     *
+     ******************************************************************************/
+    #pragma once
+   ```
+* A list of all elements for which a comment can be generated:   
+  * file (header, source, inline)   
+  * class   
+  * function (or method)   
+  * macro   
+  * struct   
+  * union   
+  * typedef   
+  * namespace   
+  * enum   
+  * for all other elements a default comment will be generated: `//!<`   
 
 ## Examples
 
@@ -38,19 +86,6 @@ Visual Studio extension for auto-generating Doxygen-style comments in C ++ code.
 
 * Create a centered comment to separate logical blocks in the file   
 ![line_comment.gif](https://s9.gifyu.com/images/line_comment.gif)
-
-A list of all elements for which a comment can be generated:   
-
-* file (header, source, inline)   
-* class   
-* function (or method)   
-* macro   
-* struct   
-* union   
-* typedef   
-* namespace   
-* enum   
-* for all other elements a default comment will be generated: `//!<`   
 
 ## Project examples
 
