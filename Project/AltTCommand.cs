@@ -33,8 +33,8 @@ namespace DoxygenComments
         /// </summary>
         private readonly AsyncPackage package;
 
-        private DTE m_DTE;
-        private IVsTextManager m_TextManager;
+        private readonly DTE m_DTE;
+        private readonly IVsTextManager m_TextManager;
 
         private static readonly string[] m_HeaderFileExtensions = { 
             ".h", 
@@ -106,7 +106,11 @@ namespace DoxygenComments
         /// </summary>
         /// <param name="package">Owner package, not null.</param>
         /// <param name="commandService">Command service to add command to, not null.</param>
-        private AltTCommand(AsyncPackage package, OleMenuCommandService commandService, DTE dte, IVsTextManager textManager)
+        private AltTCommand(
+            AsyncPackage          package, 
+            OleMenuCommandService commandService, 
+            DTE                   dte, 
+            IVsTextManager        textManager)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
@@ -117,7 +121,7 @@ namespace DoxygenComments
                 ?? throw new ArgumentNullException(nameof(dte));
 
             m_TextManager = textManager 
-                ?? throw new ArgumentNullException(nameof(m_TextManager));
+                ?? throw new ArgumentNullException(nameof(textManager));
 
             commandService = commandService 
                 ?? throw new ArgumentNullException(nameof(commandService));
@@ -207,29 +211,22 @@ namespace DoxygenComments
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            IVsTextView textView;
-            if (m_TextManager.GetActiveView(1, null, out textView) != VSConstants.S_OK)
+            if (m_TextManager.GetActiveView(1, null, out var textView) != VSConstants.S_OK)
                 throw new Exception(nameof(m_TextManager.GetActiveView));
 
-            int nLine;
-            int nColumn;
-            if (textView.GetCaretPos(out nLine, out nColumn) != VSConstants.S_OK)
+            if (textView.GetCaretPos(out var nLine, out var nColumn) != VSConstants.S_OK)
                 throw new Exception(nameof(textView.GetCaretPos));
 
-            IVsTextLines buffer;
-            if (textView.GetBuffer(out buffer) != VSConstants.S_OK)
+            if (textView.GetBuffer(out var buffer) != VSConstants.S_OK)
                 throw new Exception(nameof(textView.GetBuffer));
 
-            int nLineLen;
-            if (buffer.GetLengthOfLine(nLine, out nLineLen) != VSConstants.S_OK)
+            if (buffer.GetLengthOfLine(nLine, out var nLineLen) != VSConstants.S_OK)
                 throw new Exception(nameof(buffer.GetLengthOfLine));
 
-            string sLine;
-            if (buffer.GetLineText(nLine, 0, nLine, nLineLen, out sLine) != VSConstants.S_OK)
+            if (buffer.GetLineText(nLine, 0, nLine, nLineLen, out var sLine) != VSConstants.S_OK)
                 throw new Exception(nameof(buffer.GetLineText));
 
-            object oEditPoint;
-            if (buffer.CreateEditPoint(nLine, 0, out oEditPoint) != VSConstants.S_OK)
+            if (buffer.CreateEditPoint(nLine, 0, out var oEditPoint) != VSConstants.S_OK)
                 throw new Exception(nameof(buffer.CreateEditPoint));
 
             EditPoint editPoint = (EditPoint)oEditPoint;
@@ -265,7 +262,7 @@ namespace DoxygenComments
             {
                 // create file header
                 string sFileName = textDocument.Parent.Name;
-                int nDotPosition = sFileName.LastIndexOf(".");
+                int nDotPosition = sFileName.LastIndexOf(".", StringComparison.Ordinal);
                 string sFileNameExtension = sFileName.Substring(nDotPosition < 0 ? 0 : nDotPosition);
 
                 if (Array.IndexOf(m_HeaderFileExtensions, sFileNameExtension) != -1)
@@ -284,14 +281,14 @@ namespace DoxygenComments
                 return;
             }
 
-            int nCommentIndex = sLine.IndexOf("//");
+            int nCommentIndex = sLine.IndexOf("//", StringComparison.Ordinal);
             if (nCommentIndex != -1)
             {
-                bool bAllWhilespaces = true;
-                for (int i = 0; bAllWhilespaces && i < nCommentIndex; ++i)
-                    bAllWhilespaces &= Char.IsWhiteSpace(sLine, i);
+                bool bAllWhitespaces = true;
+                for (int i = 0; bAllWhitespaces && i < nCommentIndex; ++i)
+                    bAllWhitespaces &= Char.IsWhiteSpace(sLine, i);
 
-                if (bAllWhilespaces)
+                if (bAllWhitespaces)
                 {
                     // create line comment
                     CreateLineComment(editPoint, sLine.Substring(nCommentIndex + 2));
@@ -306,12 +303,10 @@ namespace DoxygenComments
                 return;
             }
 
-            int nNextLineLen;
-            if (buffer.GetLengthOfLine(nLine + 1, out nNextLineLen) != VSConstants.S_OK)
+            if (buffer.GetLengthOfLine(nLine + 1, out var nNextLineLen) != VSConstants.S_OK)
                 throw new Exception(nameof(buffer.GetLengthOfLine));
 
-            string sNextLine;
-            if (buffer.GetLineText(nLine + 1, 0, nLine + 1, nNextLineLen, out sNextLine) != VSConstants.S_OK)
+            if (buffer.GetLineText(nLine + 1, 0, nLine + 1, nNextLineLen, out var sNextLine) != VSConstants.S_OK)
                 throw new Exception(nameof(buffer.GetLineText));
 
             int nWhiteSpaces = sNextLine.TakeWhile(Char.IsWhiteSpace).Count();
@@ -329,35 +324,35 @@ namespace DoxygenComments
                 switch (codeElement.Kind)
                 {
                 case vsCMElement.vsCMElementFunction:
-                    CreateFunctionComment(style, editPoint, nWhiteSpaces, (VCCodeFunction)codeElement);
+                    CreateFunctionComment(style, editPoint, nWhiteSpaces, codeElement as VCCodeFunction);
                     break;
 
                 case vsCMElement.vsCMElementClass:
-                    CreateClassComment(style, editPoint, nWhiteSpaces, (VCCodeClass)codeElement);
+                    CreateClassComment(style, editPoint, nWhiteSpaces, codeElement as VCCodeClass);
                     break;
 
                 case vsCMElement.vsCMElementStruct:
-                    CreateStructComment(style, editPoint, nWhiteSpaces, (VCCodeStruct)codeElement);
+                    CreateStructComment(style, editPoint, nWhiteSpaces, codeElement as VCCodeStruct);
                     break;
 
                 case vsCMElement.vsCMElementMacro:
-                    CreateMacroComment(style, editPoint, nWhiteSpaces, (VCCodeMacro)codeElement);
+                    CreateMacroComment(style, editPoint, nWhiteSpaces, codeElement as VCCodeMacro);
                     break;
 
                 case vsCMElement.vsCMElementNamespace:
-                    CreateNamespaceComment(style, editPoint, nWhiteSpaces, (VCCodeNamespace)codeElement);
+                    CreateNamespaceComment(style, editPoint, nWhiteSpaces, codeElement as VCCodeNamespace);
                     break;
 
                 case vsCMElement.vsCMElementUnion:
-                    CreateUnionComment(style, editPoint, nWhiteSpaces, (VCCodeUnion)codeElement);
+                    CreateUnionComment(style, editPoint, nWhiteSpaces, codeElement as VCCodeUnion);
                     break;
 
                 case vsCMElement.vsCMElementTypeDef:
-                    CreateTypedefComment(style, editPoint, nWhiteSpaces, (VCCodeTypedef)codeElement);
+                    CreateTypedefComment(style, editPoint, nWhiteSpaces, codeElement as VCCodeTypedef);
                     break;
 
                 case vsCMElement.vsCMElementEnum:
-                    CreateEnumComment(style, editPoint, nWhiteSpaces, (VCCodeEnum)codeElement);
+                    CreateEnumComment(style, editPoint, nWhiteSpaces, codeElement as VCCodeEnum);
                     break;
 
                 default:

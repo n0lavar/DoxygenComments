@@ -19,7 +19,7 @@ namespace DoxygenComments
             searchPoint.LineDown();
             searchPoint.CharRight(nWhiteSpaces);
 
-            CodeElement elem = searchPoint.get_CodeElement(vsCMElement.vsCMElementClass);
+            CodeElement elem = searchPoint.CodeElement[vsCMElement.vsCMElementClass];
             if (elem != null 
                 && Array.IndexOf(m_FastSearchElements, elem.Kind) != -1
                 && Array.IndexOf(m_IgnoredElements, elem.Kind) == -1)
@@ -41,6 +41,7 @@ namespace DoxygenComments
                 }
                 catch (Exception)
                 {
+                    // ignored
                 }
             }
 
@@ -117,7 +118,7 @@ namespace DoxygenComments
 
         private bool TryRemoveWithRoot(ref string path, string rootFolder)
         {
-            int nPos = path.LastIndexOf(rootFolder);
+            int nPos = path.LastIndexOf(rootFolder, StringComparison.Ordinal);
 
             if (nPos != -1)
             {
@@ -135,7 +136,7 @@ namespace DoxygenComments
 
             foreach (string sKeyValue in dictionary)
             {
-                int nKeyEnd = sKeyValue.IndexOf(" ");
+                int nKeyEnd = sKeyValue.IndexOf(" ", StringComparison.Ordinal);
                 string sKey = sKeyValue.Substring(0, nKeyEnd);
 
                 if (sKeyToFind == sKey)

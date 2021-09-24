@@ -75,7 +75,7 @@ namespace DoxygenComments.Styles
                 + sTextIndent 
                 + sTagText
                 + sParamIndent 
-                + (sParamText != null ? sParamText : "");
+                + (sParamText ?? "");
         }
 
         protected string CreateCommentEndingBody(
