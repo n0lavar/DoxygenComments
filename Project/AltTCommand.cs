@@ -240,17 +240,22 @@ namespace DoxygenComments
                 case SettingsPage.ECommentStyle.Simple:
                     style = new SimpleStyle(Settings);
                     break;
+
                 case SettingsPage.ECommentStyle.SlashBlock:
                     style = new SlashBlockStyle(Settings);
                     break;
+
                 case SettingsPage.ECommentStyle.Qt:
-                    style = new SimpleStyle(Settings);
+                    style = new QtStyle(Settings);
                     break;
+
                 case SettingsPage.ECommentStyle.Javadoc:
-                    style = new SimpleStyle(Settings);
+                    style = new JavadocStyle(Settings);
                     break;
+
                 default:
                     throw new ArgumentOutOfRangeException();
+
             }
 
             if (editPoint.AtStartOfDocument)

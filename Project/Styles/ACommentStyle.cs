@@ -17,7 +17,8 @@ namespace DoxygenComments.Styles
             int     nParamsIndent = -1,
             string  sParamText = null);
 
-        public abstract string CreateEmptyString();
+        public abstract string CreateEmptyString(
+            int nEditPointIndent);
 
         public abstract string CreateCommentEnding(
             int nEditPointIndent);

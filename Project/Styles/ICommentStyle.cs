@@ -5,7 +5,7 @@ namespace DoxygenComments.Styles
     interface ICommentStyle
     {
         string CreateCommentBeginning(
-            int     nEditPointIndent);
+            int nEditPointIndent);
 
         string CreateCommentMiddle(
             int     nEditPointIndent,
@@ -16,9 +16,10 @@ namespace DoxygenComments.Styles
             int     nParamsIndent = -1,
             string  sParamText = null);
 
-        string CreateEmptyString();
+        string CreateEmptyString(
+            int nEditPointIndent);
 
         string CreateCommentEnding(
-            int     nEditPointIndent);
+            int nEditPointIndent);
     }
 }

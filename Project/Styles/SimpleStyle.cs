@@ -36,7 +36,7 @@ namespace DoxygenComments.Styles
                 + Environment.NewLine;
         }
 
-        public override string CreateEmptyString()
+        public override string CreateEmptyString(int nEditPointIndent)
         {
             return Environment.NewLine;
         }

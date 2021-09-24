@@ -188,7 +188,7 @@ namespace DoxygenComments
 
             nMaxTagLength = Math.Max(
                 nMaxTagLength, 
-                !string.IsNullOrEmpty(sDetails) ? 0 : sDetailsTag.Length);
+                string.IsNullOrEmpty(sDetails) ? 0 : sDetailsTag.Length);
 
             nMaxTagLength = Math.Max(
                 nMaxTagLength, 
@@ -352,12 +352,12 @@ namespace DoxygenComments
                 string sBegin = commentStyle.CreateCommentBeginning(nElementIndent);
 
                 if (bAddBlankLines)
-                    sBegin += commentStyle.CreateEmptyString();
+                    sBegin += commentStyle.CreateEmptyString(nElementIndent);
 
                 sComment = sComment.Insert(0, sBegin);
 
                 if (bAddBlankLines)
-                    sComment.Append(commentStyle.CreateEmptyString());
+                    sComment.Append(commentStyle.CreateEmptyString(nElementIndent));
 
                 string sEnding = commentStyle.CreateCommentEnding(nElementIndent);
                 if (!string.IsNullOrEmpty(sEnding))

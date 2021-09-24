@@ -46,7 +46,7 @@ namespace DoxygenComments
             Simple,
             SlashBlock,
             Qt,
-            Javadoc
+            Javadoc,
         };
 
         [Category(sCommonSettings)]
