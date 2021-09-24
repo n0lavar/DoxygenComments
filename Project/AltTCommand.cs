@@ -188,7 +188,10 @@ namespace DoxygenComments
             catch (Exception ex)
             {
                 string sTitle = "DoxygenComments";
-                string sMessage = "An exception was thrown :\n\n" + ex.Message + "\n\n" + ex.StackTrace;
+                string sMessage = "An exception was thrown :\n\n" 
+                    + ex.Message 
+                    + "\n\n" 
+                    + ex.StackTrace.Replace("D:\\Mega\\programming\\TheGame\\qxProject\\DoxygenComments\\Project\\", "");
 
                 VsShellUtilities.ShowMessageBox(
                     package,
