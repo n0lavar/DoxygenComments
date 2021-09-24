@@ -234,7 +234,24 @@ namespace DoxygenComments
             TextDocument textDocument = m_DTE.ActiveDocument.Object() as TextDocument
                 ?? throw new ArgumentNullException(nameof(m_DTE.ActiveDocument));
 
-            ICommentStyle style = new SimpleStyle(Settings);
+            ICommentStyle style;
+            switch (Settings.Style)
+            {
+                case SettingsPage.ECommentStyle.Simple:
+                    style = new SimpleStyle(Settings);
+                    break;
+                case SettingsPage.ECommentStyle.SlashBlock:
+                    style = new SlashBlockStyle(Settings);
+                    break;
+                case SettingsPage.ECommentStyle.Qt:
+                    style = new SimpleStyle(Settings);
+                    break;
+                case SettingsPage.ECommentStyle.Javadoc:
+                    style = new SimpleStyle(Settings);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
 
             if (editPoint.AtStartOfDocument)
             {

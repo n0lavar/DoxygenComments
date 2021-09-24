@@ -180,8 +180,6 @@ namespace DoxygenComments
             const string sDateTag       = "date";
             const string sCopyrightTag  = "copyright";
 
-            int nTagsIndent = nElementIndent + nIndent;
-
             int nMaxTagLength = sBriefTag.Length;
 
             nMaxTagLength = Math.Max(
@@ -190,7 +188,7 @@ namespace DoxygenComments
 
             nMaxTagLength = Math.Max(
                 nMaxTagLength, 
-                sDetails == null || sDetails.Length == 0 ? 0 : sDetailsTag.Length);
+                !string.IsNullOrEmpty(sDetails) ? 0 : sDetailsTag.Length);
 
             nMaxTagLength = Math.Max(
                 nMaxTagLength, 
@@ -231,7 +229,8 @@ namespace DoxygenComments
             if (sCommentType != null && sCommentTypeValue != null)
             {
                 sComment.Append(commentStyle.CreateCommentMiddle(
-                    nTagsIndent, 
+                    nElementIndent,
+                    nIndent, 
                     nMaxTagLength, 
                     sCommentType, 
                     sCommentTypeValue));
@@ -240,7 +239,8 @@ namespace DoxygenComments
             if (sDefaultBrief != null)
             {
                 sComment.Append(commentStyle.CreateCommentMiddle(
-                    nTagsIndent, 
+                    nElementIndent,
+                    nIndent, 
                     nMaxTagLength, 
                     sBriefTag, 
                     sDefaultBrief.Length != 0 
@@ -248,10 +248,11 @@ namespace DoxygenComments
                         : FindStringDictionaryValue(Settings.BriefDictionary, sCommentTypeValue)));
             }
 
-            if (sDetails != null && sDetails.Length != 0)
+            if (!string.IsNullOrEmpty(sDetails))
             {
                 sComment.Append(commentStyle.CreateCommentMiddle(
-                    nTagsIndent, 
+                    nElementIndent,
+                    nIndent, 
                     nMaxTagLength, 
                     sDetailsTag, 
                     sDetails));
@@ -262,7 +263,8 @@ namespace DoxygenComments
                 foreach (string sTParam in templateParameters)
                 {
                     sComment.Append(commentStyle.CreateCommentMiddle(
-                        nTagsIndent, 
+                        nElementIndent,
+                        nIndent, 
                         nMaxTagLength, 
                         sTParamTag, 
                         sTParam, 
@@ -276,7 +278,8 @@ namespace DoxygenComments
                 foreach (string sParam in parameters)
                 {
                     sComment.Append(commentStyle.CreateCommentMiddle(
-                        nTagsIndent, 
+                        nElementIndent,
+                        nIndent, 
                         nMaxTagLength, 
                         sParamTag, 
                         sParam, 
@@ -288,7 +291,8 @@ namespace DoxygenComments
             if (sRetvalValue != null)
             {
                 sComment.Append(commentStyle.CreateCommentMiddle(
-                    nTagsIndent, 
+                    nElementIndent,
+                    nIndent, 
                     nMaxTagLength, 
                     sRetvalTag, 
                     "",
@@ -301,7 +305,8 @@ namespace DoxygenComments
             if (bAddAuthor)
             {
                 sComment.Append(commentStyle.CreateCommentMiddle(
-                    nTagsIndent, 
+                    nElementIndent,
+                    nIndent, 
                     nMaxTagLength, 
                     sAuthorTag, 
                     Settings.Author));
@@ -315,7 +320,8 @@ namespace DoxygenComments
                 string sDate = nDay + "." + (nMonth < 10 ? "0" : "") + nMonth + "." + nYear;
 
                 sComment.Append(commentStyle.CreateCommentMiddle(
-                    nTagsIndent, 
+                    nElementIndent,
+                    nIndent, 
                     nMaxTagLength, 
                     sDateTag, 
                     sDate));
@@ -324,7 +330,8 @@ namespace DoxygenComments
             if (bAddCopyright && Settings.Copyright != null && Settings.Copyright.Length != 0)
             {
                 sComment.Append(commentStyle.CreateCommentMiddle(
-                    nTagsIndent, 
+                    nElementIndent,
+                    nIndent, 
                     nMaxTagLength, 
                     sCopyrightTag, 
                     Settings.Copyright[0].Replace("{year}", DateTime.Now.Year.ToString())));
@@ -332,7 +339,8 @@ namespace DoxygenComments
                 for (int i = 1; i < Settings.Copyright.Length; ++i)
                 {
                     sComment.Append(commentStyle.CreateCommentMiddle(
-                        nTagsIndent, 
+                        nElementIndent,
+                        nIndent, 
                         nMaxTagLength, 
                         "", 
                         Settings.Copyright[i].Replace("{year}", DateTime.Now.Year.ToString())));
@@ -351,7 +359,17 @@ namespace DoxygenComments
                 if (bAddBlankLines)
                     sComment.Append(commentStyle.CreateEmptyString());
 
-                sComment.Append(commentStyle.CreateCommentEnding(nElementIndent));
+                string sEnding = commentStyle.CreateCommentEnding(nElementIndent);
+                if (!string.IsNullOrEmpty(sEnding))
+                {
+                    sComment.Append(sEnding);
+                }
+                else if (sComment.Length > Environment.NewLine.Length)
+                {
+                    sComment.Remove(
+                        sComment.Length - Environment.NewLine.Length, 
+                        Environment.NewLine.Length);
+                }
             }
 
             if (additionalTextAfterComment != null && additionalTextAfterComment.Length > 0)
@@ -378,7 +396,7 @@ namespace DoxygenComments
             {
                 editPoint.StartOfLine();
                 editPoint.Delete(editPoint.LineLength);
-                sComment = new string(Settings.GetIndentChar(), nElementIndent);
+                sComment = new string(' ', nElementIndent);
             }
             else
             {

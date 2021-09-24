@@ -5,17 +5,17 @@ namespace DoxygenComments
 {
     class SettingsPage: DialogPage
     {
-        private const string sIndent              = "Indent";
-        private const string sAddBrief            = "Add @brief";
-        private const string sDetails             = "@details default string";
-        private const string sDetailsDesc         = "If empty - don't add @details";
-        private const string sAddAuthor           = "Add @author";
-        private const string sAddDate             = "Add @date";
-        private const string sAddCopyright        = "Add @copyright";
-        private const string sAddTParam           = "Add @tparam";
-        private const string sAddParam            = "Add @param";
-        private const string sAddFile             = "Add @file";
-        private const string sAddBlankLines       = "Add blank lines before the first tag and after the last";
+        private const string sIndent        = "Indent";
+        private const string sAddBrief      = "Add @brief";
+        private const string sDetails       = "@details default string";
+        private const string sDetailsDesc   = "If empty - don't add @details";
+        private const string sAddAuthor     = "Add @author";
+        private const string sAddDate       = "Add @date";
+        private const string sAddCopyright  = "Add @copyright";
+        private const string sAddTParam     = "Add @tparam";
+        private const string sAddParam      = "Add @param";
+        private const string sAddFile       = "Add @file";
+        private const string sAddBlankLines = "Add blank lines before the first tag and after the last";
 
         // Common settings
         private const string sCommonSettings = "Common settings";
@@ -37,29 +37,22 @@ namespace DoxygenComments
         public int ColumnLimit { get; set; } = 80;
 
         [Category(sCommonSettings)]
-        [DisplayName("Tab width")]
-        [Description("Tab width for correct alighment if [Indent char] is tab")]
-        public int TabWidth { get; set; } = 4;
-
-        public enum EIndentChar 
-        { 
-            Space, 
-            Tab 
-        };
-
-        [Category(sCommonSettings)]
-        [DisplayName("Indent char")]
-        public EIndentChar IndentChar { get; set; } = EIndentChar.Space;
-
-        public char GetIndentChar()
-        {
-            return IndentChar == EIndentChar.Space ? ' ' : '\t';
-        }
-
-        [Category(sCommonSettings)]
         [DisplayName("Tag char")]
         [Description("The character to be inserted before the tag name. Usually \\ (\\brief) or @ (@brief) is used.")]
         public char TagChar { get; set; } = '@';
+
+        public enum ECommentStyle 
+        { 
+            Simple,
+            SlashBlock,
+            Qt,
+            Javadoc
+        };
+
+        [Category(sCommonSettings)]
+        [DisplayName("Style")]
+        public ECommentStyle Style { get; set; } = ECommentStyle.Simple;
+
 
         [Category(sCommonSettings)]
         [DisplayName("Add \"- \" to param, tparam and retval")]

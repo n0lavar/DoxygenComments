@@ -12,10 +12,13 @@ namespace DoxygenComments.Styles
 
         public override string CreateCommentBeginning(int nEditPointIndent)
         {
-            return new string(Settings.GetIndentChar(), nEditPointIndent) + "/**" + Environment.NewLine;
+            return new string(' ', nEditPointIndent) 
+                + "/**"
+                + Environment.NewLine;
         }
 
         public override string CreateCommentMiddle(
+            int     nEditPointIndent,
             int     nTagsIndent, 
             int     nMaxTagLength, 
             string  sTag, 
@@ -23,23 +26,25 @@ namespace DoxygenComments.Styles
             int     nParamsIndent = -1,
             string  sParamText = null)
         {
-            string sTagsIndent = new string(Settings.GetIndentChar(), nTagsIndent);
-            return sTagsIndent + CreateCommentMiddleBody(
-                nMaxTagLength, 
-                sTag, 
-                sTagText, 
-                nParamsIndent, 
-                sParamText);
-        }
-
-        public override string CreateCommentEnding(int nEditPointIndent)
-        {
-            return new string(Settings.GetIndentChar(), nEditPointIndent) + "**/";
+            return new string(' ', nEditPointIndent + nTagsIndent) 
+                + CreateCommentMiddleBody(
+                    nMaxTagLength, 
+                    sTag, 
+                    sTagText, 
+                    nParamsIndent, 
+                    sParamText)
+                + Environment.NewLine;
         }
 
         public override string CreateEmptyString()
         {
             return Environment.NewLine;
+        }
+
+        public override string CreateCommentEnding(int nEditPointIndent)
+        {
+            return new string(' ', nEditPointIndent) 
+                   + "**/";
         }
     }
 }
