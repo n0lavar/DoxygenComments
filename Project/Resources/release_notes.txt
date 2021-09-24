@@ -1,3 +1,12 @@
+1.2
+* added styles: Simple, SlashBlocks, Javadoc, Qt
+* added the ability to make a comment block with a specific type more visible by filling the first and last lines of the comment
+* fixed non-working settings "Add @param", "Add @tparam" and "Add @retval" for class, function and structure
+* expanded list of cpp source file extensions
+* removed long file path in error message
+* fixed parameter name for variadic args for classes and structures, now "Args" will be generated instead of "Args..."
+* removed tab support
+
 1.1
 * Fix template explicit specialization exception
 * Add @brief @retval @param @tparam dictionaries: now you can configure default tag text for specific names
