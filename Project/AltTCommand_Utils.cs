@@ -1,15 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.VCCodeModel;
 using EnvDTE;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using DoxygenComments.Styles;
 
 namespace DoxygenComments
 {
     internal sealed partial class AltTCommand
     {
+        private struct Param
+        {
+            public string Name;
+            public string Value;
+        }
+
         private CodeElement FindNextLineCodeElement(CodeElements elements, TextPoint textPoint, int nWhiteSpaces)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
@@ -116,7 +124,7 @@ namespace DoxygenComments
             return null;
         }
 
-        private bool TryRemoveWithRoot(ref string path, string rootFolder)
+        private static bool TryRemoveWithRoot(ref string path, string rootFolder)
         {
             int nPos = path.LastIndexOf(rootFolder, StringComparison.Ordinal);
 
@@ -129,7 +137,50 @@ namespace DoxygenComments
             return false;
         }
 
-        private string FindStringDictionaryValue(string[] dictionary, string sKeyToFind)
+        private static List<string> SplitElementName(string sName)
+        {
+            List<string> ret = new List<string>();
+
+            string[] underscoreSplit = sName.Split('_');
+            foreach (string s in underscoreSplit)
+            {
+                string[] camelCaseSplit = Regex.Replace(
+                    s, 
+                    "(?<=[a-z])([A-Z])", 
+                    " $1", 
+                    RegexOptions.Compiled).Trim().Split(' ');
+
+                foreach (string s1 in camelCaseSplit)
+                    if (!string.IsNullOrEmpty(s1))
+                        ret.Add(s1);
+            }
+
+            return ret;
+        }
+
+        private static bool IsWithCapital(string sName)
+        {
+            return !string.IsNullOrEmpty(sName)
+                && Char.IsUpper(sName[0])
+                && sName.Substring(1, sName.Length - 1).All(Char.IsLower);
+        }
+
+        private List<Param> FillParams(CodeElements parameters, string[] dictionary)
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
+            List<Param> tparams = new List<Param>();
+            foreach (CodeElement tparam in parameters)
+            {
+                string sName = tparam.FullName.Replace("...", "").Replace("__VA_ARGS__", "...");
+                string sValue = FindStringDictionaryValue(dictionary, sName);
+                tparams.Add(new Param() { Name = sName, Value = sValue });
+            }
+
+            return tparams;
+        }
+
+        private static string FindStringDictionaryValue(string[] dictionary, string sKeyToFind)
         {
             if (string.IsNullOrEmpty(sKeyToFind))
                 return "";
@@ -163,8 +214,8 @@ namespace DoxygenComments
             string          sCommentTypeValue,
             string          sDefaultBrief,
             string          sDetails,
-            string[]        templateParameters,
-            string[]        parameters,
+            List<Param>     templateParameters,
+            List<Param>     parameters,
             string          sRetvalValue,
             bool            bAddAuthor,
             bool            bAddDate,
@@ -194,11 +245,11 @@ namespace DoxygenComments
 
             nMaxTagLength = Math.Max(
                 nMaxTagLength, 
-                templateParameters == null || templateParameters.Length == 0 ? 0 : sTParamTag.Length);
+                templateParameters == null || templateParameters.Count == 0 ? 0 : sTParamTag.Length);
 
             nMaxTagLength = Math.Max(
                 nMaxTagLength, 
-                parameters == null || parameters.Length == 0 ? 0 : sParamTag.Length);
+                parameters == null || parameters.Count == 0 ? 0 : sParamTag.Length);
 
             nMaxTagLength = Math.Max(
                 nMaxTagLength, 
@@ -218,13 +269,13 @@ namespace DoxygenComments
 
 
             int nMaxParamLength = 0;
-            if (templateParameters != null && templateParameters.Length != 0)
-                foreach (string sTParam in templateParameters)
-                    nMaxParamLength = Math.Max(nMaxParamLength, sTParam.Length + 1); // extra space
+            if (templateParameters != null && templateParameters.Count != 0)
+                foreach (Param sTParam in templateParameters)
+                    nMaxParamLength = Math.Max(nMaxParamLength, sTParam.Name.Length + 1); // extra space
 
-            if (parameters != null && parameters.Length != 0)
-                foreach (string sParam in parameters)
-                    nMaxParamLength = Math.Max(nMaxParamLength, sParam.Length + 1); // extra space
+            if (parameters != null && parameters.Count != 0)
+                foreach (Param sParam in parameters)
+                    nMaxParamLength = Math.Max(nMaxParamLength, sParam.Name.Length + 1); // extra space
 
             StringBuilder sComment = new StringBuilder(256);
 
@@ -260,33 +311,33 @@ namespace DoxygenComments
                     sDetails));
             }
 
-            if (templateParameters != null && templateParameters.Length != 0)
+            if (templateParameters != null && templateParameters.Count != 0)
             {
-                foreach (string sTParam in templateParameters)
+                foreach (Param sTParam in templateParameters)
                 {
                     sComment.Append(commentStyle.CreateCommentMiddle(
                         nElementIndent,
                         nIndent, 
                         nMaxTagLength, 
                         sTParamTag, 
-                        sTParam, 
+                        sTParam.Name, 
                         nMaxParamLength,
-                        FindStringDictionaryValue(Settings.TParamDictionary, sTParam)));
+                        sTParam.Value));
                 }
             }
             
-            if (parameters != null && parameters.Length != 0)
+            if (parameters != null && parameters.Count != 0)
             {
-                foreach (string sParam in parameters)
+                foreach (Param sParam in parameters)
                 {
                     sComment.Append(commentStyle.CreateCommentMiddle(
                         nElementIndent,
                         nIndent, 
                         nMaxTagLength, 
                         sParamTag, 
-                        sParam, 
+                        sParam.Name,
                         nMaxParamLength,
-                        FindStringDictionaryValue(Settings.ParamDictionary, sParam)));
+                        sParam.Value));
                 }
             }
 

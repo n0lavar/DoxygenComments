@@ -468,6 +468,16 @@ namespace DoxygenComments
         [Description(sUseBannerStyleDesc)]
         public bool FunctionUseBannerStyle { get; set; } = false;
 
+        [Category(sFunctionComment)]
+        [DisplayName("Generate @brief and @retval for getters")]
+        [Description("Tag values will be generated based on function name")]
+        public bool FunctionGenerateGetter { get; set; } = false;
+
+        [Category(sFunctionComment)]
+        [DisplayName("Generate @brief and @param for setters")]
+        [Description("Tag values will be generated based on function name")]
+        public bool FunctionGenerateSetter { get; set; } = false;
+
         #endregion
 
         #region Macro comment

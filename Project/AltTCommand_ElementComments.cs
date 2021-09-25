@@ -182,10 +182,9 @@ namespace DoxygenComments
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            List<string> tparams = new List<string>();
+            List<Param> tparams = new List<Param>();
             if (Settings.ClassAddTparam)
-                foreach (CodeElement tparam in classElement.TemplateParameters)
-                    tparams.Add(tparam.FullName.Replace("...", ""));
+                tparams = FillParams(classElement.TemplateParameters, Settings.TParamDictionary);
 
             CreateComment(
                 commentStyle,
@@ -198,7 +197,7 @@ namespace DoxygenComments
                 classElement.Name,
                 Settings.ClassAddBrief ? "" : null,
                 Settings.ClassDetails,
-                tparams.ToArray(),
+                tparams,
                 null,
                 null,
                 Settings.ClassAddAuthor,
@@ -215,10 +214,9 @@ namespace DoxygenComments
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            List<string> tparams = new List<string>();
-            if (Settings.StructAddTparam)
-                foreach (CodeElement tparam in structElement.TemplateParameters)
-                    tparams.Add(tparam.FullName.Replace("...", ""));
+            List<Param> tparams = new List<Param>();
+            if (Settings.ClassAddTparam)
+                tparams = FillParams(structElement.TemplateParameters, Settings.TParamDictionary);
 
             CreateComment(
                 commentStyle,
@@ -231,7 +229,7 @@ namespace DoxygenComments
                 structElement.Name,
                 Settings.StructAddBrief ? "" : null,
                 Settings.StructDetails,
-                tparams.ToArray(),
+                tparams,
                 null,
                 null,
                 Settings.StructAddAuthor,
@@ -248,15 +246,13 @@ namespace DoxygenComments
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            List<string> tparams = new List<string>();
-            if (Settings.FunctionAddTparam)
-                foreach (CodeElement tparam in functionElement.TemplateParameters)
-                    tparams.Add(tparam.FullName.Replace("...", ""));
+            List<Param> tparams = new List<Param>();
+            if (Settings.ClassAddTparam)
+                tparams = FillParams(functionElement.TemplateParameters, Settings.TParamDictionary);
 
-            List<string> Params = new List<string>();
-            if (Settings.FunctionAddParam)
-                foreach (CodeElement param in functionElement.Parameters)
-                    Params.Add(param.FullName.Replace("...", ""));
+            List<Param> Params = new List<Param>();
+            if (Settings.ClassAddTparam)
+                Params = FillParams(functionElement.Parameters, Settings.ParamDictionary);
 
             string sDefaultBrief  = "";
             string sDefaultRetval = null;
@@ -286,8 +282,59 @@ namespace DoxygenComments
                 bool bVoidRetval = functionElement.Type.TypeKind == vsCMTypeRef.vsCMTypeRefVoid 
                     || Regex.Replace(functionElement.TypeString.Replace("noexcept", ""), @"\s+", "") == "void";
 
+                List<string> tokens = SplitElementName(functionElement.Name);
+
                 if (!bVoidRetval)
-                    sDefaultRetval =  "";
+                {
+                    sDefaultRetval = "";
+
+                    // check if this function is getter
+                    if (Settings.FunctionGenerateGetter
+                        && tokens.Count > 1 
+                        && tokens[0].Equals("get", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        for (int i = 1; i < tokens.Count; i++)
+                        {
+                            sDefaultRetval += IsWithCapital(tokens[i])
+                                ? tokens[i].ToLower()
+                                : tokens[i];
+
+                            if (i != tokens.Count - 1)
+                                sDefaultRetval += ' ';
+                        }
+
+                        sDefaultBrief = "Get " + sDefaultRetval;
+                    }
+                }
+                else
+                {
+                    // check if this function is setter
+                    if (Settings.FunctionGenerateSetter
+                        && tokens.Count > 1 
+                        && tokens[0].Equals("set", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        string sParamText = "";
+                        for (int i = 1; i < tokens.Count; i++)
+                        {
+                            sParamText += IsWithCapital(tokens[i])
+                                ? tokens[i].ToLower()
+                                : tokens[i];
+
+                            if (i != tokens.Count - 1)
+                                sParamText += ' ';
+                        }
+
+                        sDefaultBrief = "Set " + sParamText;
+
+                        if (Params.Count == 1 
+                            && Params[0].Value != null 
+                            && Params[0].Value.Length == 0)
+                        {
+                            string sName = Params[0].Name;
+                            Params[0] = new Param() { Name = sName, Value = sParamText };
+                        }
+                    }
+                }
             }
 
             CreateComment(
@@ -301,8 +348,8 @@ namespace DoxygenComments
                 functionElement.Name,
                 Settings.FunctionAddBrief ? sDefaultBrief : null,
                 Settings.FunctionDetails,
-                tparams.ToArray(),
-                Params.ToArray(),
+                tparams,
+                Params,
                 Settings.FunctionAddRetval ? sDefaultRetval : null,
                 Settings.FunctionAddAuthor,
                 Settings.FunctionAddDate,
@@ -318,10 +365,9 @@ namespace DoxygenComments
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            List<string> Params = new List<string>();
-            if (Settings.MacroAddParam)
-                foreach (CodeElement param in macroElement.Parameters)
-                    Params.Add(param.FullName.Replace("__VA_ARGS__", "..."));
+            List<Param> Params = new List<Param>();
+            if (Settings.ClassAddTparam)
+                Params = FillParams(macroElement.Parameters, Settings.ParamDictionary);
 
             CreateComment(
                 commentStyle,
@@ -335,7 +381,7 @@ namespace DoxygenComments
                 Settings.MacroAddBrief ? "" : null,
                 Settings.MacroDetails,
                 null,
-                Params.ToArray(),
+                Params,
                 null,
                 Settings.MacroAddAuthor,
                 Settings.MacroAddDate,
