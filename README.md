@@ -48,6 +48,30 @@ Visual Studio extension for auto-generating Doxygen-style comments in C ++ code.
      ******************************************************************************/
     #pragma once
    ```
+* Auto-generation of comments for trivial functions:
+  * "ClassName object constructor" for constructors
+  * "ClassName object destructor" for destructors
+  * @brief and @retval for getters based on function name:
+    ```
+    /**
+        @brief  Get answer to the ultimate question of life the universe and everything
+        @retval - answer to the ultimate question of life the universe and everything
+    **/
+    int GetAnswerToTheUltimateQuestionOfLifeTheUniverseAndEverything()
+    {
+        return 42;
+    }
+    ```
+  * @brief and @param for setters based on function name:
+    ```
+    /**
+        @brief Set programmer salary
+        @param nNewSalary - programmer salary
+    **/
+    void SetProgrammerSalary(size_t nNewSalary = -1)
+    {
+    }
+    ```
 * A list of all elements for which a comment can be generated:   
   * file (header, source, inline)   
   * class   
