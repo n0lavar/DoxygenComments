@@ -60,8 +60,10 @@ namespace DoxygenComments.Styles
         {
             string sRet = CreateCommentEndingBody(nEditPointIndent, bUseBannerStyle, "**/", m_chFilling);
             int nFirstFillingChar = sRet.IndexOf(m_chFilling);
-            StringBuilder stringBuilder = new StringBuilder(sRet);
-            stringBuilder[nFirstFillingChar] = ' ';
+            StringBuilder stringBuilder = new StringBuilder(sRet)
+            {
+                [nFirstFillingChar] = ' '
+            };
             return stringBuilder.ToString();
         }
     }

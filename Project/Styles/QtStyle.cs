@@ -16,7 +16,7 @@ namespace DoxygenComments.Styles
         {
             if (bUseBannerStyle)
             {
-                return base.CreateCommentBeginning(nEditPointIndent, bUseBannerStyle);
+                return base.CreateCommentBeginning(nEditPointIndent, true);
             }
             else
             {

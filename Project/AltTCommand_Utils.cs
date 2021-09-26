@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using DoxygenComments.Styles;
+using Microsoft.VisualStudio.TextManager.Interop;
 
 namespace DoxygenComments
 {
@@ -206,6 +207,7 @@ namespace DoxygenComments
         private void CreateComment(
             ICommentStyle   commentStyle,
             EditPoint       editPoint,
+            IVsTextView     textView,
             int             nElementIndent, 
             int             nIndent, 
             bool            bAddBlankLines, 
@@ -216,7 +218,7 @@ namespace DoxygenComments
             string          sDetails,
             List<Param>     templateParameters,
             List<Param>     parameters,
-            string          sRetvalValue,
+            string          sDefaultRetval,
             bool            bAddAuthor,
             bool            bAddDate,
             bool            bAddCopyright,
@@ -253,7 +255,7 @@ namespace DoxygenComments
 
             nMaxTagLength = Math.Max(
                 nMaxTagLength, 
-                sRetvalValue == null ? 0 : sRetvalTag.Length);
+                sDefaultRetval == null ? 0 : sRetvalTag.Length);
 
             nMaxTagLength = Math.Max(
                 nMaxTagLength, 
@@ -277,11 +279,24 @@ namespace DoxygenComments
                 foreach (Param sParam in parameters)
                     nMaxParamLength = Math.Max(nMaxParamLength, sParam.Name.Length + 1); // extra space
 
-            StringBuilder sComment = new StringBuilder(256);
+            List<string> comment = new List<string>();
+            int nFirstEmptyValueColumn = -1;
+            int nFirstEmptyValueLine = -1;
+
+            void UpdateFirstEmptyValue(bool bEmptyValue)
+            {
+                if (bEmptyValue
+                    && nFirstEmptyValueColumn == -1
+                    && nFirstEmptyValueLine == -1)
+                {
+                    nFirstEmptyValueColumn = comment[comment.Count - 1].Length - 1;
+                    nFirstEmptyValueLine = comment.Count - 1;
+                }
+            }
 
             if (sCommentType != null && sCommentTypeValue != null)
             {
-                sComment.Append(commentStyle.CreateCommentMiddle(
+                comment.Add(commentStyle.CreateCommentMiddle(
                     nElementIndent,
                     nIndent, 
                     nMaxTagLength, 
@@ -291,19 +306,23 @@ namespace DoxygenComments
 
             if (sDefaultBrief != null)
             {
-                sComment.Append(commentStyle.CreateCommentMiddle(
+                string sBriefValue = sDefaultBrief.Length != 0 
+                    ? sDefaultBrief 
+                    : FindStringDictionaryValue(Settings.BriefDictionary, sCommentTypeValue);
+
+                comment.Add(commentStyle.CreateCommentMiddle(
                     nElementIndent,
                     nIndent, 
                     nMaxTagLength, 
                     sBriefTag, 
-                    sDefaultBrief.Length != 0 
-                        ? sDefaultBrief 
-                        : FindStringDictionaryValue(Settings.BriefDictionary, sCommentTypeValue)));
+                    sBriefValue));
+
+                UpdateFirstEmptyValue(sBriefValue.Length == 0);
             }
 
             if (!string.IsNullOrEmpty(sDetails))
             {
-                sComment.Append(commentStyle.CreateCommentMiddle(
+                comment.Add(commentStyle.CreateCommentMiddle(
                     nElementIndent,
                     nIndent, 
                     nMaxTagLength, 
@@ -315,7 +334,7 @@ namespace DoxygenComments
             {
                 foreach (Param sTParam in templateParameters)
                 {
-                    sComment.Append(commentStyle.CreateCommentMiddle(
+                    comment.Add(commentStyle.CreateCommentMiddle(
                         nElementIndent,
                         nIndent, 
                         nMaxTagLength, 
@@ -323,6 +342,8 @@ namespace DoxygenComments
                         sTParam.Name, 
                         nMaxParamLength,
                         sTParam.Value));
+
+                    UpdateFirstEmptyValue(sTParam.Value.Length == 0);
                 }
             }
             
@@ -330,7 +351,7 @@ namespace DoxygenComments
             {
                 foreach (Param sParam in parameters)
                 {
-                    sComment.Append(commentStyle.CreateCommentMiddle(
+                    comment.Add(commentStyle.CreateCommentMiddle(
                         nElementIndent,
                         nIndent, 
                         nMaxTagLength, 
@@ -338,26 +359,32 @@ namespace DoxygenComments
                         sParam.Name,
                         nMaxParamLength,
                         sParam.Value));
+
+                    UpdateFirstEmptyValue(sParam.Value.Length == 0);
                 }
             }
 
-            if (sRetvalValue != null)
+            if (sDefaultRetval != null)
             {
-                sComment.Append(commentStyle.CreateCommentMiddle(
+                string sRetvalValue = sDefaultRetval.Length != 0
+                    ? sDefaultRetval
+                    : FindStringDictionaryValue(Settings.RetvalDictionary, sCommentTypeValue);
+
+                comment.Add(commentStyle.CreateCommentMiddle(
                     nElementIndent,
                     nIndent, 
                     nMaxTagLength, 
                     sRetvalTag, 
                     "",
                     nMaxParamLength,
-                    sRetvalValue.Length != 0
-                        ? sRetvalValue
-                        : FindStringDictionaryValue(Settings.RetvalDictionary, sCommentTypeValue)));
+                    sRetvalValue));
+
+                UpdateFirstEmptyValue(sRetvalValue.Length == 0);
             }
 
             if (bAddAuthor)
             {
-                sComment.Append(commentStyle.CreateCommentMiddle(
+                comment.Add(commentStyle.CreateCommentMiddle(
                     nElementIndent,
                     nIndent, 
                     nMaxTagLength, 
@@ -372,7 +399,7 @@ namespace DoxygenComments
                 int nDay     = DateTime.Now.Day;
                 string sDate = nDay + "." + (nMonth < 10 ? "0" : "") + nMonth + "." + nYear;
 
-                sComment.Append(commentStyle.CreateCommentMiddle(
+                comment.Add(commentStyle.CreateCommentMiddle(
                     nElementIndent,
                     nIndent, 
                     nMaxTagLength, 
@@ -382,7 +409,7 @@ namespace DoxygenComments
 
             if (bAddCopyright && Settings.Copyright != null && Settings.Copyright.Length != 0)
             {
-                sComment.Append(commentStyle.CreateCommentMiddle(
+                comment.Add(commentStyle.CreateCommentMiddle(
                     nElementIndent,
                     nIndent, 
                     nMaxTagLength, 
@@ -391,7 +418,7 @@ namespace DoxygenComments
 
                 for (int i = 1; i < Settings.Copyright.Length; ++i)
                 {
-                    sComment.Append(commentStyle.CreateCommentMiddle(
+                    comment.Add(commentStyle.CreateCommentMiddle(
                         nElementIndent,
                         nIndent, 
                         nMaxTagLength, 
@@ -400,43 +427,65 @@ namespace DoxygenComments
                 }
             }
 
-            if (sComment.Length != 0 && !sComment.ToString().All(Char.IsWhiteSpace))
+            if (comment.Count != 0)
             {
-                string sBegin = commentStyle.CreateCommentBeginning(nElementIndent, bUseBannerStyle);
+                string sBeginning = commentStyle.CreateCommentBeginning(nElementIndent, bUseBannerStyle);
+                if (!string.IsNullOrEmpty(sBeginning))
+                {
+                    comment.Insert(0, sBeginning);
+                    if (nFirstEmptyValueLine != -1)
+                        ++nFirstEmptyValueLine;
+                }
 
                 if (bAddBlankLines)
-                    sBegin += commentStyle.CreateEmptyString(nElementIndent);
+                {
+                    string sBlankLine = commentStyle.CreateEmptyString(nElementIndent);
+                    if (!string.IsNullOrEmpty(sBlankLine))
+                    {
+                        comment.Insert(string.IsNullOrEmpty(sBeginning) ? 0 : 1, sBlankLine);
+                        if (nFirstEmptyValueLine != -1)
+                            ++nFirstEmptyValueLine;
 
-                sComment = sComment.Insert(0, sBegin);
-
-                if (bAddBlankLines)
-                    sComment.Append(commentStyle.CreateEmptyString(nElementIndent));
+                        comment.Add(sBlankLine);
+                    }
+                }
 
                 string sEnding = commentStyle.CreateCommentEnding(nElementIndent, bUseBannerStyle);
                 if (!string.IsNullOrEmpty(sEnding))
                 {
-                    sComment.Append(sEnding);
+                    comment.Add(sEnding);
                 }
-                else if (sComment.Length > Environment.NewLine.Length)
+                else if (comment[comment.Count - 1].Length > Environment.NewLine.Length)
                 {
-                    sComment.Remove(
-                        sComment.Length - Environment.NewLine.Length, 
+                    comment[comment.Count - 1] = comment[comment.Count - 1].Remove(
+                        comment[comment.Count - 1].Length - Environment.NewLine.Length, 
                         Environment.NewLine.Length);
                 }
             }
 
             if (additionalTextAfterComment != null && additionalTextAfterComment.Length > 0)
             {
-                sComment.Append(Environment.NewLine);
+                comment.Add(Environment.NewLine);
                 foreach (string str in additionalTextAfterComment)
-                    sComment.Append(str + Environment.NewLine);
+                    comment.Add(str + Environment.NewLine);
             }
 
-            if (sComment.Length != 0)
+            if (comment.Count != 0)
             {
                 editPoint.StartOfLine();
                 editPoint.Delete(editPoint.LineLength);
-                editPoint.Insert(sComment.ToString());
+
+                if (nFirstEmptyValueLine != -1)
+                    nFirstEmptyValueLine += editPoint.Line;
+
+                StringBuilder sb = new StringBuilder(comment.Count * Settings.ColumnLimit);
+                foreach (string line in comment)
+                    sb.Append(line);
+
+                editPoint.Insert(sb.ToString());
+
+                if (nFirstEmptyValueLine != -1 && nFirstEmptyValueColumn != -1)
+                    textView.SetCaretPos(nFirstEmptyValueLine - 1, nFirstEmptyValueColumn - 1);
             }
         }
 

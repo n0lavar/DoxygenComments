@@ -255,7 +255,6 @@ namespace DoxygenComments
 
                 default:
                     throw new ArgumentOutOfRangeException();
-
             }
 
             if (editPoint.AtStartOfDocument)
@@ -267,15 +266,15 @@ namespace DoxygenComments
 
                 if (Array.IndexOf(m_HeaderFileExtensions, sFileNameExtension) != -1)
                 {
-                    CreateHeaderFileHeader(style, editPoint, textDocument);
+                    CreateHeaderFileHeader(style, editPoint, textView, textDocument);
                 }
                 else if (Array.IndexOf(m_SourceFileExtensions, sFileNameExtension) != -1)
                 {
-                    CreateSourceFileHeader(style, editPoint, textDocument);
+                    CreateSourceFileHeader(style, editPoint, textView, textDocument);
                 }
                 else if (Array.IndexOf(m_InlineFileExtensions, sFileNameExtension) != -1)
                 {
-                    CreateInlineFileHeader(style, editPoint, textDocument);
+                    CreateInlineFileHeader(style, editPoint, textView, textDocument);
                 }
 
                 return;
@@ -324,35 +323,35 @@ namespace DoxygenComments
                 switch (codeElement.Kind)
                 {
                 case vsCMElement.vsCMElementFunction:
-                    CreateFunctionComment(style, editPoint, nWhiteSpaces, codeElement as VCCodeFunction);
+                    CreateFunctionComment(style, editPoint, textView, nWhiteSpaces, codeElement as VCCodeFunction);
                     break;
 
                 case vsCMElement.vsCMElementClass:
-                    CreateClassComment(style, editPoint, nWhiteSpaces, codeElement as VCCodeClass);
+                    CreateClassComment(style, editPoint, textView, nWhiteSpaces, codeElement as VCCodeClass);
                     break;
 
                 case vsCMElement.vsCMElementStruct:
-                    CreateStructComment(style, editPoint, nWhiteSpaces, codeElement as VCCodeStruct);
+                    CreateStructComment(style, editPoint, textView, nWhiteSpaces, codeElement as VCCodeStruct);
                     break;
 
                 case vsCMElement.vsCMElementMacro:
-                    CreateMacroComment(style, editPoint, nWhiteSpaces, codeElement as VCCodeMacro);
+                    CreateMacroComment(style, editPoint, textView, nWhiteSpaces, codeElement as VCCodeMacro);
                     break;
 
                 case vsCMElement.vsCMElementNamespace:
-                    CreateNamespaceComment(style, editPoint, nWhiteSpaces, codeElement as VCCodeNamespace);
+                    CreateNamespaceComment(style, editPoint, textView, nWhiteSpaces, codeElement as VCCodeNamespace);
                     break;
 
                 case vsCMElement.vsCMElementUnion:
-                    CreateUnionComment(style, editPoint, nWhiteSpaces, codeElement as VCCodeUnion);
+                    CreateUnionComment(style, editPoint, textView, nWhiteSpaces, codeElement as VCCodeUnion);
                     break;
 
                 case vsCMElement.vsCMElementTypeDef:
-                    CreateTypedefComment(style, editPoint, nWhiteSpaces, codeElement as VCCodeTypedef);
+                    CreateTypedefComment(style, editPoint, textView, nWhiteSpaces, codeElement as VCCodeTypedef);
                     break;
 
                 case vsCMElement.vsCMElementEnum:
-                    CreateEnumComment(style, editPoint, nWhiteSpaces, codeElement as VCCodeEnum);
+                    CreateEnumComment(style, editPoint, textView, nWhiteSpaces, codeElement as VCCodeEnum);
                     break;
 
                 default:

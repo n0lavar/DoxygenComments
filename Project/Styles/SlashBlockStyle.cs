@@ -17,7 +17,7 @@ namespace DoxygenComments.Styles
             bool    bUseBannerStyle)
         {
             if (bUseBannerStyle)
-                return CreateCommentBeginningBody(nEditPointIndent, bUseBannerStyle, m_sBlock, '/') + Environment.NewLine;
+                return CreateCommentBeginningBody(nEditPointIndent, true, m_sBlock, '/') + Environment.NewLine;
             else
                 return "";
         }
@@ -59,7 +59,7 @@ namespace DoxygenComments.Styles
             bool    bUseBannerStyle)
         {
             if (bUseBannerStyle)
-                return CreateCommentEndingBody(nEditPointIndent, bUseBannerStyle, m_sBlock, '/');
+                return CreateCommentEndingBody(nEditPointIndent, true, m_sBlock, '/');
             else
                 return "";
         }

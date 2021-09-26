@@ -5,12 +5,15 @@ using DoxygenComments.Styles;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.VCCodeModel;
 using EnvDTE;
+using Microsoft.VisualStudio.TextManager.Interop;
 
 namespace DoxygenComments
 {
     internal sealed partial class AltTCommand
     {
-        private void CreateLineComment(EditPoint editPoint, string sText)
+        private void CreateLineComment(
+            EditPoint editPoint, 
+            string    sText)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
@@ -43,7 +46,8 @@ namespace DoxygenComments
 
         private void CreateHeaderFileHeader(
             ICommentStyle   commentStyle,
-            EditPoint       editPoint, 
+            EditPoint       editPoint,
+            IVsTextView     textView,
             TextDocument    textDocument)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
@@ -51,6 +55,7 @@ namespace DoxygenComments
             CreateComment(
                 commentStyle,
                 editPoint,
+                textView,
                 0,
                 Settings.HeaderFilesHeaderIndent,
                 Settings.HeaderFilesHeaderAddBlankLines,
@@ -70,7 +75,8 @@ namespace DoxygenComments
 
         private void CreateSourceFileHeader(
             ICommentStyle   commentStyle,
-            EditPoint       editPoint, 
+            EditPoint       editPoint,
+            IVsTextView     textView,
             TextDocument    textDocument)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
@@ -130,6 +136,7 @@ namespace DoxygenComments
             CreateComment(
                 commentStyle,
                 editPoint,
+                textView,
                 0,
                 Settings.SourceFilesHeaderIndent,
                 Settings.SourceFilesHeaderAddBlankLines,
@@ -149,7 +156,8 @@ namespace DoxygenComments
 
         private void CreateInlineFileHeader(
             ICommentStyle   commentStyle,
-            EditPoint       editPoint, 
+            EditPoint       editPoint,
+            IVsTextView     textView,
             TextDocument    textDocument)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
@@ -157,6 +165,7 @@ namespace DoxygenComments
             CreateComment(
                 commentStyle,
                 editPoint,
+                textView,
                 0,
                 Settings.InlineFilesHeaderIndent,
                 Settings.InlineFilesHeaderAddBlankLines,
@@ -176,7 +185,8 @@ namespace DoxygenComments
 
         private void CreateClassComment(
             ICommentStyle   commentStyle,
-            EditPoint       editPoint, 
+            EditPoint       editPoint,
+            IVsTextView     textView,
             int             nElementIndent, 
             VCCodeClass     classElement)
         {
@@ -189,6 +199,7 @@ namespace DoxygenComments
             CreateComment(
                 commentStyle,
                 editPoint,
+                textView,
                 nElementIndent,
                 Settings.ClassIndent,
                 Settings.ClassAddBlankLines,
@@ -208,19 +219,21 @@ namespace DoxygenComments
 
         private void CreateStructComment(
             ICommentStyle   commentStyle,
-            EditPoint       editPoint, 
+            EditPoint       editPoint,
+            IVsTextView     textView,
             int             nElementIndent, 
             VCCodeStruct    structElement)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
             List<Param> tparams = new List<Param>();
-            if (Settings.ClassAddTparam)
+            if (Settings.StructAddTparam)
                 tparams = FillParams(structElement.TemplateParameters, Settings.TParamDictionary);
 
             CreateComment(
                 commentStyle,
                 editPoint,
+                textView,
                 nElementIndent,
                 Settings.StructIndent,
                 Settings.StructAddBlankLines,
@@ -240,18 +253,19 @@ namespace DoxygenComments
 
         private void CreateFunctionComment(
             ICommentStyle   commentStyle,
-            EditPoint       editPoint, 
+            EditPoint       editPoint,
+            IVsTextView     textView,
             int             nElementIndent, 
             VCCodeFunction  functionElement)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
             List<Param> tparams = new List<Param>();
-            if (Settings.ClassAddTparam)
+            if (Settings.FunctionAddTparam)
                 tparams = FillParams(functionElement.TemplateParameters, Settings.TParamDictionary);
 
             List<Param> Params = new List<Param>();
-            if (Settings.ClassAddTparam)
+            if (Settings.FunctionAddParam)
                 Params = FillParams(functionElement.Parameters, Settings.ParamDictionary);
 
             string sDefaultBrief  = "";
@@ -340,6 +354,7 @@ namespace DoxygenComments
             CreateComment(
                 commentStyle,
                 editPoint,
+                textView,
                 nElementIndent,
                 Settings.FunctionIndent,
                 Settings.FunctionAddBlankLines,
@@ -359,19 +374,21 @@ namespace DoxygenComments
 
         private void CreateMacroComment(
             ICommentStyle   commentStyle,
-            EditPoint       editPoint, 
+            EditPoint       editPoint,
+            IVsTextView     textView,
             int             nElementIndent, 
             VCCodeMacro     macroElement)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
             List<Param> Params = new List<Param>();
-            if (Settings.ClassAddTparam)
+            if (Settings.MacroAddParam)
                 Params = FillParams(macroElement.Parameters, Settings.ParamDictionary);
 
             CreateComment(
                 commentStyle,
                 editPoint,
+                textView,
                 nElementIndent,
                 Settings.MacroIndent,
                 Settings.MacroAddBlankLines,
@@ -391,7 +408,8 @@ namespace DoxygenComments
 
         private void CreateNamespaceComment(
             ICommentStyle   commentStyle,
-            EditPoint       editPoint, 
+            EditPoint       editPoint,
+            IVsTextView     textView,
             int             nElementIndent, 
             VCCodeNamespace namespaceElement)
         {
@@ -400,6 +418,7 @@ namespace DoxygenComments
             CreateComment(
                 commentStyle,
                 editPoint,
+                textView,
                 nElementIndent,
                 Settings.NamespaceIndent,
                 Settings.NamespaceAddBlankLines,
@@ -419,7 +438,8 @@ namespace DoxygenComments
 
         private void CreateUnionComment(
             ICommentStyle   commentStyle,
-            EditPoint       editPoint, 
+            EditPoint       editPoint,
+            IVsTextView     textView,
             int             nElementIndent, 
             VCCodeUnion     unionElement)
         {
@@ -428,6 +448,7 @@ namespace DoxygenComments
             CreateComment(
                 commentStyle,
                 editPoint,
+                textView,
                 nElementIndent,
                 Settings.UnionIndent,
                 Settings.UnionAddBlankLines,
@@ -447,7 +468,8 @@ namespace DoxygenComments
 
         private void CreateTypedefComment(
             ICommentStyle   commentStyle,
-            EditPoint       editPoint, 
+            EditPoint       editPoint,
+            IVsTextView     textView,
             int             nElementIndent, 
             VCCodeTypedef   typedefElement)
         {
@@ -456,6 +478,7 @@ namespace DoxygenComments
             CreateComment(
                 commentStyle,
                 editPoint,
+                textView,
                 nElementIndent,
                 Settings.TypedefIndent,
                 Settings.TypedefAddBlankLines,
@@ -475,7 +498,8 @@ namespace DoxygenComments
 
         private void CreateEnumComment(
             ICommentStyle   commentStyle,
-            EditPoint       editPoint, 
+            EditPoint       editPoint,
+            IVsTextView     textView,
             int             nElementIndent, 
             VCCodeEnum      enumElement)
         {
@@ -484,6 +508,7 @@ namespace DoxygenComments
             CreateComment(
                 commentStyle,
                 editPoint,
+                textView,
                 nElementIndent,
                 Settings.EnumIndent,
                 Settings.EnumAddBlankLines,
