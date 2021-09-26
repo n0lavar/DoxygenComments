@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="DoxygenComments.304be095-9eee-4687-835f-0e5459b1394b" Version="1.2" Language="en-US" Publisher="Nick Khrapov" />
+        <Identity Id="DoxygenComments.304be095-9eee-4687-835f-0e5459b1394b" Version="1.3" Language="en-US" Publisher="Nick Khrapov" />
         <DisplayName>DoxygenComments</DisplayName>
         <Description xml:space="preserve">Extension for auto-generating Doxygen style comments for different code elements and other code generation.</Description>
         <MoreInfo>https://github.com/n0lavar/DoxygenComments</MoreInfo>

@@ -1,3 +1,7 @@
+1.3
+* Added generating @brief and @retval for getters and @brief and @param for setters based on function name
+* Now the caret position will move to the first place in the comment where the tag value is missing
+
 1.2
 * Added styles: Simple, SlashBlocks, Javadoc, Qt
 * Added the ability to make a comment block with a specific type more visible by filling the first and last lines of the comment
