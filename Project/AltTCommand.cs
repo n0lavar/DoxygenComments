@@ -191,16 +191,26 @@ namespace DoxygenComments
             }
             catch (Exception ex)
             {
-                string sTitle = "DoxygenComments";
-                string sMessage = "An exception was thrown :\n\n" 
-                    + ex.Message 
-                    + "\n\n" 
-                    + ex.StackTrace.Replace("D:\\Mega\\programming\\TheGame\\qxProject\\DoxygenComments\\Project\\", "");
+                const string sPathEndMarker = "DoxygenComments\\Project\\";
+                string[] sPathStartMarkers = new string[] { "C:\\", "D:\\" };
+                string sStackTrace = ex.StackTrace;
+                int nEndIndex = sStackTrace.IndexOf(sPathEndMarker) + sPathEndMarker.Length;
+                foreach (string sPathStartMarker in sPathStartMarkers)
+                {
+                    int nStartIndex = sStackTrace.IndexOf(sPathStartMarker);
+                    if (nStartIndex != -1)
+                    {
+                        string sPath = sStackTrace.Substring(nStartIndex, nEndIndex - nStartIndex);
+                        sStackTrace = sStackTrace.Replace(sPath, "");
+                    }
+                }
+
+                string sMessage = "An exception was thrown :\n\n" + ex.Message + "\n\n" + sStackTrace;
 
                 VsShellUtilities.ShowMessageBox(
                     package,
                     sMessage,
-                    sTitle,
+                    "DoxygenComments",
                     OLEMSGICON.OLEMSGICON_CRITICAL,
                     OLEMSGBUTTON.OLEMSGBUTTON_OK,
                     OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
@@ -301,6 +311,9 @@ namespace DoxygenComments
                 CreateSimpleComment(editPoint);
                 return;
             }
+
+            if (nLine + 1 >= textDocument.EndPoint.Line)
+                return;
 
             if (buffer.GetLengthOfLine(nLine + 1, out var nNextLineLen) != VSConstants.S_OK)
                 throw new Exception(nameof(buffer.GetLengthOfLine));
