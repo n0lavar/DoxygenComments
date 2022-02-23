@@ -290,7 +290,7 @@ namespace DoxygenComments
                 if (bAllWhitespaces)
                 {
                     // create line comment
-                    CreateLineComment(editPoint, sLine.Substring(nCommentIndex + 2));
+                    CreateLineComment(editPoint, nCommentIndex, sLine.Substring(nCommentIndex + 2));
                     return;
                 }
             }

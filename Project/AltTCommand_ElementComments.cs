@@ -13,17 +13,18 @@ namespace DoxygenComments
     {
         private void CreateLineComment(
             EditPoint editPoint, 
+            int       nStart,
             string    sText)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
             sText = sText.Trim();
 
-            int nFillerTotal = Settings.ColumnLimit - 5 - sText.Length;
+            int nFillerTotal = Settings.ColumnLimit - 5 - sText.Length - nStart;
             int nFillerRight = nFillerTotal / 2;
             int nFillerLeft  = nFillerTotal - nFillerRight;
 
-            string sCommentText = "// ";
+            string sCommentText = new string(' ', nStart) + "// ";
 
             if (nFillerLeft >= 0)
             {
