@@ -326,7 +326,7 @@ namespace DoxygenComments
             ProjectItem projectItem = m_DTE.ActiveDocument.ProjectItem
                 ?? throw new ArgumentNullException(nameof(m_DTE.ActiveDocument.ProjectItem));
 
-            VCFileCodeModel fileCodeModel = projectItem.FileCodeModel as VCFileCodeModel
+            var fileCodeModel = projectItem.FileCodeModel
                 ?? throw new ArgumentNullException(nameof(projectItem.FileCodeModel));
 
             CodeElement codeElement = FindNextLineCodeElement(fileCodeModel.CodeElements, editPoint, nWhiteSpaces);

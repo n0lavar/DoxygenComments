@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+  <Metadata>
+    <Identity Id="DoxygenComments2019.304be095-9eee-4687-835f-0e5459b1394b" Version="1.4" Language="en-US" Publisher="Nick Khrapov" />
+    <DisplayName>DoxygenComments</DisplayName>
+    <Description xml:space="preserve">Extension for auto-generating Doxygen style comments for different code elements and other code generation.</Description>
+    <MoreInfo>https://github.com/n0lavar/DoxygenComments</MoreInfo>
+    <License>license.txt</License>
+    <ReleaseNotes>release_notes.txt</ReleaseNotes>
+    <Icon>icon.png</Icon>
+    <Tags>C++ Doxygen comments codegeneration </Tags>
+  </Metadata>
+  <Installation>
+    <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[16.0, 17.0)" />
+    <InstallationTarget Id="Microsoft.VisualStudio.Enterprise" Version="[16.0, 17.0)" />
+    <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="[16.0, 17.0)" />
+  </Installation>
+  <Dependencies>
+    <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
+  </Dependencies>
+  <Prerequisites>
+    <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[16.0,17.0)" DisplayName="Visual Studio core editor" />
+  </Prerequisites>
+</PackageManifest>

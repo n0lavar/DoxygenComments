@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>37e0a5bb-bcf6-4a89-b828-56f97b83de23</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>DoxygenCommentsShared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)AboutCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AltTCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AltTCommand_ElementComments.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AltTCommand_Utils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DoxygenCommentsPackage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SettingsPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)StringArrayConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Styles\ACommentStyle.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Styles\ICommentStyle.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Styles\JavadocStyle.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Styles\QtStyle.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Styles\SimpleStyle.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Styles\SlashBlockStyle.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)app.config" />
+  </ItemGroup>
+</Project>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace DoxygenComments
 {
     public class AboutForm : System.Windows.Forms.Form
@@ -11,6 +12,7 @@ namespace DoxygenComments
         private System.Windows.Forms.Label infoLabel;
         private System.Windows.Forms.LinkLabel sourceCodeLabel;
         private System.Windows.Forms.LinkLabel donateLabel;
+
 
         public AboutForm()
         {
