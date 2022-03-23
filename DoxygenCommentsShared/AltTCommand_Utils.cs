@@ -230,11 +230,11 @@ namespace DoxygenComments
             const string sDetailsTag    = "details";
             const string sTParamTag     = "tparam";
             const string sParamTag      = "param";
-            const string sRetvalTag     = "retval";
             const string sAuthorTag     = "author";
             const string sDateTag       = "date";
             const string sCopyrightTag  = "copyright";
 
+            string sRetvalTag = Settings.RetvalName;
             int nMaxTagLength = sBriefTag.Length;
 
             nMaxTagLength = Math.Max(

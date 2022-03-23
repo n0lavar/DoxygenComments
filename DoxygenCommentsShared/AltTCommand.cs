@@ -36,11 +36,11 @@ namespace DoxygenComments
         private readonly DTE m_DTE;
         private readonly IVsTextManager m_TextManager;
 
-        private static readonly string[] m_HeaderFileExtensions = { 
-            ".h", 
+        private static readonly string[] m_HeaderFileExtensions = {
+            ".h",
             ".hpp",
-            ".hh", 
-            ".hp", 
+            ".hh",
+            ".hp",
             ".hxx",
             ".H",
             ".HPP",
@@ -49,17 +49,17 @@ namespace DoxygenComments
             ".H++",
         };
 
-        private static readonly string[] m_SourceFileExtensions = { 
-            ".c", 
+        private static readonly string[] m_SourceFileExtensions = {
+            ".c",
             ".cpp",
             ".cc",
-            ".cp", 
-            ".cxx", 
-            ".C", 
-            ".CPP", 
-            ".CXX", 
-            ".c++", 
-            ".C++", 
+            ".cp",
+            ".cxx",
+            ".C",
+            ".CPP",
+            ".CXX",
+            ".c++",
+            ".C++",
         };
 
         private static readonly string[] m_InlineFileExtensions = {
@@ -107,23 +107,23 @@ namespace DoxygenComments
         /// <param name="package">Owner package, not null.</param>
         /// <param name="commandService">Command service to add command to, not null.</param>
         private AltTCommand(
-            AsyncPackage          package, 
-            OleMenuCommandService commandService, 
-            DTE                   dte, 
+            AsyncPackage          package,
+            OleMenuCommandService commandService,
+            DTE                   dte,
             IVsTextManager        textManager)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            this.package = package 
+            this.package = package
                 ?? throw new ArgumentNullException(nameof(package));
 
-            m_DTE = dte 
+            m_DTE = dte
                 ?? throw new ArgumentNullException(nameof(dte));
 
-            m_TextManager = textManager 
+            m_TextManager = textManager
                 ?? throw new ArgumentNullException(nameof(textManager));
 
-            commandService = commandService 
+            commandService = commandService
                 ?? throw new ArgumentNullException(nameof(commandService));
 
             var menuCommandID = new CommandID(CommandSet, CommandId);
@@ -191,8 +191,8 @@ namespace DoxygenComments
             }
             catch (Exception ex)
             {
-                const string sPathEndMarker = "DoxygenComments\\Project\\";
-                string[] sPathStartMarkers = new string[] { "C:\\", "D:\\" };
+                const string sPathEndMarker = "DoxygenComments\\DoxygenCommentsShared\\";
+                string[] sPathStartMarkers = { "C:\\", "D:\\" };
                 string sStackTrace = ex.StackTrace;
                 int nEndIndex = sStackTrace.IndexOf(sPathEndMarker) + sPathEndMarker.Length;
                 foreach (string sPathStartMarker in sPathStartMarkers)
@@ -305,7 +305,7 @@ namespace DoxygenComments
                 }
             }
 
-            if(!sLine.All(Char.IsWhiteSpace))
+            if (!sLine.All(Char.IsWhiteSpace))
             {
                 editPoint.EndOfLine();
                 CreateSimpleComment(editPoint);

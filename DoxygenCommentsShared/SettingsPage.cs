@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace DoxygenComments
 {
-    class SettingsPage: DialogPage
+    class SettingsPage : DialogPage
     {
         private const string sIndent             = "Indent";
         private const string sAddBrief           = "Add @brief";
@@ -44,8 +44,8 @@ namespace DoxygenComments
         [Description("The character to be inserted before the tag name. Usually \\ (\\brief) or @ (@brief) is used.")]
         public char TagChar { get; set; } = '@';
 
-        public enum ECommentStyle 
-        { 
+        public enum ECommentStyle
+        {
             Simple,
             SlashBlock,
             Qt,
@@ -143,6 +143,7 @@ namespace DoxygenComments
             "operator!= true, if objects are not equal",
             "operator<= true, if left object is less or equal than right",
             "operator>= true, if left object is greater or equal than right",
+            "operator<=> three-way comparison result",
             "operator-> this object pointer",
             "operator* this object reference",
         };
@@ -184,7 +185,7 @@ namespace DoxygenComments
         [Category(sHeaderFilesHeader)]
         [DisplayName(sDetails)]
         [Description(sDetailsDesc)]
-        public string HeaderFilesHeaderDetails{ get; set; } = "~";
+        public string HeaderFilesHeaderDetails { get; set; } = "~";
 
         [Category(sHeaderFilesHeader)]
         [DisplayName(sAddAuthor)]
@@ -234,7 +235,7 @@ namespace DoxygenComments
         [Category(sSourceFilesHeader)]
         [DisplayName(sDetails)]
         [Description(sDetailsDesc)]
-        public string SourceFilesHeaderDetails{ get; set; } = "~";
+        public string SourceFilesHeaderDetails { get; set; } = "~";
 
         [Category(sSourceFilesHeader)]
         [DisplayName(sAddAuthor)]
@@ -299,7 +300,7 @@ namespace DoxygenComments
         [Category(sInlineFilesHeader)]
         [DisplayName(sDetails)]
         [Description(sDetailsDesc)]
-        public string InlineFilesHeaderDetails{ get; set; } = "~";
+        public string InlineFilesHeaderDetails { get; set; } = "~";
 
         [Category(sInlineFilesHeader)]
         [DisplayName(sAddAuthor)]
@@ -322,7 +323,7 @@ namespace DoxygenComments
         [Category(sInlineFilesHeader)]
         [DisplayName(sAddBlankLines)]
         public bool InlineFilesHeaderAddBlankLines { get; set; } = true;
-        
+
         [Category(sInlineFilesHeader)]
         [DisplayName(sUseBannerStyle)]
         [Description(sUseBannerStyleDesc)]
@@ -349,7 +350,7 @@ namespace DoxygenComments
         [Category(sClassComment)]
         [DisplayName(sDetails)]
         [Description(sDetailsDesc)]
-        public string ClassDetails{ get; set; } = "~";
+        public string ClassDetails { get; set; } = "~";
 
         [Category(sClassComment)]
         [DisplayName(sAddTParam)]
@@ -366,7 +367,7 @@ namespace DoxygenComments
         [Category(sClassComment)]
         [DisplayName(sAddBlankLines)]
         public bool ClassAddBlankLines { get; set; } = true;
-                
+
         [Category(sClassComment)]
         [DisplayName(sUseBannerStyle)]
         [Description(sUseBannerStyleDesc)]
@@ -393,7 +394,7 @@ namespace DoxygenComments
         [Category(sStructComment)]
         [DisplayName(sDetails)]
         [Description(sDetailsDesc)]
-        public string StructDetails{ get; set; } = "";
+        public string StructDetails { get; set; } = "";
 
         [Category(sStructComment)]
         [DisplayName(sAddTParam)]
@@ -410,7 +411,7 @@ namespace DoxygenComments
         [Category(sStructComment)]
         [DisplayName(sAddBlankLines)]
         public bool StructAddBlankLines { get; set; } = false;
-                        
+
         [Category(sStructComment)]
         [DisplayName(sUseBannerStyle)]
         [Description(sUseBannerStyleDesc)]
@@ -437,7 +438,7 @@ namespace DoxygenComments
         [Category(sFunctionComment)]
         [DisplayName(sDetails)]
         [Description(sDetailsDesc)]
-        public string FunctionDetails{ get; set; } = "";
+        public string FunctionDetails { get; set; } = "";
 
         [Category(sFunctionComment)]
         [DisplayName(sAddTParam)]
@@ -462,7 +463,7 @@ namespace DoxygenComments
         [Category(sFunctionComment)]
         [DisplayName(sAddBlankLines)]
         public bool FunctionAddBlankLines { get; set; } = false;
-                        
+
         [Category(sFunctionComment)]
         [DisplayName(sUseBannerStyle)]
         [Description(sUseBannerStyleDesc)]
@@ -477,6 +478,11 @@ namespace DoxygenComments
         [DisplayName("Generate @brief and @param for setters")]
         [Description("Tag values will be generated based on function name")]
         public bool FunctionGenerateSetter { get; set; } = false;
+
+        [Category(sFunctionComment)]
+        [DisplayName("@retval name")]
+        [Description("\"retval\", \"return\", \"result\" and \"returns\" tags are commonly used")]
+        public string RetvalName { get; set; } = "retval";
 
         #endregion
 
@@ -499,7 +505,7 @@ namespace DoxygenComments
         [Category(sMacroComment)]
         [DisplayName(sDetails)]
         [Description(sDetailsDesc)]
-        public string MacroDetails{ get; set; } = "";
+        public string MacroDetails { get; set; } = "";
 
         [Category(sMacroComment)]
         [DisplayName(sAddParam)]
@@ -516,7 +522,7 @@ namespace DoxygenComments
         [Category(sMacroComment)]
         [DisplayName(sAddBlankLines)]
         public bool MacroAddBlankLines { get; set; } = false;
-                        
+
         [Category(sMacroComment)]
         [DisplayName(sUseBannerStyle)]
         [Description(sUseBannerStyleDesc)]
@@ -543,7 +549,7 @@ namespace DoxygenComments
         [Category(sNamespaceComment)]
         [DisplayName(sDetails)]
         [Description(sDetailsDesc)]
-        public string NamespaceDetails{ get; set; } = "";
+        public string NamespaceDetails { get; set; } = "";
 
         [Category(sNamespaceComment)]
         [DisplayName(sAddAuthor)]
@@ -556,7 +562,7 @@ namespace DoxygenComments
         [Category(sNamespaceComment)]
         [DisplayName(sAddBlankLines)]
         public bool NamespaceAddBlankLines { get; set; } = false;
-                        
+
         [Category(sNamespaceComment)]
         [DisplayName(sUseBannerStyle)]
         [Description(sUseBannerStyleDesc)]
@@ -583,7 +589,7 @@ namespace DoxygenComments
         [Category(sUnionComment)]
         [DisplayName(sDetails)]
         [Description(sDetailsDesc)]
-        public string UnionDetails{ get; set; } = "";
+        public string UnionDetails { get; set; } = "";
 
         [Category(sUnionComment)]
         [DisplayName(sAddAuthor)]
@@ -596,7 +602,7 @@ namespace DoxygenComments
         [Category(sUnionComment)]
         [DisplayName(sAddBlankLines)]
         public bool UnionAddBlankLines { get; set; } = false;
-                        
+
         [Category(sUnionComment)]
         [DisplayName(sUseBannerStyle)]
         [Description(sUseBannerStyleDesc)]
@@ -623,7 +629,7 @@ namespace DoxygenComments
         [Category(sTypedefComment)]
         [DisplayName(sDetails)]
         [Description(sDetailsDesc)]
-        public string TypedefDetails{ get; set; } = "";
+        public string TypedefDetails { get; set; } = "";
 
         [Category(sTypedefComment)]
         [DisplayName(sAddAuthor)]
@@ -636,7 +642,7 @@ namespace DoxygenComments
         [Category(sTypedefComment)]
         [DisplayName(sAddBlankLines)]
         public bool TypedefAddBlankLines { get; set; } = false;
-                        
+
         [Category(sTypedefComment)]
         [DisplayName(sUseBannerStyle)]
         [Description(sUseBannerStyleDesc)]
@@ -663,7 +669,7 @@ namespace DoxygenComments
         [Category(sEnumComment)]
         [DisplayName(sDetails)]
         [Description(sDetailsDesc)]
-        public string EnumDetails{ get; set; } = "";
+        public string EnumDetails { get; set; } = "";
 
         [Category(sEnumComment)]
         [DisplayName(sAddAuthor)]
@@ -676,7 +682,7 @@ namespace DoxygenComments
         [Category(sEnumComment)]
         [DisplayName(sAddBlankLines)]
         public bool EnumAddBlankLines { get; set; } = false;
-                    
+
         [Category(sEnumComment)]
         [DisplayName(sUseBannerStyle)]
         [Description(sUseBannerStyleDesc)]
