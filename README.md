@@ -1,8 +1,15 @@
 # DoxygenComments
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](http://paypal.me/nickkhrapov)
+
+## VS2019
 [![Version](https://vsmarketplacebadge.apphb.com/version-short/NickKhrapov.DoxygenComments.svg)](https://marketplace.visualstudio.com/items?itemName=NickKhrapov.DoxygenComments)
 [![Installs](https://vsmarketplacebadge.apphb.com/installs-short/NickKhrapov.DoxygenComments.svg)](https://marketplace.visualstudio.com/items?itemName=NickKhrapov.DoxygenComments)
 [![Ratings](https://vsmarketplacebadge.apphb.com/rating-star/NickKhrapov.DoxygenComments.svg)](https://marketplace.visualstudio.com/items?itemName=NickKhrapov.DoxygenComments)   
+
+## VS2022
+[![Version](https://vsmarketplacebadge.apphb.com/version-short/NickKhrapov.DoxygenComments2022.svg)](https://marketplace.visualstudio.com/items?itemName=NickKhrapov.DoxygenComments2022)
+[![Installs](https://vsmarketplacebadge.apphb.com/installs-short/NickKhrapov.DoxygenComments2022.svg)](https://marketplace.visualstudio.com/items?itemName=NickKhrapov.DoxygenComments2022)
+[![Ratings](https://vsmarketplacebadge.apphb.com/rating-star/NickKhrapov.DoxygenComments2022.svg)](https://marketplace.visualstudio.com/items?itemName=NickKhrapov.DoxygenComments2022)   
 Visual Studio extension for auto-generating Doxygen-style comments in C ++ code.   
 
 ## Extension capabilities
