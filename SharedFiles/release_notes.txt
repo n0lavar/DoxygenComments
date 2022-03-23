@@ -1,7 +1,10 @@
 1.4
+* Added Visual Studio 2022 support
+* Added the ability to edit @retval tag
+* Added the ability to disable @param, @tparam and @retval indention
+* Added the ability to edit @param, @tparam and @retval "tag" and "value" delimiter
 * Line comment now starts at the edit point
 * Fixed end of the file exception with AltTCommand
-* Added Visual Studio 2022 support
 
 1.3
 * Added generating @brief and @retval for getters and @brief and @param for setters based on function name
