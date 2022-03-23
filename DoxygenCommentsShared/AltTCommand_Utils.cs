@@ -273,11 +273,11 @@ namespace DoxygenComments
             int nMaxParamLength = 0;
             if (templateParameters != null && templateParameters.Count != 0)
                 foreach (Param sTParam in templateParameters)
-                    nMaxParamLength = Math.Max(nMaxParamLength, sTParam.Name.Length + 1); // extra space
+                    nMaxParamLength = Math.Max(nMaxParamLength, sTParam.Name.Length);
 
             if (parameters != null && parameters.Count != 0)
                 foreach (Param sParam in parameters)
-                    nMaxParamLength = Math.Max(nMaxParamLength, sParam.Name.Length + 1); // extra space
+                    nMaxParamLength = Math.Max(nMaxParamLength, sParam.Name.Length);
 
             List<string> comment = new List<string>();
             int nFirstEmptyValueColumn = -1;
@@ -301,7 +301,8 @@ namespace DoxygenComments
                     nIndent, 
                     nMaxTagLength, 
                     sCommentType, 
-                    sCommentTypeValue));
+                    sCommentTypeValue,
+                    false));
             }
 
             if (sDefaultBrief != null)
@@ -315,7 +316,8 @@ namespace DoxygenComments
                     nIndent, 
                     nMaxTagLength, 
                     sBriefTag, 
-                    sBriefValue));
+                    sBriefValue,
+                    false));
 
                 UpdateFirstEmptyValue(sBriefValue.Length == 0);
             }
@@ -327,7 +329,8 @@ namespace DoxygenComments
                     nIndent, 
                     nMaxTagLength, 
                     sDetailsTag, 
-                    sDetails));
+                    sDetails,
+                    false));
             }
 
             if (templateParameters != null && templateParameters.Count != 0)
@@ -339,7 +342,8 @@ namespace DoxygenComments
                         nIndent, 
                         nMaxTagLength, 
                         sTParamTag, 
-                        sTParam.Name, 
+                        sTParam.Name,
+                        true, 
                         nMaxParamLength,
                         sTParam.Value));
 
@@ -357,6 +361,7 @@ namespace DoxygenComments
                         nMaxTagLength, 
                         sParamTag, 
                         sParam.Name,
+                        true,
                         nMaxParamLength,
                         sParam.Value));
 
@@ -376,6 +381,7 @@ namespace DoxygenComments
                     nMaxTagLength, 
                     sRetvalTag, 
                     "",
+                    true,
                     nMaxParamLength,
                     sRetvalValue));
 
@@ -389,7 +395,8 @@ namespace DoxygenComments
                     nIndent, 
                     nMaxTagLength, 
                     sAuthorTag, 
-                    Settings.Author));
+                    Settings.Author,
+                    false));
             }
 
             if (bAddDate)
@@ -404,7 +411,8 @@ namespace DoxygenComments
                     nIndent, 
                     nMaxTagLength, 
                     sDateTag, 
-                    sDate));
+                    sDate,
+                    false));
             }
 
             if (bAddCopyright && Settings.Copyright != null && Settings.Copyright.Length != 0)
@@ -414,7 +422,8 @@ namespace DoxygenComments
                     nIndent, 
                     nMaxTagLength, 
                     sCopyrightTag, 
-                    Settings.Copyright[0].Replace("{year}", DateTime.Now.Year.ToString())));
+                    Settings.Copyright[0].Replace("{year}", DateTime.Now.Year.ToString()),
+                    false));
 
                 for (int i = 1; i < Settings.Copyright.Length; ++i)
                 {
@@ -423,7 +432,8 @@ namespace DoxygenComments
                         nIndent, 
                         nMaxTagLength, 
                         "", 
-                        Settings.Copyright[i].Replace("{year}", DateTime.Now.Year.ToString())));
+                        Settings.Copyright[i].Replace("{year}", DateTime.Now.Year.ToString()),
+                        false));
                 }
             }
 

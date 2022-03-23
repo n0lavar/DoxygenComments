@@ -56,10 +56,13 @@ namespace DoxygenComments
         [DisplayName("Style")]
         public ECommentStyle Style { get; set; } = ECommentStyle.Simple;
 
+        [Category(sCommonSettings)]
+        [DisplayName("Indent param, tparam and retval tags")]
+        public bool IndentInOut { get; set; } = true;
 
         [Category(sCommonSettings)]
-        [DisplayName("Add \"- \" to param, tparam and retval")]
-        public bool AddРyphen { get; set; } = false;
+        [DisplayName("Text to add after param, tparam and retval tags")]
+        public string InOutTagValueDelimiter { get; set; } = " - ";
 
         [Category(sCommonSettings)]
         [DisplayName("@brief dictionary")]

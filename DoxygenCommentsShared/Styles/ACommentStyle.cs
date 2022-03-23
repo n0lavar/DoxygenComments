@@ -15,8 +15,9 @@ namespace DoxygenComments.Styles
             int     nMaxTagLength, 
             string  sTag, 
             string  sTagText,
-            int     nParamsIndent = -1,
-            string  sParamText = null);
+            bool    bInOutString,
+            int     nParamsIndent = 0,
+            string  sParamText    = null);
 
         public abstract string CreateEmptyString(
             int     nEditPointIndent);
@@ -49,7 +50,8 @@ namespace DoxygenComments.Styles
             int     nMaxTagLength, 
             string  sTag, 
             string  sTagText,
-            int     nParamsIndent = -1,
+            bool    bInOutString,
+            int     nParamsIndent = 0,
             string  sParamText = null)
         {
             if (sTag.Length != 0)
@@ -58,17 +60,14 @@ namespace DoxygenComments.Styles
             nMaxTagLength = nMaxTagLength + 1;  // extra TagChar
 
             string sTextIndent = new string(' ', nMaxTagLength - sTag.Length + 1);
-            string sParamIndent;
+            string sParamIndent = "";
 
-            if (nParamsIndent != -1)
+            if (bInOutString)
             {
-                sParamIndent = new string(' ', nParamsIndent - sTagText.Length);
-                if (Settings.AddРyphen)
-                    sParamIndent += "- ";
-            }
-            else
-            {
-                sParamIndent = "";
+                if (Settings.IndentInOut)
+                    sParamIndent = new string(' ', nParamsIndent - sTagText.Length);
+
+                sParamIndent += Settings.InOutTagValueDelimiter;
             }
 
             return sTag 

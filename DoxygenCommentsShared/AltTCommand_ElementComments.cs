@@ -308,7 +308,7 @@ namespace DoxygenComments
                         && tokens.Count > 1 
                         && tokens[0].Equals("get", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        for (int i = 1; i < tokens.Count; i++)
+                        for (int i = 1; i < tokens.Count; ++i)
                         {
                             sDefaultRetval += IsWithCapital(tokens[i])
                                 ? tokens[i].ToLower()

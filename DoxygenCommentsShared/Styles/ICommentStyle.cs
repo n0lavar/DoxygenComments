@@ -14,6 +14,7 @@ namespace DoxygenComments.Styles
             int     nMaxTagLength, 
             string  sTag, 
             string  sTagText,
+            bool    bInOutString,
             int     nParamsIndent = -1,
             string  sParamText = null);
 

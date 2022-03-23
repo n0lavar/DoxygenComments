@@ -28,6 +28,7 @@ namespace DoxygenComments.Styles
             int     nMaxTagLength, 
             string  sTag, 
             string  sTagText,
+            bool    bInOutString,
             int     nParamsIndent = -1,
             string  sParamText = null)
         {
@@ -42,6 +43,7 @@ namespace DoxygenComments.Styles
                     nMaxTagLength, 
                     sTag, 
                     sTagText, 
+                    bInOutString,
                     nParamsIndent, 
                     sParamText)
                 + Environment.NewLine;
