@@ -404,7 +404,7 @@ namespace DoxygenComments
                 int nYear    = DateTime.Now.Year;
                 int nMonth   = DateTime.Now.Month;
                 int nDay     = DateTime.Now.Day;
-                string sDate = nDay + "." + (nMonth < 10 ? "0" : "") + nMonth + "." + nYear;
+                string sDate = (nDay < 10 ? "0" : "") + nDay + "." + (nMonth < 10 ? "0" : "") + nMonth + "." + nYear;
 
                 comment.Add(commentStyle.CreateCommentMiddle(
                     nElementIndent,
