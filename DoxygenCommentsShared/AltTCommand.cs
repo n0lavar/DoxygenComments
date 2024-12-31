@@ -107,10 +107,10 @@ namespace DoxygenComments
         /// <param name="package">Owner package, not null.</param>
         /// <param name="commandService">Command service to add command to, not null.</param>
         private AltTCommand(
-            AsyncPackage          package,
+            AsyncPackage package,
             OleMenuCommandService commandService,
-            DTE                   dte,
-            IVsTextManager        textManager)
+            DTE dte,
+            IVsTextManager textManager)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
@@ -326,8 +326,13 @@ namespace DoxygenComments
             ProjectItem projectItem = m_DTE.ActiveDocument.ProjectItem
                 ?? throw new ArgumentNullException(nameof(m_DTE.ActiveDocument.ProjectItem));
 
-            var fileCodeModel = projectItem.FileCodeModel
-                ?? throw new ArgumentNullException(nameof(projectItem.FileCodeModel));
+            FileCodeModel fileCodeModel = projectItem.FileCodeModel
+                ?? throw new ArgumentNullException(
+                    nameof(projectItem.FileCodeModel),
+                    "The model is null. \n" +
+                    "This may be because you are trying to generate a comment in an external file or in a file in the CMake project (Open Folder). \n" +
+                    "To generate something more complicated than a file comment, an extension needs the parsed code model that Visual Studio generates, " +
+                    "which is only available when using .sln\n");
 
             CodeElement codeElement = FindNextLineCodeElement(fileCodeModel.CodeElements, editPoint, nWhiteSpaces);
             if (codeElement != null)
@@ -335,41 +340,41 @@ namespace DoxygenComments
                 // create code element comment
                 switch (codeElement.Kind)
                 {
-                case vsCMElement.vsCMElementFunction:
-                    CreateFunctionComment(style, editPoint, textView, nWhiteSpaces, codeElement as VCCodeFunction);
-                    break;
+                    case vsCMElement.vsCMElementFunction:
+                        CreateFunctionComment(style, editPoint, textView, nWhiteSpaces, codeElement as VCCodeFunction);
+                        break;
 
-                case vsCMElement.vsCMElementClass:
-                    CreateClassComment(style, editPoint, textView, nWhiteSpaces, codeElement as VCCodeClass);
-                    break;
+                    case vsCMElement.vsCMElementClass:
+                        CreateClassComment(style, editPoint, textView, nWhiteSpaces, codeElement as VCCodeClass);
+                        break;
 
-                case vsCMElement.vsCMElementStruct:
-                    CreateStructComment(style, editPoint, textView, nWhiteSpaces, codeElement as VCCodeStruct);
-                    break;
+                    case vsCMElement.vsCMElementStruct:
+                        CreateStructComment(style, editPoint, textView, nWhiteSpaces, codeElement as VCCodeStruct);
+                        break;
 
-                case vsCMElement.vsCMElementMacro:
-                    CreateMacroComment(style, editPoint, textView, nWhiteSpaces, codeElement as VCCodeMacro);
-                    break;
+                    case vsCMElement.vsCMElementMacro:
+                        CreateMacroComment(style, editPoint, textView, nWhiteSpaces, codeElement as VCCodeMacro);
+                        break;
 
-                case vsCMElement.vsCMElementNamespace:
-                    CreateNamespaceComment(style, editPoint, textView, nWhiteSpaces, codeElement as VCCodeNamespace);
-                    break;
+                    case vsCMElement.vsCMElementNamespace:
+                        CreateNamespaceComment(style, editPoint, textView, nWhiteSpaces, codeElement as VCCodeNamespace);
+                        break;
 
-                case vsCMElement.vsCMElementUnion:
-                    CreateUnionComment(style, editPoint, textView, nWhiteSpaces, codeElement as VCCodeUnion);
-                    break;
+                    case vsCMElement.vsCMElementUnion:
+                        CreateUnionComment(style, editPoint, textView, nWhiteSpaces, codeElement as VCCodeUnion);
+                        break;
 
-                case vsCMElement.vsCMElementTypeDef:
-                    CreateTypedefComment(style, editPoint, textView, nWhiteSpaces, codeElement as VCCodeTypedef);
-                    break;
+                    case vsCMElement.vsCMElementTypeDef:
+                        CreateTypedefComment(style, editPoint, textView, nWhiteSpaces, codeElement as VCCodeTypedef);
+                        break;
 
-                case vsCMElement.vsCMElementEnum:
-                    CreateEnumComment(style, editPoint, textView, nWhiteSpaces, codeElement as VCCodeEnum);
-                    break;
+                    case vsCMElement.vsCMElementEnum:
+                        CreateEnumComment(style, editPoint, textView, nWhiteSpaces, codeElement as VCCodeEnum);
+                        break;
 
-                default:
-                    CreateSimpleComment(editPoint, nWhiteSpaces);
-                    break;
+                    default:
+                        CreateSimpleComment(editPoint, nWhiteSpaces);
+                        break;
                 }
             }
         }
